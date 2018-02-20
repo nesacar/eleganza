@@ -884,4 +884,10 @@ class PagesController extends Controller
         return 'poslato na radic.dejan.nbg@gmail.com';
     }
 
+    public function eleganza(){
+        $settings = Setting::first();
+        $theme = Theme::where('active', 0)->first();
+        return view('themes.'.$theme->slug.'.index', compact('settings', 'theme'));
+    }
+
 }

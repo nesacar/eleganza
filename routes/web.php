@@ -15,6 +15,8 @@ Route::get('/', 'PagesController@index');
 Route::get('pretraga', 'PagesController@search');
 Route::post('subscribe', 'PagesController@subscribe');
 
+Route::get('eleganza', 'PagesController@eleganza');
+
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('admin/pages/more', 'PagesController@more');
 Route::get('atribut/{slug}/{id}', 'PagesController@attribute');
