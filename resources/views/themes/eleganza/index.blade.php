@@ -292,7 +292,7 @@
             </div>
         </div>
     </div>
-    <img class="e-jumbotron__img" src=home-2.jpg />
+    {!! HTML::Image('themes/'.$theme->slug.'/img/home-2.jpg', '', array('class' => 'e-jumbotron__img')) !!}
 </div>
 
 <div class="backdrop">
@@ -306,7 +306,7 @@
                     <div class="instashop-list__item">
                         <div class="instashop-image">
                             <div class="e-image e-image--11 instashop-thumbnail with-zoom">
-                                <img src=satovi.jpg />
+                                {!! HTML::Image('themes/'.$theme->slug.'/img/satovi.jpg', '') !!}
                                 <div class="instashop-overlay">
                                     <div class="instashop-overlay__action">
                                         <i class="fab fa-instagram"></i>
@@ -317,7 +317,7 @@
                         </div>
                         <div class="instashop-image">
                             <div class="e-image e-image--43 instashop-thumbnail with-zoom">
-                                <img src=satovi.jpg />
+                                {!! HTML::Image('themes/'.$theme->slug.'/img/satovi.jpg', '') !!}
                                 <div class="instashop-overlay">
                                     <div class="instashop-overlay__action">
                                         <i class="fab fa-instagram"></i>
@@ -330,7 +330,7 @@
                     <div class="instashop-list__item">
                         <div class="instashop-image">
                             <div class="e-image e-image--43 instashop-thumbnail with-zoom">
-                                <img src=satovi.jpg />
+                                {!! HTML::Image('themes/'.$theme->slug.'/img/satovi.jpg', '') !!}
                                 <div class="instashop-overlay">
                                     <div class="instashop-overlay__action">
                                         <i class="fab fa-instagram"></i>
@@ -341,7 +341,7 @@
                         </div>
                         <div class="instashop-image">
                             <div class="e-image e-image--11 instashop-thumbnail with-zoom">
-                                <img src=satovi.jpg />
+                                {!! HTML::Image('themes/'.$theme->slug.'/img/satovi.jpg', '') !!}
                                 <div class="instashop-overlay">
                                     <div class="instashop-overlay__action">
                                         <i class="fab fa-instagram"></i>
@@ -354,7 +354,7 @@
                     <div class="instashop-list__item">
                         <div class="instashop-image">
                             <div class="e-image e-image--11 instashop-thumbnail with-zoom">
-                                <img src=satovi.jpg />
+                                {!! HTML::Image('themes/'.$theme->slug.'/img/satovi.jpg', '') !!}
                                 <div class="instashop-overlay">
                                     <div class="instashop-overlay__action">
                                         <i class="fab fa-instagram"></i>
@@ -365,7 +365,7 @@
                         </div>
                         <div class="instashop-image">
                             <div class="e-image e-image--43 instashop-thumbnail with-zoom">
-                                <img src=satovi.jpg />
+                                {!! HTML::Image('themes/'.$theme->slug.'/img/satovi.jpg', '') !!}
                                 <div class="instashop-overlay">
                                     <div class="instashop-overlay__action">
                                         <i class="fab fa-instagram"></i>
@@ -388,7 +388,7 @@
         <div class="product-item no-mragin">
             <a href="#">
                 <div class="product-item__img-box">
-                    <img src=product.jpg alt="image name">
+                    {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!}
                 </div>
                 <div class="product-item__info-box">
                     <span class="product-item__brand">item brand</span>
@@ -401,7 +401,7 @@
         <div class="product-item no-mragin">
             <a href="#">
                 <div class="product-item__img-box">
-                    <img src=product.jpg alt="image name">
+                    {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!}
                 </div>
                 <div class="product-item__info-box">
                     <span class="product-item__brand">item brand</span>
@@ -413,7 +413,7 @@
         <div class="product-item no-mragin">
             <a href="#">
                 <div class="product-item__img-box">
-                    <img src=product.jpg alt="image name">
+                    {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!}
                 </div>
                 <div class="product-item__info-box">
                     <span class="product-item__brand">item brand</span>
@@ -425,7 +425,7 @@
         <div class="product-item no-mragin">
             <a href="#">
                 <div class="product-item__img-box">
-                    <img src=product.jpg alt="image name">
+                    {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!}
                 </div>
                 <div class="product-item__info-box">
                     <span class="product-item__brand">item brand</span>
@@ -437,7 +437,7 @@
         <div class="product-item no-mragin">
             <a href="#">
                 <div class="product-item__img-box">
-                    <img src=product.jpg alt="image name">
+                    {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!}
                 </div>
                 <div class="product-item__info-box">
                     <span class="product-item__brand">item brand</span>
@@ -461,7 +461,7 @@
             <div class="e-blog">
                 <a href="#">
                     <div class="e-blog__thumb e-image e-image--43">
-                        <img src=blog-bg-1.jpg />
+                        {!! HTML::Image('themes/'.$theme->slug.'/img/blog-bg-1.jpg', '') !!}
                         <div class="e-blog__title e-blog__title--small">
                             <h4>gaga milano osvojio je nagradu watchpro satovi 2017. godine</h4>
                         </div>
@@ -474,7 +474,7 @@
             <div class="e-blog">
                 <a href="#">
                     <div class="e-blog__thumb e-image e-image--43">
-                        <img src=blog-bg-1.jpg />
+                        {!! HTML::Image('themes/'.$theme->slug.'/img/blog-bg-1.jpg', '') !!}
                         <div class="e-blog__title e-blog__title--small">
                             <h4>gaga milano osvojio je nagradu watchpro satovi 2017. godine</h4>
                         </div>
@@ -487,7 +487,7 @@
             <div class="e-blog">
                 <a href="#">
                     <div class="e-blog__thumb e-image e-image--43">
-                        <img src=blog-bg-1.jpg />
+                        {!! HTML::Image('themes/'.$theme->slug.'/img/blog-bg-1.jpg', '') !!}
                         <div class="e-blog__title e-blog__title--small">
                             <h4>gaga milano osvojio je nagradu watchpro satovi 2017. godine</h4>
                         </div>
@@ -499,7 +499,73 @@
     </div>
 </div>
 
-<div class=benefits> <div class=container> <ul class=benefits__list> <li class=benefits__list__item> <i class="fas fa-truck"></i> <span>BESPLATNA DOSTAVA ZA PROIZVODE IZNAD 500 KN</span> </li> <li class=benefits__list__item> <i class="fas fa-lock"></i> <span>GARANCIJE SIGURNE KUPNJE</span> </li> <li class=benefits__list__item> <i class="fas fa-redo-alt"></i> <span>povrat i zamjene</span> </li> </ul> </div> </div> <footer class=footer> <div class=container> <div class=row> <div class="col-md-3 col-sm-6 footer__col"> <h4 class=footer__col__title>kontakt</h4> <ul class=footer__list> <li class=footer__list__item> Tel: 051 227 012 </li> <li class=footer__list__item> Fax: 051 227 014 </li> <li class=footer__list__item> <a href=mailto:sales@p-grupacija.hr>E-mail: sales@p-grupacija.hr</a> </li> </ul> </div> <div class="col-md-3 col-sm-6 footer__col"> <ul class=footer__list> <li class=footer__list__item><a href=#>O Nama</a></li> <li class=footer__list__item><a href=#>Blog</a></li> <li class=footer__list__item><a href=#>Kontakt</a></li> <li class=footer__list__item><a href=#>Pitanja i odgovori</a></li> </ul> </div> <div class="col-md-3 col-sm-6 footer__col"> <h4 class=footer__col__title>korisnička podrška</h4> <ul class=footer__list> <li class=footer__list__item><a href=#>Opći uveti poslovanja</a></li> <li class=footer__list__item><a href=#>Dostava</a></li> <li class=footer__list__item><a href=#>Povrat i zamjene</a></li> <li class=footer__list__item><a href=#>Načini plaćanja</a></li> <li class=footer__list__item><a href=#>Privatnost i sigurnost</a></li> <li class=footer__list__item><a href=#>Zaštita osobnih podataka</a></li> </ul> </div> <div class="col-md-3 col-sm-6 footer__col"> <h4 class=footer__col__title>društvene mreže</h4> <ul class=social-list> <li class=social-list__item> <a href=# target=_blank rel=noopener aria-label=Facebook> <i class="fab fa-facebook-f"></i> </a> </li> <li class=social-list__item> <a href=# target=_blank rel=noopener aria-label=Twitter> <i class="fab fa-twitter"></i> </a> </li> <li class=social-list__item> <a href=# target=_blank rel=noopener aria-label=Instagram> <i class="fab fa-instagram"></i> </a> </li> <li class=social-list__item> <a href=# target=_blank rel=noopener aria-label=YouTube> <i class="fab fa-youtube"></i> </a> </li> </ul> </div> <div class=col-12> <div class=e-cards-list> <img src=amex.png /> <img src=maestro.png /> <img src=master.png /> <img src=visa.png /> <img src=discover.png /> <img src=diners.png /> </div> </div> </div> </div> </footer> <div class=sub-footer> <div class="container sub-footer__container"> <div>radionica</div> <div class=copy> <span>2018</span> P-grupacija. Sva prava zadržana. </div> </div> </div>
+<div class=benefits>
+    <div class=container>
+        <ul class=benefits__list>
+            <li class=benefits__list__item> <i class="fas fa-truck"></i> <span>BESPLATNA DOSTAVA ZA PROIZVODE IZNAD 500 KN</span> </li>
+            <li class=benefits__list__item> <i class="fas fa-lock"></i> <span>GARANCIJE SIGURNE KUPNJE</span> </li>
+            <li class=benefits__list__item> <i class="fas fa-redo-alt"></i> <span>povrat i zamjene</span> </li>
+        </ul>
+    </div>
+</div>
+<footer class=footer>
+    <div class=container>
+        <div class=row>
+            <div class="col-md-3 col-sm-6 footer__col">
+                <h4 class=footer__col__title>kontakt</h4>
+                <ul class=footer__list>
+                    <li class=footer__list__item> Tel: 051 227 012 </li>
+                    <li class=footer__list__item> Fax: 051 227 014 </li>
+                    <li class=footer__list__item> <a href=mailto:sales@p-grupacija.hr>E-mail: sales@p-grupacija.hr</a> </li>
+                </ul>
+            </div>
+            <div class="col-md-3 col-sm-6 footer__col">
+                <ul class=footer__list>
+                    <li class=footer__list__item><a href=#>O Nama</a></li>
+                    <li class=footer__list__item><a href=#>Blog</a></li>
+                    <li class=footer__list__item><a href=#>Kontakt</a></li>
+                    <li class=footer__list__item><a href=#>Pitanja i odgovori</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 col-sm-6 footer__col">
+                <h4 class=footer__col__title>korisnička podrška</h4>
+                <ul class=footer__list>
+                    <li class=footer__list__item><a href=#>Opći uveti poslovanja</a></li>
+                    <li class=footer__list__item><a href=#>Dostava</a></li>
+                    <li class=footer__list__item><a href=#>Povrat i zamjene</a></li>
+                    <li class=footer__list__item><a href=#>Načini plaćanja</a></li>
+                    <li class=footer__list__item><a href=#>Privatnost i sigurnost</a></li>
+                    <li class=footer__list__item><a href=#>Zaštita osobnih podataka</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 col-sm-6 footer__col">
+                <h4 class=footer__col__title>društvene mreže</h4>
+                <ul class=social-list>
+                    <li class=social-list__item> <a href=# target=_blank rel=noopener aria-label=Facebook> <i class="fab fa-facebook-f"></i> </a> </li>
+                    <li class=social-list__item> <a href=# target=_blank rel=noopener aria-label=Twitter> <i class="fab fa-twitter"></i> </a> </li>
+                    <li class=social-list__item> <a href=# target=_blank rel=noopener aria-label=Instagram> <i class="fab fa-instagram"></i> </a> </li>
+                    <li class=social-list__item> <a href=# target=_blank rel=noopener aria-label=YouTube> <i class="fab fa-youtube"></i> </a> </li>
+                </ul>
+            </div>
+            <div class=col-12>
+                <div class=e-cards-list>
+                    {!! HTML::Image('themes/'.$theme->slug.'/img/amex.png', 'amex') !!}
+                    {!! HTML::Image('themes/'.$theme->slug.'/img/maestro.png', 'maestro') !!}
+                    {!! HTML::Image('themes/'.$theme->slug.'/img/master.png', 'master') !!}
+                    {!! HTML::Image('themes/'.$theme->slug.'/img/visa.png', 'visa') !!}
+                    {!! HTML::Image('themes/'.$theme->slug.'/img/discover.png', 'discover') !!}
+                    {!! HTML::Image('themes/'.$theme->slug.'/img/diners.png', 'diners') !!}
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<div class=sub-footer>
+    <div class="container sub-footer__container">
+        <div>radionica</div>
+        <div class=copy> <span>2018</span> P-grupacija. Sva prava zadržana. </div>
+    </div>
+</div>
 {!! HTML::script('themes/'.$theme->slug.'/js/app.bundle.js') !!}
 </body>
 </html>
