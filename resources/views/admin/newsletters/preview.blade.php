@@ -1,0 +1,1 @@
+@include('themes.'.$theme->slug.'.email.newsletter2')

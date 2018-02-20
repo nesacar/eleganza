@@ -1,0 +1,23 @@
+{
+  "name": "nesacar/newsletter",
+  "description": "Newsletter package",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Nebojša Marković",
+      "email": "nebojsart1409@yahoo.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "nesacar\\newsletter\\": "src/"
+    }
+  },
+  "minimum-stability": "stable",
+  "require": {
+    "php" : ">=7.0.0",
+    "illuminate/support": "~5",
+    "dimsav/laravel-translatable": "^8.0",
+    "mcamara/laravel-localization": "^1.3"
+  }
+}
