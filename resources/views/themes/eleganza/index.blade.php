@@ -160,12 +160,12 @@
                     </div>
                     <div class=submenu__col>
                         <div class="e-image e-image--custom">
-                            <img src=nakit.jpg>
+                            {!! HTML::Image('themes/'.$theme->slug.'/img/nakit.jpg', '') !!}
                         </div>
                     </div>
                     <div class=submenu__col>
                         <div class="e-image e-image--custom">
-                            <img src=satovi.jpg>
+                            {!! HTML::Image('themes/'.$theme->slug.'/img/satovi.jpg', '') !!}
                         </div>
                     </div>
                 </div>
@@ -180,25 +180,25 @@
                     <div class=submenu__col>
                         <div class=submenu__title>satovi</div>
                         <div class="e-image e-image--43">
-                            <img src=nakit.jpg>
+                            {!! HTML::Image('themes/'.$theme->slug.'/img/nakit.jpg', '') !!}
                         </div>
                     </div>
                     <div class=submenu__col>
                         <div class=submenu__title>nakit</div>
                         <div class="e-image e-image--43">
-                            <img src=satovi.jpg>
+                            {!! HTML::Image('themes/'.$theme->slug.'/img/satovi.jpg', '') !!}
                         </div>
                     </div>
                     <div class=submenu__col>
                         <div class=submenu__title>modni dodaci</div>
                         <div class="e-image e-image--43">
-                            <img src=nakit.jpg>
+                            {!! HTML::Image('themes/'.$theme->slug.'/img/nakit.jpg', '') !!}
                         </div>
                     </div>
                     <div class=submenu__col>
                         <div class=submenu__title>kitchen</div>
                         <div class="e-image e-image--43">
-                            <img src=satovi.jpg>
+                            {!! HTML::Image('themes/'.$theme->slug.'/img/satovi.jpg', '') !!}
                         </div>
                     </div>
 
