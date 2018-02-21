@@ -104,7 +104,7 @@
                                         {{ $p->id }}
                                     </div>
                                     <div class="col-md-3 ima-padding">
-                                        {{ $p->title }}
+                                        {{ $p->{'title:hr'} }}
                                     </div>
                                     <div class="col-md-1 ima-padding">
                                         {{ $p->code }}

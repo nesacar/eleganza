@@ -1,92 +1,67 @@
 @extends('themes.'.$theme->slug.'.index')
 
 @section('content')
-    <div class="e-jumbotron">
-        <div class="e-jumbotron__wrap">
-            <div class="container e-jumbotron__content e-jumbotron__content--left">
-                <div class="e-jumbotron__cta e-jumbotron__cta--left">
-                    <h2>besplatna dostava za sve gaga milano satove</h2>
-                    <a href="#" class="e-cta with-shadow with-shadow">izaberi svoj gaga milano sat</a>
+
+    @if(!empty($home))
+        <div class="e-jumbotron">
+            <div class="e-jumbotron__wrap">
+                <div class="container e-jumbotron__content e-jumbotron__content--left">
+                    <div class="e-jumbotron__cta e-jumbotron__cta--left">
+                        <h2>{{ $hero->title }}</h2>
+                        <a href="{{ url($hero->link) }}" class="e-cta with-shadow with-shadow">{{ $hero->button }}</a>
+                    </div>
+                </div>
+            </div>
+            {!! HTML::Image('themes/'.$theme->slug.'/img/home-1.png', '', array('class' => 'e-jumbotron__img')) !!}
+        </div>
+    @endif
+
+    @if(!empty($home4))
+
+        <div class="backdrop">
+            <div class="container e-card-container kategorije">
+                <div class="e-card-wrap">
+                    <div class="nav-grid e-card">
+                        @foreach($home4 as $box)
+
+                            <div class="nav-grid__item">
+                                <div class="nav-grid__item__wrap">
+                                    <a href="#">
+                                        <div class="nav-grid__item__content with-zoom">
+                                            {!! HTML::Image($box->image, $box->title, array('class' => 'center')) !!}
+                                            <div class="diamond center">
+                                                <div class="diamond__shape diamond__shape--white"></div>
+                                            </div>
+                                            <h3 class="center">{{ $box->title }}</h3>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                        @endforeach
+
+                    </div>
                 </div>
             </div>
         </div>
-        {!! HTML::Image('themes/'.$theme->slug.'/img/home-1.png', '', array('class' => 'e-jumbotron__img')) !!}
-    </div>
 
-    <div class="backdrop">
-        <div class="container e-card-container kategorije">
-            <div class="e-card-wrap">
-                <div class="nav-grid e-card">
+    @endif
 
-                    <div class="nav-grid__item">
-                        <div class="nav-grid__item__wrap">
-                            <a href="#">
-                                <div class="nav-grid__item__content with-zoom">
-                                    {!! HTML::Image('themes/'.$theme->slug.'/img/satovi.jpg', '', array('class' => 'center')) !!}
-                                    <div class="diamond center">
-                                        <div class="diamond__shape diamond__shape--white"></div>
-                                    </div>
-                                    <h3 class="center">satovi</h3>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="nav-grid__item">
-                        <div class="nav-grid__item__wrap">
-                            <a href="#">
-                                <div class="nav-grid__item__content with-zoom">
-                                    {!! HTML::Image('themes/'.$theme->slug.'/img/nakit.jpg', '', array('class' => 'center')) !!}
-                                    <div class="diamond center">
-                                        <div class="diamond__shape diamond__shape--white"></div>
-                                    </div>
-                                    <h3 class="center">nakit</h3>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="nav-grid__item">
-                        <div class="nav-grid__item__wrap">
-                            <a href="#">
-                                <div class="nav-grid__item__content with-zoom">
-                                    {!! HTML::Image('themes/'.$theme->slug.'/img/dodaci.jpg', '', array('class' => 'center')) !!}
-                                    <div class="diamond center">
-                                        <div class="diamond__shape diamond__shape--white"></div>
-                                    </div>
-                                    <h3 class="center">modni dodaci</h3>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="nav-grid__item">
-                        <div class="nav-grid__item__wrap">
-                            <a href="#">
-                                <div class="nav-grid__item__content with-zoom">
-                                    {!! HTML::Image('themes/'.$theme->slug.'/img/cuisine.jpg', '', array('class' => 'center')) !!}
-                                    <div class="diamond center">
-                                        <div class="diamond__shape diamond__shape--white"></div>
-                                    </div>
-                                    <h3 class="center">cuisine</h3>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
+    @if(!empty($home1))
 
+        <div class="e-jumbotron">
+            <div class="e-jumbotron__wrap">
+                <div class="container e-jumbotron__content e-jumbotron__content--center">
+                    <div class="e-jumbotron__cta e-jumbotron__cta--center">
+                        <h2>{{ $home1->title }}</h2>
+                        <a href="#" class="e-cta with-shadow">{{ $home1->button }}</a>
+                    </div>
                 </div>
             </div>
+            {!! HTML::Image($home1->image, $home1->title, array('class' => 'e-jumbotron__img')) !!}
         </div>
-    </div>
 
-    <div class="e-jumbotron">
-        <div class="e-jumbotron__wrap">
-            <div class="container e-jumbotron__content e-jumbotron__content--center">
-                <div class="e-jumbotron__cta e-jumbotron__cta--center">
-                    <h2>ekskluzivna kolekcija movado edge by yves behar</h2>
-                    <a href="#" class="e-cta with-shadow">istrazi sve movado edge modele</a>
-                </div>
-            </div>
-        </div>
-        {!! HTML::Image('themes/'.$theme->slug.'/img/home-2.jpg', '', array('class' => 'e-jumbotron__img')) !!}
-    </div>
+    @endif
 
     <div class="backdrop">
         <div class="container e-card-container instashop">

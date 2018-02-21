@@ -8,6 +8,7 @@
             </form>
         </div>
         <div class=top-bar__box>
+            @if(false)
             <div class=top-bar__link data-e-select>
                 <div class=e-select__icon></div>
                 <div class=e-select>
@@ -25,6 +26,7 @@
                     </select>
                 </div>
             </div>
+            @endif
             <a class=top-bar__link href=#>
                 <span>lista želja</span> <i class="fas fa-heart"></i> </a>
         </div>

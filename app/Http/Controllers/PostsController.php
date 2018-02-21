@@ -96,6 +96,8 @@ class PostsController extends Controller
             $tmb->save();
         }
 
+        $post->update();
+
         $post->pcategory()->sync(request('kat'));
 
         return redirect('admin/posts')->with('done', 'Članak je kreiran.');
@@ -148,14 +150,12 @@ class PostsController extends Controller
         $request->input('publish')? $post->publish = 1 : $post->publish = 0;
 
         if($request->hasFile('image')){
-            $imageName = $post->translate('sr')->slug . '-' . $post->id . '.' . $request->file('image')->getClientOriginalExtension();
+            $imageName = $post->slug . '-' . $post->id . '.' . $request->file('image')->getClientOriginalExtension();
             $imagePath = 'images/posts/'.$imageName;
             $imagePathTmb = 'images/posts/tmb/'.$imageName;
             $request->file('image')->move(base_path() . '/public/images/posts/', $imageName);
             $post->image = $imagePath;
             $post->tmb = $imagePathTmb;
-
-            $post->update();
 
             File::copy($imagePath, $imagePathTmb);
 
@@ -163,6 +163,8 @@ class PostsController extends Controller
             $tmb->fit(1080, 500);
             $tmb->save();
         }
+
+        $post->update();
 
         $post->pcategory()->sync(request('kat'));
 

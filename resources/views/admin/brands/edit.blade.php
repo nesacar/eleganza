@@ -71,7 +71,7 @@
                     <hr>
                     <div class="form-group">
                         <div class="col-sm-12">
-                            <input type="submit" class="btn btn-success pull-right" value="Izmeni">
+                            <input type="submit" class="btn btn-success pull-right" value="Izmeni generalno">
                         </div>
                     </div>
                     {!! Form::close() !!}
@@ -128,7 +128,7 @@
                                 @endif
                                 <div class="form-group">
                                     <div class="col-sm-12">
-                                        <input type="submit" class="btn btn-success lang pull-right" value="Izmeni">
+                                        <input type="submit" class="btn btn-success lang pull-right" value="Izmeni {{ $language->name }}">
                                     </div>
                                 </div>
                                 {!! Form::close() !!}

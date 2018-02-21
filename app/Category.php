@@ -50,7 +50,7 @@ class Category extends Model
         if(isset($category)){
             $str .=  "<ol class='sortable'>";
             foreach($category as $c){
-                $str .= "<li id='list_{$c->id}'><div>{$c->{'title:sr'}}  /  {$c->id}</div>";
+                $str .= "<li id='list_{$c->id}'><div>{$c->{'title:hr'}}  /  {$c->id}</div>";
                 $str .= self::getSortCategory($c->id);
                 $str .= "</li>";
             }
@@ -313,7 +313,7 @@ class Category extends Model
             $str .=  "<ol class='sortable'>";
             foreach($category as $c){
                 $str .= "<li id='list_{$c->id}' style='position: relative'>";
-                $str .= "<div class='udesno'>{$c->{'title:sr'}}</div>";
+                $str .= "<div class='udesno'>{$c->{'title:hr'}}</div>";
                 if (in_array($c->id, $catids)) {
                     $str .= "<input type='radio' name='parent' value='{$c->id}' checked='checked' class='right-sort'";
                     if($c->level > 3){ $str .= "disabled='true'"; }
@@ -342,7 +342,7 @@ class Category extends Model
             $str .=  "<ol class='sortable'>";
             foreach($category as $c){
                 $str .= "<li id='list_{$c->id}' style='position: relative'>";
-                $str .= "<div class='udesno'>{$c->{'title:sr'}}</div>";
+                $str .= "<div class='udesno'>{$c->{'title:hr'}}</div>";
                 if (in_array($c->id, $catids)) {
                     $str .= "<input type='checkbox' name='kat[]' value='{$c->id}' checked='checked' class='right-sort'>";
                 }else {
@@ -366,7 +366,7 @@ class Category extends Model
                 $separator = self::getSeparator($c->level);
                 $str .=  "<option value='{$c->id}'";
                 if(Session::get('cat') == $c->id){ $str .= "selected>"; }else{ $str .= ">"; }
-                $str .= $separator." {$c->order}. {$c->{'title:sr'}}";
+                $str .= $separator." {$c->order}. {$c->{'title:hr'}}";
                 $str .= "</option>";
                 $str .= self::getSortCategorySelectParentAdmin($c->id);
             }
@@ -385,7 +385,7 @@ class Category extends Model
                 $separator = self::getSeparator($c->level);
                 $str .=  "<option value='{$c->id}'";
                 if(Session::get('post_cat') == $c->id){ $str .= "selected>"; }else{ $str .= ">"; }
-                $str .= $separator." {$c->order}. {$c->{'title:sr'}}";
+                $str .= $separator." {$c->order}. {$c->{'title:hr'}}";
                 $str .= "</option>";
                 $str .= self::getSortCategorySelectParent($c->id);
             }
@@ -403,7 +403,7 @@ class Category extends Model
                     $separator = self::getSeparator($c->level);
                     $str .=  "<option value='{$c->id}'";
                     if(Session::get('cat') == $c->id){ $str .= "selected>"; }else{ $str .= ">"; }
-                    $str .= $separator." {$c->order}. {$c->{'title:sr'}}";
+                    $str .= $separator." {$c->order}. {$c->{'title:hr'}}";
                     $str .= "</option>";
                     $str .= self::getSortCategorySelectParent($c->id);
                 }
@@ -421,7 +421,7 @@ class Category extends Model
                     $separator = self::getSeparator($c->level);
                     $str .=  "<option value='{$c->id}'";
                     if(Session::get('cat') == $c->id){ $str .= "selected>"; }else{ $str .= ">"; }
-                    $str .= $separator." {$c->order}. {$c->{'title:sr'}}";
+                    $str .= $separator." {$c->order}. {$c->{'title:hr'}}";
                     $str .= "</option>";
                     $str .= self::getSortCategorySelectParentAdmin($c->id);
                 }

@@ -57,7 +57,7 @@
                                         {{ $p->id }}
                                     </div>
                                     <div class="col-md-3 vcenter">
-                                        {{ $p->{'title:sr'} }}
+                                        {{ $p->{'title:hr'} }}
                                     </div>
                                     <div class="col-md-3 vcenter">
                                         {{ $p->pcategory()->first()->{'title:sr'} }}

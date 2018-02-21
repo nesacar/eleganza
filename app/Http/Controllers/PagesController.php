@@ -805,48 +805,7 @@ class PagesController extends Controller
     }
 
     public function proba(){
-        //return Helper::getRandomImage('images/products');
-        //return Helper::saveAllProperties('http://croatia.pggrupa.rs/proba');
-        //return Helper::saveAllAttributes('http://croatia.pggrupa.rs/proba');
-        //return Helper::saveAllBrands('http://croatia.pggrupa.rs/proba');
-        //return Helper::saveAllCategories('http://croatia.pggrupa.rs/proba');
-        //return Helper::saveAllPCategories('http://croatia.pggrupa.rs/proba');
-        //return Helper::saveAllPosts('http://croatia.pggrupa.rs/proba');
-        //return Helper::saveAllTags('http://croatia.pggrupa.rs/proba');
-        //return Helper::saveAllProducts('http://croatia.pggrupa.rs/proba', 0);
-        //return Helper::saveAllSets('http://croatia.pggrupa.rs/proba');
-        //return Helper::fixCategoryParent();
-        //return Helper::setPostTmbImage();
-        //return Helper::setProductTmbImage();
-        //return Helper::setCategoryCollectionImage();
-        //return Product::getFiltersByCategory(101);
-        //return Helper::saveSetsForProducts('http://croatia.pggrupa.rs/proba');
-        //return $products = Product::where('code', null)->orWhere('code', '')->get();
-
-
-        /*$boxes = Box::all();
-        app()->setLocale('hr');
-        if(count($boxes)>0){
-            foreach ($boxes as $b){
-                $b->title = $b->{'title:sr'};
-                $b->subtitle = $b->{'subtitle:sr'};
-                $b->button = $b->{'button:sr'};
-                $b->link = $b->{'link:sr'};
-                $b->update();
-            }
-        }*/
-
-        /*return Attribute::select('properties.id', 'attribute_translations.title')
-            ->join('attribute_translations', 'attributes.id', '=', 'attribute_translations.attribute_id')
-            ->join('properties', 'attributes.property_id', '=', 'properties.id')
-            ->join('property_translations', 'properties.id', '=', 'property_translations.property_id')
-            ->groupBy('attributes.id')
-            ->orderBy('attribute_translations.title', 'ASC')
-            ->pluck('properties.id', 'attribute_translations.title');*/
-
-        //\Session::put('korpa', [1728, 1727]);
-
-        $array = [
+        /*$array = [
             'radic.dejan.nbg@gmail.com',
             'dejan.radic@ministudio.rs',
             //'nebojsart1409@yahoo.com',
@@ -859,7 +818,9 @@ class PagesController extends Controller
             \Mail::to($email)->send(new LuxLifeNewsletter());
         }
 
-        return 'oprem';
+        return 'oprem';*/
+
+
     }
 
     public function outlock(){
@@ -887,7 +848,10 @@ class PagesController extends Controller
     public function eleganza(){
         $settings = Setting::first();
         $theme = Theme::where('active', 0)->first();
-        return view('themes.'.$theme->slug.'.pages.home', compact('settings', 'theme'));
+        $hero = Block::find(4)->box()->where('publish', 1)->orderBy('order', 'ASC')->first();
+        $home4 = Block::find(2)->box()->where('publish', 1)->orderBy('order', 'ASC')->get();
+        $home1 = Block::find(3)->box()->where('publish', 1)->orderBy('order', 'ASC')->first();
+        return view('themes.'.$theme->slug.'.pages.home', compact('settings', 'theme', 'hero', 'home4', 'home1'));
     }
 
     public function eleganzaShop(){

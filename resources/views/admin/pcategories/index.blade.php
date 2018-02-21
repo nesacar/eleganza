@@ -39,7 +39,7 @@
                             @foreach($pcategories as $c)
                                 <div class="row @if($c->publish == 0) crvena @endif">
                                     <div class="col-sm-5 vcenter">
-                                        {{ $c->{'title:sr'} }}
+                                        {{ $c->{'title:hr'} }}
                                     </div>
                                     <div class="col-sm-2 vcenter">
                                         {{ $c->order }}

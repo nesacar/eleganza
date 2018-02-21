@@ -146,7 +146,7 @@ class CategoriesController extends Controller
         $request->input('publish')? $category->publish = 1 : $category->publish = 0;
 
         if($request->hasFile('image')){
-            $imageName = $category->translate('sr')->slug . '-' . $category->id . '.' . $request->file('image')->getClientOriginalExtension();
+            $imageName = $category->slug . '-' . $category->id . '.' . $request->file('image')->getClientOriginalExtension();
             $imagePath = 'images/categories/featured/'.$imageName;
             $request->file('image')->move(base_path() . '/public/images/categories/featured/', $imageName);
             $category->image = $imagePath;
@@ -206,7 +206,7 @@ class CategoriesController extends Controller
 
     public function sortable()
     {
-        app()->setLocale('sr');
+        app()->setLocale('hr');
         $slug = 'categories';
         return view('admin.categories.sortable', compact('slug'));
     }
@@ -231,7 +231,7 @@ class CategoriesController extends Controller
     }
 
     public function properties($id){
-        app()->setLocale('sr');
+        app()->setLocale('hr');
         $slug = 'categories';
         $category = Category::find($id);
         $properties = Property::where('publish', 1)->orderBy('order', 'ASC')->get();
