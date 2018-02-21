@@ -887,7 +887,49 @@ class PagesController extends Controller
     public function eleganza(){
         $settings = Setting::first();
         $theme = Theme::where('active', 0)->first();
-        return view('themes.'.$theme->slug.'.index', compact('settings', 'theme'));
+        return view('themes.'.$theme->slug.'.pages.home', compact('settings', 'theme'));
+    }
+
+    public function eleganzaShop(){
+        $settings = Setting::first();
+        $theme = Theme::where('active', 0)->first();
+        return view('themes.'.$theme->slug.'.pages.category', compact('settings', 'theme'));
+    }
+
+    public function eleganzaBlog(){
+        $settings = Setting::first();
+        $theme = Theme::where('active', 0)->first();
+        return view('themes.'.$theme->slug.'.pages.blog', compact('settings', 'theme'));
+    }
+
+    public function eleganzaWish(){
+        $settings = Setting::first();
+        $theme = Theme::where('active', 0)->first();
+        return view('themes.'.$theme->slug.'.pages.wishList', compact('settings', 'theme'));
+    }
+
+    public function eleganzaCart(){
+        $settings = Setting::first();
+        $theme = Theme::where('active', 0)->first();
+        return view('themes.'.$theme->slug.'.pages.cart', compact('settings', 'theme'));
+    }
+
+    public function eleganzaLogin(){
+        $settings = Setting::first();
+        $theme = Theme::where('active', 0)->first();
+        return view('themes.'.$theme->slug.'.pages.login', compact('settings', 'theme'));
+    }
+
+    public function eleganzaProduct(){
+        $settings = Setting::first();
+        $theme = Theme::where('active', 0)->first();
+        return view('themes.'.$theme->slug.'.pages.product', compact('settings', 'theme'));
+    }
+
+    public function eleganzaRegistration(){
+        $settings = Setting::first();
+        $theme = Theme::where('active', 0)->first();
+        return view('themes.'.$theme->slug.'.pages.registration', compact('settings', 'theme'));
     }
 
 }

@@ -16,6 +16,13 @@ Route::get('pretraga', 'PagesController@search');
 Route::post('subscribe', 'PagesController@subscribe');
 
 Route::get('eleganza', 'PagesController@eleganza');
+Route::get('eleganza/shop', 'PagesController@eleganzaShop');
+Route::get('eleganza/blog', 'PagesController@eleganzaBlog');
+Route::get('eleganza/wish', 'PagesController@eleganzaWish');
+Route::get('eleganza/cart', 'PagesController@eleganzaCart');
+Route::get('eleganza/login', 'PagesController@eleganzaLogin');
+Route::get('eleganza/product', 'PagesController@eleganzaProduct');
+Route::get('eleganza/registration', 'PagesController@eleganzaRegistration');
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('admin/pages/more', 'PagesController@more');
