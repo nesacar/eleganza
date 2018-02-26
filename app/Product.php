@@ -394,8 +394,8 @@ class Product extends Model {
                         $query->whereBetween('products.price_small', [$min, $max]);
                     }
                 })
-                ->groupby('products.id')
-                ->orderby('price_small', 'DESC')
+                ->orderBy('products.price_small', 'DESC')
+                ->groupBy('products.id')
                 ->first();
         }else{
             return Product::select('products.*')
@@ -417,8 +417,8 @@ class Product extends Model {
                         $query->whereBetween('products.price_small', [$min, $max]);
                     }
                 })
-                ->groupby('products.id')
-                ->orderby('price_small', 'DESC')
+                ->orderBy('products.price_small', 'DESC')
+                ->groupBy('products.id')
                 ->first();
         }
     }
@@ -542,7 +542,7 @@ class Product extends Model {
             ->pluck('product_translations.title', 'products.id');
     }
 
-    public static function newFilteredAdminProducts($title=false, $cat=0, $limit, $sort=1, $min=0, $max=0){
+    public static function newFilteredAdminProducts($title=false, $cat=0, $limit, $sort=2, $min=0, $max=0){
         if($sort == 2){ $field = 'products.price_small'; $param = 'ASC'; }elseif($sort == 3){ $field = 'products.price_small'; $param = 'DESC'; }else{ $field = 'products.id'; $param = 'DESC'; }
         if($cat == 0){
             return Product::select('products.*')
@@ -596,7 +596,7 @@ class Product extends Model {
         }
     }
 
-    public static function filteredProducts($cat=0, $fil, $sort=1, $min=0, $max=0){
+    public static function filteredProducts($cat=0, $fil, $sort=2, $min=0, $max=0){
         if($sort == 2){ $field = 'products.price_small'; $param = 'ASC'; }elseif($sort == 3){ $field = 'products.price_small'; $param = 'DESC'; }else{ $field = 'products.publish_at'; $param = 'DESC'; }
         if($cat == 0){
             if(count($fil) > 0){
@@ -677,7 +677,7 @@ class Product extends Model {
         }
     }
 
-    public static function filtered($products, $count, $limit, $sort=1, $oo){
+    public static function filtered($products, $count, $limit, $sort=2, $oo){
         if($sort == 2){ $field = 'products.price_small'; $param = 'ASC'; }elseif($sort == 3){ $field = 'products.price_small'; $param = 'DESC'; }else{ $field = 'products.publish_at'; $param = 'DESC'; }
         $res = array();
         if(count($products)>0){
@@ -764,7 +764,7 @@ class Product extends Model {
         return $cookie->get('S-L-shop');
     }
 
-    public static function paginateRender($products, $limit, $sort=1){
+    public static function paginateRender($products, $limit, $sort=2){
         if($sort == 2){ $field = 'products.price_small'; $param = 'ASC'; }elseif($sort == 3){ $field = 'products.price_small'; $param = 'DESC'; }else{ $field = 'products.publish_at'; $param = 'DESC'; }
         return self::whereIn('id', $products->pluck('id')->toArray())->orderby($field, $param)->paginate($limit);
     }
@@ -799,6 +799,51 @@ class Product extends Model {
         }else{
             return round(($percent/100) * $product->price_small);
         }
+    }
+
+    public static function cloneProduct($num=1, $category_id=false){
+        for($i=0;$i<$num;$i++){
+
+            if($category_id != false){
+                $category = Category::find($category_id);
+                $product = $category->product()->inRandomOrder()->first();
+            }else{
+                $product = Product::inRandomOrder()->first();
+            }
+
+            $new = new Product();
+            $new->user_id = $product->user_id;
+            $new->brand_id = $product->brand_id;
+            $new->set_id = $product->set_id;
+            $new->code = str_random(7);
+            $new->image = $product->image;
+            $new->tmb = $product->tmb;
+            $new->price_small = $product->price_small;
+            $new->price_outlet = $product->price_outlet;
+            $new->views = $product->views;
+            $new->amount = $product->amount;
+            $new->featured = $product->featured;
+            $new->color = $product->color;
+            $new->discount = 0;
+            $new->sold = 0;
+            $new->publish_at = $product->publish_at;
+            $new->publish = 1;
+
+            $new->title = $product->title;
+            $new->slug = $product->slug;
+            $new->short = $product->short;
+            $new->body = $product->body;
+            $new->body2 = $product->body2;
+
+            $new->save();
+
+            if(count($product->category)>0){
+                $ids = $product->category()->pluck('categories.id');
+                $new->category()->sync($ids);
+            }
+        }
+
+        return 'done';
     }
 
     public function brand(){

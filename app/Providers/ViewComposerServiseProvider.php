@@ -22,6 +22,7 @@ class ViewComposerServiseProvider extends ServiceProvider
         $this->composerSecMenu();
         $this->composerIndexPage();
         $this->composerPrimaryLanguage();
+        $this->composerEleganzaMenu();
     }
 
     /**
@@ -80,6 +81,16 @@ class ViewComposerServiseProvider extends ServiceProvider
         $primary = Language::getPrimary();
         view()->composer('themes.'.$theme->slug.'.*', function($view) use ($primary){
             $view->with('primary', $primary);
+        });
+    }
+
+    private function composerEleganzaMenu(){
+        $menus = Menu::find(3)->menuLinks()->where('publish', 1)->where('parent', 0)->orderBy('order', 'ASC')->get();
+        view()->composer('themes.eleganza.partials.header', function($view) use ($menus){
+            $view->with('menus', $menus);
+        });
+        view()->composer('themes.eleganza.partials.mobile-menu', function($view) use ($menus){
+            $view->with('menus', $menus);
         });
     }
 }

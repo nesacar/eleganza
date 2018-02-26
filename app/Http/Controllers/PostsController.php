@@ -145,9 +145,10 @@ class PostsController extends Controller
     {
         $primary = Language::getPrimary();
         app()->setLocale($primary->locale);
-        $post->update($request->all());
+        $post->update($request->except('image'));
         $request->input('home')? $post->home = 1 : $post->home = 0;
         $request->input('publish')? $post->publish = 1 : $post->publish = 0;
+
 
         if($request->hasFile('image')){
             $imageName = $post->slug . '-' . $post->id . '.' . $request->file('image')->getClientOriginalExtension();
@@ -156,17 +157,23 @@ class PostsController extends Controller
             $request->file('image')->move(base_path() . '/public/images/posts/', $imageName);
             $post->image = $imagePath;
             $post->tmb = $imagePathTmb;
+            $post->update();
 
             File::copy($imagePath, $imagePathTmb);
 
-            $tmb = \Image::make($post->tmb);
+            /*$tmb = \Image::make($post->tmb);
             $tmb->fit(1080, 500);
-            $tmb->save();
+            $tmb->save();*/
         }
 
-        $post->update();
 
-        $post->pcategory()->sync(request('kat'));
+        $post->update($request->except('image'));
+
+        if($request->input('kat') == null){
+            $post->pcategory()->sync([]);
+        }else{
+            $post->pcategory()->sync($request->input('kat'));
+        }
 
         if($request->input('tags') == null){
             $post->tag()->sync([]);
@@ -224,7 +231,8 @@ class PostsController extends Controller
     public function deleteimg($id){
         $post = Post::find($id);
         File::delete($post->image);
-        $post->update(array('image' => null));
+        File::delete($post->tmb);
+        $post->update(array('image' => null, 'tmb' => null));
         return view('admin.posts.image_append');
     }
 

@@ -89,5 +89,8 @@
     </div>
 </div>
 {!! HTML::script('themes/'.$theme->slug.'/js/app.bundle.js') !!}
+
+@yield('footer_scripts')
+
 </body>
 </html>

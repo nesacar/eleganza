@@ -31,7 +31,7 @@
                                     <div>
                                         {!! Form::hidden('categories[]', $category->id) !!}
                                         {!! Form::hidden('types[]', 2) !!}
-                                        {{ $category->{'title:sr'} }}
+                                        {{ $category->{'title:hr'} }}
                                         <span class="kat-dole">Kategorija bloga <i class="fa fa-times" aria-hidden="true"></i></span>
                                     </div>
                                 </li>
@@ -53,7 +53,7 @@
                                         <div>
                                             {!! Form::hidden('categories[]', $category->id) !!}
                                             {!! Form::hidden('types[]', 1) !!}
-                                            {{ $category->{'title:sr'} }} / {{ $category->id }}
+                                            {{ $category->{'title:hr'} }} / {{ $category->id }}
                                             <span class="kat-dole">Kategorija prodavnice <i class="fa fa-times" aria-hidden="true"></i></span>
                                         </div>
                                     </li>

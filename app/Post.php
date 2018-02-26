@@ -68,7 +68,7 @@ class Post extends Model
         return false;
     }
 
-    public static function getPostLink($post, $locale = 'sr'){
+    public static function getPostLink($post, $locale = 'hr'){
         $str = '';
         $parent = PCategory::select('p_categories.*')->join('p_category_post', 'p_categories.id', '=', 'p_category_post.p_category_id')
             ->where('p_category_post.post_id', $post->id)->where('p_categories.level', 1)->orderBy('p_categories.order', 'ASC')->first();
@@ -76,9 +76,9 @@ class Post extends Model
             $child = PCategory::select('p_categories.*')->join('p_category_post', 'p_categories.id', '=', 'p_category_post.p_category_id')
                 ->where('p_category_post.post_id', $post->id)->where('p_categories.parent', $parent->id)->where('p_categories.level', 2)->orderBy('p_categories.order', 'ASC')->first();
             if(!empty($child)){
-                $str .= $parent->{'slug:sr'}.'/'.$child->{'slug:sr'}.'/'.$post->{'slug:sr'}.'/'.$post->id;
+                $str .= $parent->{'slug:hr'}.'/'.$child->{'slug:hr'}.'/'.$post->{'slug:hr'}.'/'.$post->id;
             }else{
-                $str .= $parent->{'slug:sr'}.'/'.$post->{'slug:sr'}.'/'.$post->id;
+                $str .= $parent->{'slug:hr'}.'/'.$post->{'slug:hr'}.'/'.$post->id;
             }
         }
         return url($str);

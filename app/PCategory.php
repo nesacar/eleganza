@@ -87,7 +87,7 @@ class PCategory extends Model {
             $str .=  "<ol class='sortable'>";
             foreach($category as $c){
                 $title =
-                $str .= "<li id='list_{$c->id}'><div>{$c->{'title:sr'}} / {$c->id}</div>";
+                $str .= "<li id='list_{$c->id}'><div>{$c->{'title:hr'}} / {$c->id}</div>";
                 $str .= PCategory::getSortCategory($c->id);
                 $str .= "</li>";
             }
@@ -107,7 +107,7 @@ class PCategory extends Model {
             $str .=  "<ol class='sortable'>";
             foreach($category as $c){
                 $str .= "<li id='list_{$c->id}' style='position: relative'>";
-                $str .= "<div class='udesno'>{$c->{'title:sr'}}</div>";
+                $str .= "<div class='udesno'>{$c->{'title:hr'}}</div>";
                 if (in_array($c->id, $catids)) {
                     $str .= "<input type='checkbox' name='kat[]' value='{$c->id}' checked='checked' class='right-sort'>";
                 }else {
@@ -132,7 +132,7 @@ class PCategory extends Model {
             $str .=  "<ol class='sortable'>";
             foreach($category as $c){
                 $str .= "<li id='list_{$c->id}' style='position: relative'>";
-                $str .= "<div class='udesno'>{$c->{'title:sr'}}</div>";
+                $str .= "<div class='udesno'>{$c->{'title:hr'}}</div>";
                 if (in_array($c->id, $catids)) {
                     $str .= "<input type='radio' name='parent' value='{$c->id}' checked='checked' class='right-sort'";
                     if($c->level > 3){ $str .= "disabled='true'"; }
@@ -161,7 +161,7 @@ class PCategory extends Model {
             $str .=  "<ol class='sortable'>";
             foreach($category as $c){
                 $str .= "<li id='list_{$c->id}' style='position: relative'>";
-                $str .= "<div class='udesno'>{$c->{'title:sr'}}</div>";
+                $str .= "<div class='udesno'>{$c->{'title:hr'}}</div>";
                 if ($product_group_id == $c->id) {
                     $str .= "<input type='radio' name='parent' value='{$c->id}' checked='checked' class='right-sort'";
                     if($c->level > 3){ $str .= "disabled='true'"; }
@@ -189,7 +189,7 @@ class PCategory extends Model {
                 $separator = PCategory::getSeparator($c->level);
                 $str .=  "<option value='{$c->id}'";
                 if(Session::get('cat') == $c->id){ $str .= "selected>"; }else{ $str .= ">"; }
-                $str .= $separator." {$c->order}. {$c->{'title:sr'}}";
+                $str .= $separator." {$c->order}. {$c->{'title:hr'}}";
                 $str .= "</option>";
                 $str .= PCategory::getSortCategorySelectParent($c->id);
             }
@@ -208,7 +208,7 @@ class PCategory extends Model {
                 $separator = PCategory::getSeparator($c->level);
                 $str .=  "<option value='{$c->id}'";
                 if(Session::get('cat') == $c->id){ $str .= "selected>"; }else{ $str .= ">"; }
-                $str .= $separator." {$c->order}. {$c->{'title:sr'}}";
+                $str .= $separator." {$c->order}. {$c->{'title:hr'}}";
                 $str .= "</option>";
                 $str .= PCategory::getSortCategorySelectParentAdmin($c->id);
             }
@@ -227,7 +227,7 @@ class PCategory extends Model {
                 $separator = PCategory::getSeparator($c->level);
                 $str .=  "<option value='{$c->id}'";
                 if(Session::get('post_cat') == $c->id){ $str .= "selected>"; }else{ $str .= ">"; }
-                $str .= $separator." {$c->order}. {$c->{'title:sr'}}";
+                $str .= $separator." {$c->order}. {$c->{'title:hr'}}";
                 $str .= "</option>";
                 $str .= PCategory::getSortCategorySelectParent($c->id);
             }
@@ -245,7 +245,7 @@ class PCategory extends Model {
                     $separator = PCategory::getSeparator($c->level);
                     $str .=  "<option value='{$c->id}'";
                     if(Session::get('cat') == $c->id){ $str .= "selected>"; }else{ $str .= ">"; }
-                    $str .= $separator." {$c->order}. {$c->{'title:sr'}}";
+                    $str .= $separator." {$c->order}. {$c->{'title:hr'}}";
                     $str .= "</option>";
                     $str .= PCategory::getSortCategorySelectParent($c->id);
                 }
@@ -263,7 +263,7 @@ class PCategory extends Model {
                     $separator = PCategory::getSeparator($c->level);
                     $str .=  "<option value='{$c->id}'";
                     if(Session::get('cat') == $c->id){ $str .= "selected>"; }else{ $str .= ">"; }
-                    $str .= $separator." {$c->order}. {$c->{'title:sr'}}";
+                    $str .= $separator." {$c->order}. {$c->{'title:hr'}}";
                     $str .= "</option>";
                     $str .= PCategory::getSortCategorySelectParentAdmin($c->id);
                 }
@@ -574,7 +574,7 @@ class PCategory extends Model {
         }
     }
 
-    public static function getLangCategory($slug, $id=false, $locale = 'sr'){
+    public static function getLangCategory($slug, $id=false, $locale = 'hr'){
         if($id){
             $cat_id = PCategoryTranslation::where('slug', $slug)->where('locale', $locale)->pluck('p_category_id')->first();
             isset($cat_id)? $category = PCategory::where('id', $cat_id)->where('publish', 1)->where('parent', $id)->first() : $category = null;
@@ -654,7 +654,7 @@ class PCategory extends Model {
             $str .=  "<ol class='sortable'>";
             foreach($category as $c){
                 $str .= "<li id='list_{$c->id}' style='position: relative'>";
-                $str .= "<div class='udesno'>{$c->{'title:sr'}}</div>";
+                $str .= "<div class='udesno'>{$c->{'title:hr'}}</div>";
                 if (in_array($c->id, $catids)) {
                     $str .= "<input type='checkbox' name='kat[]' value='{$c->id}' checked='checked' class='right-sort'>";
                 }else {

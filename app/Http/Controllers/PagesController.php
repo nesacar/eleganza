@@ -46,18 +46,15 @@ class PagesController extends Controller
     public function index(){
         $settings = Setting::first();
         $theme = Theme::where('active', 1)->first();
-        $stock = Block::find(1)->box()->where('boxes.publish', 1)->orderBy('boxes.order', 'ASC')->get();
-        $home = true;
-        $active = 'satovi';
-        $category = Menu::find(1)->menuLinks()->where('menu_links.parent', 0)->orderBy('menu_links.order', 'ASC')->first();
-        $topParent = MenuLink::getTopParentBylink($category->link);
-        $collections = Category::getCollections();
-        $posts1 = Post::getHomeTwo();
-        $posts2 = Post::getHomeTwoSkip();
-        return view('themes.'.$theme->slug.'.pages.shop', compact('settings', 'theme', 'home', 'stock', 'category', 'topParent', 'active', 'collections', 'posts1', 'posts2'));
+        $hero = Block::find(4)->box()->where('publish', 1)->orderBy('order', 'ASC')->first();
+        $home4 = Block::find(2)->box()->where('publish', 1)->orderBy('order', 'ASC')->get();
+        $home1 = Block::find(3)->box()->where('publish', 1)->orderBy('order', 'ASC')->first();
+        $posts = Post::where('publish', 1)->where('home', 1)->where('publish_at', '<=', (new \Carbon\Carbon()))->orderBy('publish_at', 'DESC')->take(3)->get();
+        return view('themes.'.$theme->slug.'.pages.home', compact('settings', 'theme', 'hero', 'home4', 'home1', 'posts'));
     }
 
     public function shopCategory($slug){
+        //return request()->all();
         \Session::forget('filter');
         $category = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
             ->where('category_translations.slug', $slug)->where('categories.publish', 1)->first();
@@ -72,9 +69,9 @@ class PagesController extends Controller
 
             request('filters') ? $filters = request('filters') : $filters = [];
             request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
-            request('sort') ? $sort = request('sort') : $sort = 1;
+            request('sort') ? $sort = request('sort') : $sort = 2;
             request('page') ? $page = request('page') : $page = 1;
-            request('limit') ? $limit = request('limit') : $limit = 20;
+            request('limit') ? $limit = request('limit') : $limit = 9;
 
             $count = Property::countPropertyFilter($filters);
             $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1]);
@@ -89,11 +86,12 @@ class PagesController extends Controller
                 $products = Product::paginateRender($products, $limit, $sort);
             }
 
+            $max = Product::newMaxPrice($category->id, $filters);
             $theme = Theme::where('active', 1)->first();
             $settings = Setting::find(1);
             $topCat = [];
             $active = $slug;
-            return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props'));
+            return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max'));
         }else{
             return 'error 404';
         }
@@ -144,9 +142,9 @@ class PagesController extends Controller
 
                 request('filters') ? $filters = request('filters') : $filters = [];
                 request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
-                request('sort') ? $sort = request('sort') : $sort = 1;
+                request('sort') ? $sort = request('sort') : $sort = 2;
                 request('page') ? $page = request('page') : $page = 1;
-                request('limit') ? $limit = request('limit') : $limit = 20;
+                request('limit') ? $limit = request('limit') : $limit = 9;
 
                 $count = Property::countPropertyFilter($filters);
                 $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1]);
@@ -161,7 +159,8 @@ class PagesController extends Controller
                     $products = Product::paginateRender($products, $limit, $sort);
                 }
                 $topCat = [];
-                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props'));
+                $max = Product::newMaxPrice($category->id, $filters);
+                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max'));
             }else{
                 return 'error 404';
             }
@@ -208,9 +207,9 @@ class PagesController extends Controller
 
                 request('filters') ? $filters = request('filters') : $filters = [];
                 request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
-                request('sort') ? $sort = request('sort') : $sort = 1;
+                request('sort') ? $sort = request('sort') : $sort = 2;
                 request('page') ? $page = request('page') : $page = 1;
-                request('limit') ? $limit = request('limit') : $limit = 20;
+                request('limit') ? $limit = request('limit') : $limit = 9;
 
                 $count = Property::countPropertyFilter($filters);
                 $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1]);
@@ -227,7 +226,8 @@ class PagesController extends Controller
 
                 $settings = Setting::find(1);
                 $topCat = [];
-                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props'));
+                $max = Product::newMaxPrice($category->id, $filters);
+                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max'));
             }else{
                 return 'error 404';
             }
@@ -274,9 +274,9 @@ class PagesController extends Controller
 
                 request('filters') ? $filters = request('filters') : $filters = [];
                 request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
-                request('sort') ? $sort = request('sort') : $sort = 1;
+                request('sort') ? $sort = request('sort') : $sort = 2;
                 request('page') ? $page = request('page') : $page = 1;
-                request('limit') ? $limit = request('limit') : $limit = 20;
+                request('limit') ? $limit = request('limit') : $limit = 9;
 
                 $count = Property::countPropertyFilter($filters);
                 $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1]);
@@ -291,7 +291,8 @@ class PagesController extends Controller
                     $products = Product::paginateRender($products, $limit, $sort);
                 }
                 $topCat = [];
-                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props'));
+                $max = Product::newMaxPrice($category->id, $filters);
+                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max'));
             }else{
                 return 'error 404';
             }
@@ -343,9 +344,9 @@ class PagesController extends Controller
 
                 request('filters') ? $filters = request('filters') : $filters = [];
                 request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
-                request('sort') ? $sort = request('sort') : $sort = 1;
+                request('sort') ? $sort = request('sort') : $sort = 2;
                 request('page') ? $page = request('page') : $page = 1;
-                request('limit') ? $limit = request('limit') : $limit = 20;
+                request('limit') ? $limit = request('limit') : $limit = 9;
 
                 $count = Property::countPropertyFilter($filters);
                 $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1]);
@@ -360,7 +361,8 @@ class PagesController extends Controller
                     $products = Product::paginateRender($products, $limit, $sort);
                 }
                 $topCat = [];
-                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 's5', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props'));
+                $max = Product::newMaxPrice($category->id, $filters);
+                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 's5', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max'));
             }else{
                 return 'error 404';
             }
@@ -414,9 +416,9 @@ class PagesController extends Controller
 
                 request('filters') ? $filters = request('filters') : $filters = [];
                 request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
-                request('sort') ? $sort = request('sort') : $sort = 1;
+                request('sort') ? $sort = request('sort') : $sort = 2;
                 request('page') ? $page = request('page') : $page = 1;
-                request('limit') ? $limit = request('limit') : $limit = 20;
+                request('limit') ? $limit = request('limit') : $limit = 9;
 
                 $count = Property::countPropertyFilter($filters);
                 $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1]);
@@ -431,7 +433,8 @@ class PagesController extends Controller
                     $products = Product::paginateRender($products, $limit, $sort);
                 }
                 $topCat = [];
-                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 's5', 's6', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props'));
+                $max = Product::newMaxPrice($category->id, $filters);
+                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 's5', 's6', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max'));
             }else{
                 return 'error 404';
             }
@@ -820,7 +823,15 @@ class PagesController extends Controller
 
         return 'oprem';*/
 
+        //return Product::cloneProduct(10, 1);
+        //kopiranje atributa
 
+        $products = Product::all();
+        foreach ($products as $product){
+            $product->price_small = rand(23,223);
+            $product->update();
+        }
+        return 'done';
     }
 
     public function outlock(){
@@ -847,52 +858,57 @@ class PagesController extends Controller
 
     public function eleganza(){
         $settings = Setting::first();
-        $theme = Theme::where('active', 0)->first();
+        $theme = Theme::where('active', 1)->first();
         $hero = Block::find(4)->box()->where('publish', 1)->orderBy('order', 'ASC')->first();
         $home4 = Block::find(2)->box()->where('publish', 1)->orderBy('order', 'ASC')->get();
         $home1 = Block::find(3)->box()->where('publish', 1)->orderBy('order', 'ASC')->first();
-        return view('themes.'.$theme->slug.'.pages.home', compact('settings', 'theme', 'hero', 'home4', 'home1'));
+        $posts = Post::where('publish', 1)->where('home', 1)->where('publish_at', '<=', (new \Carbon\Carbon()))->orderBy('publish_at', 'DESC')->take(3)->get();
+        return view('themes.'.$theme->slug.'.pages.home', compact('settings', 'theme', 'hero', 'home4', 'home1', 'posts'));
     }
 
     public function eleganzaShop(){
         $settings = Setting::first();
-        $theme = Theme::where('active', 0)->first();
-        return view('themes.'.$theme->slug.'.pages.category', compact('settings', 'theme'));
+        $theme = Theme::where('active', 1)->first();
+        $category = Category::whereTranslation('slug', 'satovi')->first();
+        $products = $category->product()->where('publish', 1)->where('publish_at', '<=', (new \Carbon\Carbon()))->orderBy('publish_at', 'DESC')->paginate(1);
+        return view('themes.'.$theme->slug.'.pages.shop-category', compact('settings', 'theme', 'category', 'products'));
     }
 
     public function eleganzaBlog(){
         $settings = Setting::first();
-        $theme = Theme::where('active', 0)->first();
-        return view('themes.'.$theme->slug.'.pages.blog', compact('settings', 'theme'));
+        $theme = Theme::where('active', 1)->first();
+        $posts = Post::select('posts.*')->join('p_category_post', 'posts.id', '=', 'p_category_post.post_id')->whereIn('p_category_post.p_category_id', PCategory::where('id', '<>', 3)->pluck('id'))
+            ->groupBy('posts.id')->paginate(4);
+        return view('themes.'.$theme->slug.'.pages.blog', compact('settings', 'theme', 'posts'));
     }
 
     public function eleganzaWish(){
         $settings = Setting::first();
-        $theme = Theme::where('active', 0)->first();
+        $theme = Theme::where('active', 1)->first();
         return view('themes.'.$theme->slug.'.pages.wishList', compact('settings', 'theme'));
     }
 
     public function eleganzaCart(){
         $settings = Setting::first();
-        $theme = Theme::where('active', 0)->first();
+        $theme = Theme::where('active', 1)->first();
         return view('themes.'.$theme->slug.'.pages.cart', compact('settings', 'theme'));
     }
 
     public function eleganzaLogin(){
         $settings = Setting::first();
-        $theme = Theme::where('active', 0)->first();
+        $theme = Theme::where('active', 1)->first();
         return view('themes.'.$theme->slug.'.pages.login', compact('settings', 'theme'));
     }
 
     public function eleganzaProduct(){
         $settings = Setting::first();
-        $theme = Theme::where('active', 0)->first();
+        $theme = Theme::where('active', 1)->first();
         return view('themes.'.$theme->slug.'.pages.product', compact('settings', 'theme'));
     }
 
     public function eleganzaRegistration(){
         $settings = Setting::first();
-        $theme = Theme::where('active', 0)->first();
+        $theme = Theme::where('active', 1)->first();
         return view('themes.'.$theme->slug.'.pages.registration', compact('settings', 'theme'));
     }
 

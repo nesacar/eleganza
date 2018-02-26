@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @if(!empty($home))
+    @if(!empty($hero))
         <div class="e-jumbotron">
             <div class="e-jumbotron__wrap">
                 <div class="container e-jumbotron__content e-jumbotron__content--left">
@@ -63,207 +63,33 @@
 
     @endif
 
-    <div class="backdrop">
-        <div class="container e-card-container instashop">
-            <div class="e-card-wrap">
-                <div class="instashop__wrap e-card">
-                    <h3 class="e-subheading">#instashop</h3>
-                    <p>Pokazite nam kako nosite proizvode iz nase kolekcije. #ELEGANZA</p>
+    @include('themes.'.$theme->slug.'.partials.instagram-feed')
 
-                    <div class="instashop-list">
-                        <div class="instashop-list__item">
-                            <div class="instashop-image">
-                                <div class="e-image e-image--11 instashop-thumbnail with-zoom">
-                                    {!! HTML::Image('themes/'.$theme->slug.'/img/satovi.jpg', '') !!}
-                                    <div class="instashop-overlay">
-                                        <div class="instashop-overlay__action">
-                                            <i class="fab fa-instagram"></i>
-                                            <span>shop the look</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="instashop-image">
-                                <div class="e-image e-image--43 instashop-thumbnail with-zoom">
-                                    {!! HTML::Image('themes/'.$theme->slug.'/img/satovi.jpg', '') !!}
-                                    <div class="instashop-overlay">
-                                        <div class="instashop-overlay__action">
-                                            <i class="fab fa-instagram"></i>
-                                            <span>shop the look</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="instashop-list__item">
-                            <div class="instashop-image">
-                                <div class="e-image e-image--43 instashop-thumbnail with-zoom">
-                                    {!! HTML::Image('themes/'.$theme->slug.'/img/satovi.jpg', '') !!}
-                                    <div class="instashop-overlay">
-                                        <div class="instashop-overlay__action">
-                                            <i class="fab fa-instagram"></i>
-                                            <span>shop the look</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="instashop-image">
-                                <div class="e-image e-image--11 instashop-thumbnail with-zoom">
-                                    {!! HTML::Image('themes/'.$theme->slug.'/img/satovi.jpg', '') !!}
-                                    <div class="instashop-overlay">
-                                        <div class="instashop-overlay__action">
-                                            <i class="fab fa-instagram"></i>
-                                            <span>shop the look</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="instashop-list__item">
-                            <div class="instashop-image">
-                                <div class="e-image e-image--11 instashop-thumbnail with-zoom">
-                                    {!! HTML::Image('themes/'.$theme->slug.'/img/satovi.jpg', '') !!}
-                                    <div class="instashop-overlay">
-                                        <div class="instashop-overlay__action">
-                                            <i class="fab fa-instagram"></i>
-                                            <span>shop the look</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="instashop-image">
-                                <div class="e-image e-image--43 instashop-thumbnail with-zoom">
-                                    {!! HTML::Image('themes/'.$theme->slug.'/img/satovi.jpg', '') !!}
-                                    <div class="instashop-overlay">
-                                        <div class="instashop-overlay__action">
-                                            <i class="fab fa-instagram"></i>
-                                            <span>shop the look</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <h3 class="e-subheading">best sellers</h3>
-        <div class="owl-carousel" data-is-carousel="true">
-
-            <div class="product-item no-mragin">
-                <a href="#">
-                    <div class="product-item__img-box">
-                        {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!}
-                    </div>
-                    <div class="product-item__info-box">
-                        <span class="product-item__brand">item brand</span>
-                        <h2 class="product-item__name">item name</h2>
-                        <span class="product-item__price">1234</span>
-                    </div>
-                </a>
-            </div>
-
-            <div class="product-item no-mragin">
-                <a href="#">
-                    <div class="product-item__img-box">
-                        {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!}
-                    </div>
-                    <div class="product-item__info-box">
-                        <span class="product-item__brand">item brand</span>
-                        <h2 class="product-item__name">item name</h2>
-                        <span class="product-item__price">1234</span>
-                    </div>
-                </a>
-            </div>
-            <div class="product-item no-mragin">
-                <a href="#">
-                    <div class="product-item__img-box">
-                        {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!}
-                    </div>
-                    <div class="product-item__info-box">
-                        <span class="product-item__brand">item brand</span>
-                        <h2 class="product-item__name">item name</h2>
-                        <span class="product-item__price">1234</span>
-                    </div>
-                </a>
-            </div>
-            <div class="product-item no-mragin">
-                <a href="#">
-                    <div class="product-item__img-box">
-                        {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!}
-                    </div>
-                    <div class="product-item__info-box">
-                        <span class="product-item__brand">item brand</span>
-                        <h2 class="product-item__name">item name</h2>
-                        <span class="product-item__price">1234</span>
-                    </div>
-                </a>
-            </div>
-            <div class="product-item no-mragin">
-                <a href="#">
-                    <div class="product-item__img-box">
-                        {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!}
-                    </div>
-                    <div class="product-item__info-box">
-                        <span class="product-item__brand">item brand</span>
-                        <h2 class="product-item__name">item name</h2>
-                        <span class="product-item__price">1234</span>
-                    </div>
-                </a>
-            </div>
-
-        </div>
-    </div>
+    @include('themes.'.$theme->slug.'.partials.best-sellers')
 
     @include('themes.'.$theme->slug.'.partials.newsletter')
 
-
+    @if(!empty($posts))
     <div class="container novosti">
         <h3 class="e-subheading">novosti</h3>
         <div class="e-row">
-
-            <div class="e-col e-col--3">
-                <div class="e-blog">
-                    <a href="#">
-                        <div class="e-blog__thumb e-image e-image--43">
-                            {!! HTML::Image('themes/'.$theme->slug.'/img/blog-bg-1.jpg', '') !!}
-                            <div class="e-blog__title e-blog__title--small">
-                                <h4>gaga milano osvojio je nagradu watchpro satovi 2017. godine</h4>
+            @foreach($posts as $post)
+                <div class="e-col e-col--3">
+                    <div class="e-blog">
+                        <a href="{{ \App\Post::getPostLink($post) }}">
+                            <div class="e-blog__thumb e-image e-image--43">
+                                {!! HTML::Image($post->image, $post->title) !!}
+                                <div class="e-blog__title e-blog__title--small">
+                                    <h4>{{ $post->title }}</h4>
+                                </div>
                             </div>
-                        </div>
-                    </a>
+                        </a>
+                    </div>
                 </div>
-            </div>
-
-            <div class="e-col e-col--3">
-                <div class="e-blog">
-                    <a href="#">
-                        <div class="e-blog__thumb e-image e-image--43">
-                            {!! HTML::Image('themes/'.$theme->slug.'/img/blog-bg-1.jpg', '') !!}
-                            <div class="e-blog__title e-blog__title--small">
-                                <h4>gaga milano osvojio je nagradu watchpro satovi 2017. godine</h4>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-            <div class="e-col e-col--3">
-                <div class="e-blog">
-                    <a href="#">
-                        <div class="e-blog__thumb e-image e-image--43">
-                            {!! HTML::Image('themes/'.$theme->slug.'/img/blog-bg-1.jpg', '') !!}
-                            <div class="e-blog__title e-blog__title--small">
-                                <h4>gaga milano osvojio je nagradu watchpro satovi 2017. godine</h4>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
+            @endforeach
 
         </div>
     </div>
+    @endif
+
 @endsection

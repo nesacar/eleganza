@@ -135,10 +135,10 @@ class MenusController extends Controller
     }
 
     public function editLinks($id){
-        app()->setLocale('sr');
+        app()->setLocale('hr');
         $slug = 'settings';
         $menu = Menu::find($id);
-        $excludes = MenuLink::where('menu_id', $menu->id)->where('locale', 'sr')->pluck('cat_id');
+        $excludes = MenuLink::where('menu_id', $menu->id)->where('locale', 'hr')->pluck('cat_id');
 
         $links = $menu->menuLinks()->where('parent', 0)->where('level', 1)->orderBy('order', 'ASC')->get();
 
@@ -158,7 +158,7 @@ class MenusController extends Controller
     }
 
     public function editLinksUpdate(Request $request, $id){
-        $request->input('locale')? $locale = $request->input('locale') : $locale = 'sr';
+        $request->input('locale')? $locale = $request->input('locale') : $locale = 'hr';
         app()->setLocale($locale);
         $menu = Menu::find($id);
         $sort = $request->input('sortable');
@@ -232,7 +232,7 @@ class MenusController extends Controller
     }
 
     public function editLink($id){
-        app()->setLocale('sr');
+        app()->setLocale('hr');
         $slug = 'settings';
         $link = MenuLink::find($id);
         if(empty($link)){
@@ -252,7 +252,7 @@ class MenusController extends Controller
     }
 
     public function editLinkUpdate(Request $request, $id){
-        app()->setLocale('sr');
+        app()->setLocale('hr');
         $link = MenuLink::find($id);
         $link->title = $request->input('title');
         $link->link = $request->input('link');
@@ -280,7 +280,7 @@ class MenusController extends Controller
 
     /********* IMAGES ******/
     public function images($id){
-        app()->setLocale('sr');
+        app()->setLocale('hr');
         $slug = 'settings';
         $menu = Menu::find($id);
         $images = MenuImage::where('menu_id', $menu->id)->orderBy('created_at', 'DESC')->paginate(Menu::$list_limit);
@@ -288,14 +288,14 @@ class MenusController extends Controller
     }
 
     public function createImage($id){
-        app()->setLocale('sr');
+        app()->setLocale('hr');
         $slug = 'settings';
         $menu = Menu::find($id);
         return view('admin.menus.createImage', compact('slug', 'menu'));
     }
 
     public function storeImage(CreateMenuImageRequest $request, $id){
-        app()->setLocale('sr');
+        app()->setLocale('hr');
         $image = new MenuImage();
         $image->menu_id = $request->input('menu_id');
         $image->title = $request->input('title');
@@ -316,7 +316,7 @@ class MenusController extends Controller
     }
 
     public function editImage($id){
-        app()->setLocale('sr');
+        app()->setLocale('hr');
         $slug = 'settings';
         $image = MenuImage::find($id);
         $menu = Menu::find($image->menu_id);
@@ -341,7 +341,7 @@ class MenusController extends Controller
     }
 
     public function updateLangImage(CreateMenuImageRequest $request, $id){
-        $request->input('locale')? $locale = $request->input('locale') : $locale = 'sr';
+        $request->input('locale')? $locale = $request->input('locale') : $locale = 'hr';
         app()->setLocale($locale);
         $image = MenuImage::find($id);
         $image->title = $request->input('title');
