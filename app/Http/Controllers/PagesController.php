@@ -200,7 +200,8 @@ class PagesController extends Controller
             $product->increment('views');
             $images = $product->images;
             $attributes = Attribute::getAttributesByProduct($product->id);
-            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 'related', 'rel_posts', 'settings', 'theme', 'active', 'images', 'attributes'));
+            $s2 = null; $s3 = null; $s4 = null;
+            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 's4', 'related', 'rel_posts', 'settings', 'theme', 'active', 'images', 'attributes'));
         }else{
             $s2 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
                 ->where('category_translations.slug', $slug2)->where('categories.publish', 1)->where('categories.parent', $s1->id)->first();
@@ -271,6 +272,7 @@ class PagesController extends Controller
             $product->increment('views');
             $images = $product->images;
             $attributes = Attribute::getAttributesByProduct($product->id);
+            $s3 = null; $s4 = null;
             return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 's4', 's5', 'related', 'rel_posts', 'settings', 'theme', 'active', 'images', 'attributes'));
         }else{
             $s3 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
@@ -342,6 +344,7 @@ class PagesController extends Controller
             $product->increment('views');
             $images = $product->images;
             $attributes = Attribute::getAttributesByProduct($product->id);
+            $s4 = null;
             return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 's4', 's5', 'related', 'rel_posts', 'settings', 'theme', 'active', 'images', 'attributes'));
         }else{
             $s4 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
