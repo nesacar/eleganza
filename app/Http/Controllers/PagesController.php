@@ -129,7 +129,8 @@ class PagesController extends Controller
                 }
             }
             $product->increment('views');
-            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 'related', 'rel_posts', 'settings', 'active'));
+            $images = $product->images;
+            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 'related', 'rel_posts', 'settings', 'active', 'images'));
         }else{
             $category = $s2;
             if(isset($category)){
@@ -172,10 +173,6 @@ class PagesController extends Controller
     {
         $s1 = $category = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
             ->where('category_translations.slug', $slug1)->where('categories.publish', 1)->first();
-        $s2 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('category_translations.slug', $slug2)->where('categories.publish', 1)->where('categories.parent', $s1->id)->first();
-        $s3 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('category_translations.slug', $slug3)->where('categories.publish', 1)->where('categories.parent', $s2->id)->first();
         $product = Product::find($slug3);
         $theme = Theme::where('active', 1)->first();
         $settings = Setting::find(1);
@@ -194,9 +191,13 @@ class PagesController extends Controller
             $related = Product::getRelatedByCategory($category->id, $product->id, 4);
             $rel_posts = array();
             $product->increment('views');
-            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 'related', 'rel_posts', 'settings', 'theme', 'active'));
+            $images = $product->images;
+            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 'related', 'rel_posts', 'settings', 'theme', 'active', 'images'));
         }else{
-            $category = $s3;
+            $s2 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
+                ->where('category_translations.slug', $slug2)->where('categories.publish', 1)->where('categories.parent', $s1->id)->first();
+            $category = $s3 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
+                ->where('category_translations.slug', $slug3)->where('categories.publish', 1)->where('categories.parent', $s2->id)->first();
             if(isset($category)){
                 $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
                 $props = $set->property;
@@ -240,8 +241,6 @@ class PagesController extends Controller
             ->where('category_translations.slug', $slug1)->where('categories.publish', 1)->first();
         $s2 = $category = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
             ->where('category_translations.slug', $slug2)->where('categories.publish', 1)->where('categories.parent', $s1->id)->first();
-        $s3 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('category_translations.slug', $slug3)->where('categories.publish', 1)->where('categories.parent', $s2->id)->first();
         $product = Product::find($slug4);
         $theme = Theme::where('active', 1)->first();
         $settings = Setting::find(1);
@@ -260,8 +259,11 @@ class PagesController extends Controller
             $related = Product::getRelatedByCategory($category->id, $product->id, 4);
             $rel_posts = array();
             $product->increment('views');
-            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 's4', 's5', 'related', 'rel_posts', 'settings', 'theme', 'active'));
+            $images = $product->images;
+            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 's4', 's5', 'related', 'rel_posts', 'settings', 'theme', 'active', 'images'));
         }else{
+            $s3 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
+                ->where('category_translations.slug', $slug3)->where('categories.publish', 1)->where('categories.parent', $s2->id)->first();
             $category = $s4 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
                 ->where('category_translations.slug', $slug4)->where('categories.publish', 1)->where('categories.parent', $s3->id)->first();
             if(isset($category)){
@@ -307,12 +309,6 @@ class PagesController extends Controller
             ->where('category_translations.slug', $slug2)->where('categories.publish', 1)->where('categories.parent', $s1->id)->first();
         $s3 = $category = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
             ->where('category_translations.slug', $slug3)->where('categories.publish', 1)->where('categories.parent', $s2->id)->first();
-        $s4 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('category_translations.slug', $slug4)->where('categories.publish', 1)->where('categories.parent', $s3->id)->first();
-        if(isset($s4)){
-            $s5 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-                ->where('category_translations.slug', $slug5)->where('categories.publish', 1)->where('categories.parent', $s4->id)->first();
-        }
         $product = Product::find($slug5);
         $theme = Theme::where('active', 1)->first();
         $settings = Setting::find(1);
@@ -331,9 +327,13 @@ class PagesController extends Controller
             $related = Product::getRelatedByCategory($category->id, $product->id, 4);
             $rel_posts = array();
             $product->increment('views');
-            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 's4', 's5', 'related', 'rel_posts', 'settings', 'theme', 'active'));
+            $images = $product->images;
+            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 's4', 's5', 'related', 'rel_posts', 'settings', 'theme', 'active', 'images'));
         }else{
-            $category = $s5;
+            $s4 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
+                ->where('category_translations.slug', $slug4)->where('categories.publish', 1)->where('categories.parent', $s3->id)->first();
+            $category = $s5 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
+                ->where('category_translations.slug', $slug5)->where('categories.publish', 1)->where('categories.parent', $s4->id)->first();
             if($category){
                 $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
                 $props = $set->property;
@@ -379,12 +379,6 @@ class PagesController extends Controller
             ->where('slug', $slug3)->where('publish', 1)->where('parent', $s2->id)->first();
         $s4 = $category = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
             ->where('category_translations.slug', $slug4)->where('categories.publish', 1)->first();
-        $s5 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('category_translations.slug', $slug5)->where('categories.publish', 1)->where('categories.parent', $s4->id)->first();
-        if(isset($s5)){
-            $s6 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-                ->where('category_translations.slug', $slug6)->where('categories.publish', 1)->where('categories.parent', $s5->id)->first();
-        }
         $product = Product::find($slug6);
         $theme = Theme::where('active', 1)->first();
         $settings = Setting::find(1);
@@ -403,9 +397,13 @@ class PagesController extends Controller
             $related = Product::getRelatedByCategory($category->id, $product->id, 4);
             $rel_posts = array();
             $product->increment('views');
-            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 's4', 's5', 'related', 'rel_posts', 'settings', 'theme', 'active'));
+            $images = $product->images;
+            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 's4', 's5', 'related', 'rel_posts', 'settings', 'theme', 'active', 'images'));
         }else{
-            $category = $s6;
+            $s5 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
+                ->where('category_translations.slug', $slug5)->where('categories.publish', 1)->where('categories.parent', $s4->id)->first();
+            $category = $s6 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
+                ->where('category_translations.slug', $slug6)->where('categories.publish', 1)->where('categories.parent', $s5->id)->first();
             if(isset($category)){
                 $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
                 $props = $set->property;

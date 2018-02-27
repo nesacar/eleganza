@@ -2,9 +2,24 @@
 
 @section('content')
 
-    <div> <div class=container> <nav aria-label=breadcrumb> <ol class=breadcrumb> <li class=breadcrumb-item><a href=#>Home</a></li> <li class=breadcrumb-item><a href=#>Something</a></li> <li class="breadcrumb-item active" aria-current=page>Library</li> </ol> </nav> </div> </div>
+    <div>
+        <div class=container>
+            <nav aria-label=breadcrumb>
+                <ol class=breadcrumb>
+                    <li class=breadcrumb-item><a href=#>Home</a></li>
+                    <li class=breadcrumb-item><a href=#>Something</a></li>
+                    <li class="breadcrumb-item active" aria-current=page>Library</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
 
-    <div class=page-header> <div class="container page-header__container"> <h2 class=page-header__title>Page title</h2> <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, alias sint. Repellat repellendus consectetur, incidunt non blanditiis debitis quisquam voluptatem iste laudantium quia, aspernatur distinctio asperiores expedita ut mollitia illum.</p> </div> </div>
+    <div class=page-header>
+        <div class="container page-header__container">
+            <h2 class=page-header__title>{{ $product->title }}</h2>
+            <p>{{ $product->short }}</p>
+        </div>
+    </div>
 
     <section class="container content">
         <div class="row">
@@ -15,40 +30,50 @@
                     <div class="col-xl-3">
                         <div class="owl-thumbs" data-slider-id="image-box">
                             <div class="e-image e-image--11 e-owl-thumbnail owl-thumb-item">
-                                {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!}
+                                {!! HTML::Image($product->image, $product->title) !!}
                             </div>
-                            <div class="e-image e-image--11 e-owl-thumbnail owl-thumb-item">
-                                {!! HTML::Image('themes/'.$theme->slug.'/img/product-2.jpg', '') !!}
-                            </div>
+                            @if(count($images)>0)
+                                @foreach($images as $image)
+                                    <div class="e-image e-image--11 e-owl-thumbnail owl-thumb-item">
+                                        {!! HTML::Image($image->file_path, $product->title) !!}
+                                    </div>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
 
                     <div class="col-xl-9" style="position: relative;">
                         <div class="product-image-box owl-carousel" data-slider-id="image-box" id="jsImageBox">
                             <div class="e-image e-image--11 product-image-box__image">
-                                {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '', array('data-zoom' => url('themes/'.$theme->slug.'/img/product.jpg'))) !!}
+                                {!! HTML::Image($product->image, $product->title, array('data-zoom' => url($product->image))) !!}
                             </div>
-                            <div class="e-image e-image--11 product-image-box__image">
-                                {!! HTML::Image('themes/'.$theme->slug.'/img/product-2.jpg', '', array('data-zoom' => url('themes/'.$theme->slug.'/img/product-2.jpg'))) !!}
-                            </div>
+                            @if(count($images)>0)
+                                @foreach($images as $image)
+                                    <div class="e-image e-image--11 product-image-box__image">
+                                        {!! HTML::Image($image->file_path, $product->title, array('data-zoom' => url($image->file_path))) !!}
+                                    </div>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
 
                     <div class="pane-container" id="jsPaneContainer"></div>
                 </div>
 
+                @if(!empty($product->body2))
                 <div class="row">
                     <div class="col-xl-9 offset-xl-3">
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum quae magnam ex quam sapiente corporis, consequuntur, tempora libero laudantium eveniet in! Nisi, mollitia. Dolorem iusto accusamus itaque asperiores dolorum repellendus.</p>
+                        {!! $product->body2 !!}
                     </div>
                 </div>
+                @endif
             </div>
 
             <div class="col-xl-4 col-md-6">
                 <div class="product-info">
                     <div class="product-info__section">
-                        <h3 class="product__name">movado edge</h3>
-                        <div class="product__id product__hint-text">sku:123456</div>
+                        <h3 class="product__name">{{ $product->title }}</h3>
+                        <div class="product__id product__hint-text">{{ $product->code }}</div>
                     </div>
                     <hr>
                     <div class="product-info__section product__price-box">

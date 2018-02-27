@@ -28,7 +28,7 @@ class ImageController extends Controller {
 
 	public function postUpload(Request $request)
 	{
-	    app()->setLocale('sr');
+	    app()->setLocale('hr');
 		$product = Product::find($request->input('product_id'));
 
 		if(isset($product->images) && count($product->images) > 0){
@@ -44,7 +44,7 @@ class ImageController extends Controller {
 			$slug = Str::slug($product->title);
 			$slug2 = $slug.'-'.$product->id;
 			$filename = $slug.'-'.$i.'.'.$file->getClientOriginalExtension();
-			$small_filename = $slug.'-'.$i.'_tmb.'.$file->getClientOriginalExtension();
+			$small_filename = $slug.'-'.$i. '-'.  str_random(5) . '_tmb.'.$file->getClientOriginalExtension();
 			$file->move('images/galleries/'.$slug2, $filename);
 
 			Images::create([

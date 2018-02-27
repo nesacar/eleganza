@@ -39,9 +39,13 @@
                 <div class="e-select e-select--with-carrot">
                     <label for=order-by>Sortiraj po: </label>
                     <select id=order-by name="sort">
+                        <option value=0>Prikaži po</option>
                         @if(request('sort') == 3)
                             <option value=2>Cijena: manja prema veća</option>
                             <option value=3 selected>Cijena: veća prema manjoj</option>
+                        @elseif(request('sort') == 2)
+                            <option value=2 selected>Cijena: manja prema veća</option>
+                            <option value=3>Cijena: veća prema manjoj</option>
                         @else
                             <option value=2>Cijena: manja prema veća</option>
                             <option value=3>Cijena: veća prema manjoj</option>
@@ -67,7 +71,7 @@
             <ul class="product-list">
                 @foreach($products as $product)
                     <li class="product-item product-list__item with-shadow">
-                        <a href="{{ \App\Product::getProductLink($product->id) }}">
+                        <a href="{{ url(\App\Product::getProductLink($product->id)) }}">
                             <div class=product-item__img-box>
                                 {!! HTML::Image($product->image, $product->title) !!}
                                 <ul class=product-item__actions>
