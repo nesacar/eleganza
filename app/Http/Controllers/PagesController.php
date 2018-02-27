@@ -93,7 +93,8 @@ class PagesController extends Controller
             $settings = Setting::find(1);
             $topCat = [];
             $active = $slug;
-            return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max', 'price'));
+            $s2 = null; $s3 = null; $s4 = null;
+            return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max', 'price'));
         }else{
             return 'error 404';
         }
@@ -166,7 +167,8 @@ class PagesController extends Controller
                 }
                 $topCat = [];
                 $max = Product::newMaxPrice($category->id, $filters);
-                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max'));
+                $s3 = null; $s4 = null;
+                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max'));
             }else{
                 return 'error 404';
             }
@@ -236,7 +238,8 @@ class PagesController extends Controller
                 $settings = Setting::find(1);
                 $topCat = [];
                 $max = Product::newMaxPrice($category->id, $filters);
-                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max'));
+                $s4 = null;
+                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max'));
             }else{
                 return 'error 404';
             }

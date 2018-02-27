@@ -5,9 +5,11 @@
         <div class=container>
             <nav aria-label=breadcrumb>
                 <ol class=breadcrumb>
-                    <li class=breadcrumb-item><a href=#>Home</a></li>
-                    <li class=breadcrumb-item><a href=#>Something</a></li>
-                    <li class="breadcrumb-item active" aria-current=page>Library</li>
+                    <li class=breadcrumb-item><a href="{{ url('/') }}">Home</a></li>
+                    @if($s1 != null) @if($s1->id != $category->id) <li class=breadcrumb-item><a href={{ url(\App\Category::getCategoryLink($s1, 'hr')) }}>{{ $s1->title }}</a></li> @else <li class="breadcrumb-item active" aria-current=page>{{ $s1->title }}</li> @endif @endif
+                    @if($s2 != null) @if($s2->id != $category->id) <li class=breadcrumb-item><a href={{ url(\App\Category::getCategoryLink($s2, 'hr')) }}>{{ $s2->title }}</a></li> @else <li class="breadcrumb-item active" aria-current=page>{{ $s2->title }}</li> @endif @endif
+                    @if($s3 != null) @if($s3->id != $category->id) <li class=breadcrumb-item><a href={{ url(\App\Category::getCategoryLink($s3, 'hr')) }}>{{ $s3->title }}</a></li> @else <li class="breadcrumb-item active" aria-current=page>{{ $s3->title }}</li> @endif @endif
+                    @if($s4 != null) @if($s4->id != $category->id) <li class=breadcrumb-item><a href={{ url(\App\Category::getCategoryLink($s4, 'hr')) }}>{{ $s4->title }}</a></li> @else <li class="breadcrumb-item active" aria-current=page>{{ $s4->title }}</li> @endif @endif
                 </ol>
             </nav>
         </div>
