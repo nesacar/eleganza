@@ -29,10 +29,13 @@
                     <div class="panel-header-stats">
                         @if(count($subscribers) > 0)
                             <div class="row">
-                                <div class="col-md-3">
-                                    <b>Naziv</b>
+                                <div class="col-md-2">
+                                    <b>Email</b>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
+                                    <b>Ime i prezime</b>
+                                </div>
+                                <div class="col-md-2">
                                     <b>Blokiran</b>
                                 </div>
                                 <div class="col-md-2">
@@ -48,14 +51,17 @@
                             <hr>
                             @foreach($subscribers as $s)
                                 <div class="row @if($s->block == 1) crvena @endif">
-                                    <div class="col-md-3 vcenter">
+                                    <div class="col-md-2 vcenter">
                                         {{ $s->email }}
                                     </div>
-                                    <div class="col-md-3 vcenter-2">
+                                    <div class="col-md-2 vcenter">
+                                        {{ $s->name }}
+                                    </div>
+                                    <div class="col-md-2 vcenter-2">
                                         {!! Form::checkbox('publish', 1, $s->block, ['id' => $s->id, 'name' => 'primary[]', 'class' => 'switch-state', 'data-on-color' => 'success', 'data-off-color' => 'danger', 'data-on-text' => 'DA', 'data-off-text' => 'NE']) !!}
                                     </div>
                                     <div class="col-md-2 vcenter">
-                                        {{ $s->locale }}
+                                        {{ $s->language->name }}
                                     </div>
                                     <div class="col-md-2 vcenter">
                                         {{ \Jenssegers\Date\Date::parse($s->created_at)->format('d/m/Y H:m:s') }}

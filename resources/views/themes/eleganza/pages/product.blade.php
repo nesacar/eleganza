@@ -77,9 +77,15 @@
                     </div>
                     <hr>
                     <div class="product-info__section product__price-box">
-                        <span class="product__price product__price--current">7200 kn</span>
-                        <span class="product__price product__price--actual">7138 kn</span>
-                        <span class="product__price product__price--discount product__hint-text">popust 10%</span>
+                        @if($product->price_outlet != null)
+                            <span class="product__price product__price--current">{{ $product->price_outlet }} kn</span>
+                            <span class="product__price product__price--actual">{{ $product->price_small }} kn</span>
+                        @else
+                            <span class="product__price product__price--current">{{ $product->price_small }} kn</span>
+                        @endif
+                        @if($product->discount > 0)
+                        <span class="product__price product__price--discount product__hint-text">popust {{ $product->discount }}%</span>
+                        @endif
                         <p class="product__hint-text">dodatnih 5% popusta na online placanje</p>
                     </div>
                     <div class="product-info__section">
@@ -108,90 +114,57 @@
                     <hr>
                     <div class="product-info__section product__attrs">
                         <h3>karakteristike</h3>
-                        <ul class="product__attrs-list">
-                            <li class="product-attr">
-                                <span class="product-attr__key">Brend:</span>
-                                <span class="product-attr__value">MOVADO</span>
-                            </li>
-                            <li class="product-attr">
-                                <span class="product-attr__key">Kolekcija:</span>
-                                <span class="product-attr__value">EDGE</span>
-                            </li>
-                            <li class="product-attr">
-                                <span class="product-attr__key">Materijal kucista:</span>
-                                <span class="product-attr__value">celik</span>
-                            </li>
-                            <li class="product-attr">
-                                <span class="product-attr__key">Boja brojcanika:</span>
-                                <span class="product-attr__value">plava</span>
-                            </li>
-                            <li class="product-attr">
-                                <span class="product-attr__key">Materijal remena:</span>
-                                <span class="product-attr__value">koza</span>
-                            </li>
-                        </ul>
+                        @if(!empty($product->body))
+                            {!! $product->body !!}
+                        @else
+                            <ul class="product__attrs-list">
+                                @if(!empty($product->brand))
+                                <li class="product-attr">
+                                    <span class="product-attr__key">Brend:</span>
+                                    <span class="product-attr__value">{{ $product->brand->title }}</span>
+                                </li>
+                                @endif
+                                <li class="product-attr">
+                                    <span class="product-attr__key">Kolekcija:</span>
+                                    <span class="product-attr__value">{{ \App\Product::getLastCategory($product->id) }}</span>
+                                </li>
+                                @if(count($attributes))
+                                    @foreach($attributes as $attribute)
+                                        <li class="product-attr">
+                                            <span class="product-attr__key">{{ $attribute->property }}:</span>
+                                            <span class="product-attr__value">{{ $attribute->title }}</span>
+                                        </li>
+                                    @endforeach
+                                @endif
+                            </ul>
+                        @endif
                     </div>
                 </div>
             </div>
 
         </div>
 
+        @if(count($related)>0)
         <div class="content similar">
             <h2>slični proizvodi</h2>
             <ul class="similar-list">
-
-                <li class="product-item similar-list__item with-shadow">
-                    <a href="#">
-                        <div class="product-item__img-box">
-                            {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!}
-                        </div>
-                        <div class="product-item__info-box">
-                            <h2 class="product-item__name">item name</h2>
-                            <span class="product-item__price">1234</span>
-                        </div>
-                        <button class="e-btn e-btn--primary e-btn--block">saznaj više</button>
-                    </a>
-                </li>
-
-                <li class="product-item similar-list__item with-shadow">
-                    <a href="#">
-                        <div class="product-item__img-box">
-                            {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!}
-                        </div>
-                        <div class="product-item__info-box">
-                            <h2 class="product-item__name">item name</h2>
-                            <span class="product-item__price">1234</span>
-                        </div>
-                        <button class="e-btn e-btn--primary e-btn--block">saznaj više</button>
-                    </a>
-                </li>
-                <li class="product-item similar-list__item with-shadow">
-                    <a href="#">
-                        <div class="product-item__img-box">
-                            {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!}
-                        </div>
-                        <div class="product-item__info-box">
-                            <h2 class="product-item__name">item name</h2>
-                            <span class="product-item__price">1234</span>
-                        </div>
-                        <button class="e-btn e-btn--primary e-btn--block">saznaj više</button>
-                    </a>
-                </li>
-                <li class="product-item similar-list__item with-shadow">
-                    <a href="#">
-                        <div class="product-item__img-box">
-                            {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!}
-                        </div>
-                        <div class="product-item__info-box">
-                            <h2 class="product-item__name">item name</h2>
-                            <span class="product-item__price">1234</span>
-                        </div>
-                        <button class="e-btn e-btn--primary e-btn--block">saznaj više</button>
-                    </a>
-                </li>
-
+                @foreach($related as $p)
+                    <li class="product-item similar-list__item with-shadow">
+                        <a href="{{ \App\Product::getProductLink($p->id) }}">
+                            <div class="product-item__img-box">
+                                {!! HTML::Image($p->image, $p->title) !!}
+                            </div>
+                            <div class="product-item__info-box">
+                                <h2 class="product-item__name">{{ $p->title }}</h2>
+                                <span class="product-item__price">{{ $p->price_small }}</span>
+                            </div>
+                            <button class="e-btn e-btn--primary e-btn--block">saznaj više</button>
+                        </a>
+                    </li>
+                @endforeach
             </ul>
         </div>
+        @endif
     </section>
 
     @include('themes.'.$theme->slug.'.partials.newsletter')

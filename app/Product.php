@@ -40,16 +40,16 @@ class Product extends Model {
         if(count($category->osobina) > 0){
             $str .=  "<ul>";
             foreach($category->osobina as $o){
-                $str .=  "<li>".$o->{'title:sr'}."</li>";
+                $str .=  "<li>".$o->{'title:hr'}."</li>";
                 if($o->attribute){
                     $str .=  "<ul>";
                     foreach($o->attribute as $a){
                         if(in_array($a->id, $attributes)){
                             if(in_array($a->id, $pr)){
                                 $price = Attribute::where('id', $a->id)->first()->product()->where('id', $product_id)->first()->pivot->price;
-                                $str .= "<li><input type='checkbox' name='filter[]' value='{$a->id}' checked > <span>".$a->{'title:sr'}."</span> <input type='text' name='price[]' value='{$price}'></li>";
+                                $str .= "<li><input type='checkbox' name='filter[]' value='{$a->id}' checked > <span>".$a->{'title:hr'}."</span> <input type='text' name='price[]' value='{$price}'></li>";
                             }else{
-                                $str .= "<li><input type='checkbox' name='filter[]' value='{$a->id}' > <span>".$a->{'title:sr'}."</span></li>";
+                                $str .= "<li><input type='checkbox' name='filter[]' value='{$a->id}' > <span>".$a->{'title:hr'}."</span></li>";
                             }
                         }
                     }
@@ -62,16 +62,16 @@ class Product extends Model {
             if(isset($osobinas)){
                 $str .=  "<ul>";
                 foreach($osobinas as $o){
-                    $str .=  "<li>".$o->{'title:sr'}."</li>";
+                    $str .=  "<li>".$o->{'title:hr'}."</li>";
                     if($o->attribute){
                         $str .=  "<ul>";
                         foreach($o->attribute as $a){
                             if(in_array($a->id, $attributes)) {
                                 if (in_array($a->id, $pr)) {
                                     $price = Attribute::where('id', $a->id)->first()->product()->where('id', $product_id)->first()->pivot->price;
-                                    $str .= "<li><input type='checkbox' name='filter[]' value='{$a->id}'> <span>" . $a->{'title:sr'} . "</span> <input type='text' name='price[]' value='{$price}'></li>";
+                                    $str .= "<li><input type='checkbox' name='filter[]' value='{$a->id}'> <span>" . $a->{'title:hr'} . "</span> <input type='text' name='price[]' value='{$price}'></li>";
                                 } else {
-                                    $str .= "<li><input type='checkbox' name='filter[]' value='{$a->id}' > <span>" . $a->{'title:sr'} . "</span></li>";
+                                    $str .= "<li><input type='checkbox' name='filter[]' value='{$a->id}' > <span>" . $a->{'title:hr'} . "</span></li>";
                                 }
                             }
                         }
@@ -114,7 +114,7 @@ class Product extends Model {
                     $cat = $c;
                 }
             }
-            return $cat->{'title:sr'};
+            return $cat->{'title:hr'};
         }else{
             return null;
         }
@@ -248,7 +248,7 @@ class Product extends Model {
     }
 
     public static function getWomanProductCount(){
-        $w = Attribute::where('publish', 1)->where('title', '�enski')->first();
+        $w = Attribute::where('publish', 1)->where('title', 'ženski')->first();
         return self::select('products.id')
             ->join('attribute_product', 'products.id', '=', 'attribute_product.product_id')
             ->join('attributes', 'attribute_product.attribute_id', '=', 'attributes.id')
@@ -746,7 +746,7 @@ class Product extends Model {
 
     public static function cropImage($product){
         $extension = File::extension($product->image);
-        $tmb = 'images/products/thumbnails/'.$product->{'slug:sr'}.'-'.$product->id.'.'.$extension;
+        $tmb = 'images/products/thumbnails/'.$product->{'slug:hr'}.'-'.$product->id.'.'.$extension;
         $img = \Image::make($product->image);
         $img->fit(270, 400);
         $img->save($tmb);
@@ -797,7 +797,7 @@ class Product extends Model {
         if($percent == 0){
             return $product->price_small;
         }else{
-            return round(($percent/100) * $product->price_small);
+            return $product->price_small - round(($percent/100) * $product->price_small);
         }
     }
 

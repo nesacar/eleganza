@@ -13,7 +13,7 @@ class Subscriber extends Model
 
     protected $table = 'subscribers';
 
-    protected $fillable = ['language_id', 'email', 'verification', 'block'];
+    protected $fillable = ['language_id', 'email', 'name', 'verification', 'block'];
 
     public static function createSubscriber(Request $request){
         $sub = self::where('email', $request->input('email'))->first();

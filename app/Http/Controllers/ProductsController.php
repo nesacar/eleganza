@@ -103,6 +103,7 @@ class ProductsController extends Controller {
 		$product->body = $request->input('body');
 		$product->body2 = $request->input('body2');
         $request->input('publish')? $product->publish = 1 : $product->publish = 0;
+        $product->price_outlet = Product::calculateDiscount(request('discount'), $product);
 
 		if($request->input('kat') == null){
 			$product->category()->sync([]);
@@ -123,8 +124,7 @@ class ProductsController extends Controller {
             $product->tmb = 'images/products/tmb/' . $filename;
         }
 
-
-		$product->update($request->except('slug', 'image', 'tmb'));
+		$product->update($request->except('slug', 'image', 'tmb', 'price_outlet'));
 		return redirect('admin/products/'.$product->id.'/edit')->with('done', 'Proizvod je kreiran.');
 	}
 
@@ -258,8 +258,9 @@ class ProductsController extends Controller {
 		$request->input('publish')? $product->publish = 1 : $product->publish = 0;
 		$product->brand_id = $request->brand_id;
 		$product->set_id = $request->set_id;
+		$product->price_outlet = Product::calculateDiscount(request('discount'), $product);
 
-		$product->update($request->except('publish', 'image', 'tmb'));
+		$product->update($request->except('publish', 'image', 'tmb', 'price_outlet'));
 		//Product::setSlug($product->id);
 		return redirect('admin/products/'.$id.'/edit')->with('done', 'Proizvod je izmenjen.');
 	}

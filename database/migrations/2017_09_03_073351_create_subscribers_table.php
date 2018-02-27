@@ -17,6 +17,7 @@ class CreateSubscribersTable extends Migration
             $table->increments('id');
             $table->integer('language_id')->unsigned()->nullable();
             $table->string('email')->nullable();
+            $table->string('name')->nullable();
             $table->string('verification')->nullable();
             $table->boolean('block')->nullable()->default(0);
             $table->timestamps();

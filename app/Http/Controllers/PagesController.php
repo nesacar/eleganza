@@ -68,7 +68,9 @@ class PagesController extends Controller
             $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
 
             request('filters') ? $filters = request('filters') : $filters = [];
-            request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
+            //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
+            request('max-price') ? $price[0] = request('max-price') : $price[0] = 0;
+            request('min-price') ? $price[1] = request('max-price') : $price[1] = 0;
             request('sort') ? $sort = request('sort') : $sort = 2;
             request('page') ? $page = request('page') : $page = 1;
             request('limit') ? $limit = request('limit') : $limit = 9;
@@ -91,7 +93,7 @@ class PagesController extends Controller
             $settings = Setting::find(1);
             $topCat = [];
             $active = $slug;
-            return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max'));
+            return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max', 'price'));
         }else{
             return 'error 404';
         }
@@ -130,7 +132,8 @@ class PagesController extends Controller
             }
             $product->increment('views');
             $images = $product->images;
-            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 'related', 'rel_posts', 'settings', 'active', 'images'));
+            $attributes = Attribute::getAttributesByProduct($product->id);
+            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 'related', 'rel_posts', 'settings', 'active', 'images', 'attributes'));
         }else{
             $category = $s2;
             if(isset($category)){
@@ -142,7 +145,9 @@ class PagesController extends Controller
                 $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
 
                 request('filters') ? $filters = request('filters') : $filters = [];
-                request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
+                //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
+                request('max-price') ? $price[0] = request('max-price') : $price[0] = 0;
+                request('min-price') ? $price[1] = request('max-price') : $price[1] = 0;
                 request('sort') ? $sort = request('sort') : $sort = 2;
                 request('page') ? $page = request('page') : $page = 1;
                 request('limit') ? $limit = request('limit') : $limit = 9;
@@ -192,7 +197,8 @@ class PagesController extends Controller
             $rel_posts = array();
             $product->increment('views');
             $images = $product->images;
-            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 'related', 'rel_posts', 'settings', 'theme', 'active', 'images'));
+            $attributes = Attribute::getAttributesByProduct($product->id);
+            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 'related', 'rel_posts', 'settings', 'theme', 'active', 'images', 'attributes'));
         }else{
             $s2 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
                 ->where('category_translations.slug', $slug2)->where('categories.publish', 1)->where('categories.parent', $s1->id)->first();
@@ -207,7 +213,9 @@ class PagesController extends Controller
                 $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
 
                 request('filters') ? $filters = request('filters') : $filters = [];
-                request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
+                //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
+                request('max-price') ? $price[0] = request('max-price') : $price[0] = 0;
+                request('min-price') ? $price[1] = request('max-price') : $price[1] = 0;
                 request('sort') ? $sort = request('sort') : $sort = 2;
                 request('page') ? $page = request('page') : $page = 1;
                 request('limit') ? $limit = request('limit') : $limit = 9;
@@ -235,8 +243,7 @@ class PagesController extends Controller
         }
     }
 
-    public function shopCategory4($slug1, $slug2, $slug3, $slug4)
-    {
+    public function shopCategory4($slug1, $slug2, $slug3, $slug4){
         $s1 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
             ->where('category_translations.slug', $slug1)->where('categories.publish', 1)->first();
         $s2 = $category = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
@@ -260,7 +267,8 @@ class PagesController extends Controller
             $rel_posts = array();
             $product->increment('views');
             $images = $product->images;
-            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 's4', 's5', 'related', 'rel_posts', 'settings', 'theme', 'active', 'images'));
+            $attributes = Attribute::getAttributesByProduct($product->id);
+            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 's4', 's5', 'related', 'rel_posts', 'settings', 'theme', 'active', 'images', 'attributes'));
         }else{
             $s3 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
                 ->where('category_translations.slug', $slug3)->where('categories.publish', 1)->where('categories.parent', $s2->id)->first();
@@ -275,7 +283,9 @@ class PagesController extends Controller
                 $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
 
                 request('filters') ? $filters = request('filters') : $filters = [];
-                request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
+                //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
+                request('max-price') ? $price[0] = request('max-price') : $price[0] = 0;
+                request('min-price') ? $price[1] = request('max-price') : $price[1] = 0;
                 request('sort') ? $sort = request('sort') : $sort = 2;
                 request('page') ? $page = request('page') : $page = 1;
                 request('limit') ? $limit = request('limit') : $limit = 9;
@@ -328,7 +338,8 @@ class PagesController extends Controller
             $rel_posts = array();
             $product->increment('views');
             $images = $product->images;
-            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 's4', 's5', 'related', 'rel_posts', 'settings', 'theme', 'active', 'images'));
+            $attributes = Attribute::getAttributesByProduct($product->id);
+            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 's4', 's5', 'related', 'rel_posts', 'settings', 'theme', 'active', 'images', 'attributes'));
         }else{
             $s4 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
                 ->where('category_translations.slug', $slug4)->where('categories.publish', 1)->where('categories.parent', $s3->id)->first();
@@ -343,7 +354,9 @@ class PagesController extends Controller
                 $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
 
                 request('filters') ? $filters = request('filters') : $filters = [];
-                request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
+                //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
+                request('max-price') ? $price[0] = request('max-price') : $price[0] = 0;
+                request('min-price') ? $price[1] = request('max-price') : $price[1] = 0;
                 request('sort') ? $sort = request('sort') : $sort = 2;
                 request('page') ? $page = request('page') : $page = 1;
                 request('limit') ? $limit = request('limit') : $limit = 9;
@@ -398,7 +411,8 @@ class PagesController extends Controller
             $rel_posts = array();
             $product->increment('views');
             $images = $product->images;
-            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 's4', 's5', 'related', 'rel_posts', 'settings', 'theme', 'active', 'images'));
+            $attributes = Attribute::getAttributesByProduct($product->id);
+            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 's4', 's5', 'related', 'rel_posts', 'settings', 'theme', 'active', 'images', 'attributes'));
         }else{
             $s5 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
                 ->where('category_translations.slug', $slug5)->where('categories.publish', 1)->where('categories.parent', $s4->id)->first();
@@ -413,7 +427,9 @@ class PagesController extends Controller
                 $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
 
                 request('filters') ? $filters = request('filters') : $filters = [];
-                request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
+                //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
+                request('max-price') ? $price[0] = request('max-price') : $price[0] = 0;
+                request('min-price') ? $price[1] = request('max-price') : $price[1] = 0;
                 request('sort') ? $sort = request('sort') : $sort = 2;
                 request('page') ? $page = request('page') : $page = 1;
                 request('limit') ? $limit = request('limit') : $limit = 9;
@@ -797,8 +813,12 @@ class PagesController extends Controller
     }
 
     public function subscribe(SubscribeRequest $request){
+        $primary = Language::getPrimary();
+
         $sub = new Subscriber();
+        $sub->language_id = $primary->id;
         $sub->email = request('email');
+        $sub->name = request('name');
         $sub->verification = str_random(32);
         $sub->block = 0;
         $sub->save();
@@ -824,9 +844,15 @@ class PagesController extends Controller
         //return Product::cloneProduct(10, 1);
         //kopiranje atributa
 
-        $products = Product::all();
+        /*$products = Product::all();
         foreach ($products as $product){
             $product->price_small = rand(23,223);
+            $product->update();
+        }
+        return 'done';*/
+        $products = Product::all();
+        foreach ($products as $product){
+            $product->price_outlet = Product::calculateDiscount(0, $product);
             $product->update();
         }
         return 'done';
@@ -877,7 +903,7 @@ class PagesController extends Controller
         $theme = Theme::where('active', 1)->first();
         $posts = Post::select('posts.*')->join('p_category_post', 'posts.id', '=', 'p_category_post.post_id')->whereIn('p_category_post.p_category_id', PCategory::where('id', '<>', 3)->pluck('id'))
             ->groupBy('posts.id')->paginate(4);
-        return view('themes.'.$theme->slug.'.pages.blog', compact('settings', 'theme', 'posts'));
+        return view('themes.'.$theme->slug.'.pages.category', compact('settings', 'theme', 'posts'));
     }
 
     public function eleganzaWish(){

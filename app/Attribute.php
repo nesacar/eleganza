@@ -117,6 +117,13 @@ class Attribute extends Model {
         return $array;
     }
 
+    public static function getAttributesByProduct($product_id){
+        return self::select('attribute_translations.title', 'property_translations.title as property')->join('attribute_translations', 'attributes.id', '=', 'attribute_translations.attribute_id')
+            ->join('properties', 'attributes.property_id', '=', 'properties.id')->join('property_translations', 'properties.id', '=', 'property_translations.property_id')
+            ->join('attribute_product', 'attributes.id', '=', 'attribute_product.attribute_id')
+            ->where('attribute_product.product_id', $product_id)->where('properties.publish', 1)->where('attributes.publish', 1)->groupBy('attributes.id')->get();
+    }
+
     public function property(){
         return $this->belongsTo('App\Property');
     }

@@ -29,7 +29,7 @@
 
                 @include('themes.'.$theme->slug.'.partials.filters')
 
-                <button class="e-btn e-btn--primary e-btn--block filters__submit-btn">primeni</button>
+                <button class="e-btn e-btn--primary e-btn--block filters__submit-btn" id="primeni">primeni</button>
 
         </div>
 
@@ -128,6 +128,12 @@
             });
 
             $('select[name="limit"]').change(function(){
+                $('#page').val(1);
+                $('#moja').submit();
+            });
+
+            $('#primeni').click(function(e){
+                e.preventDefault();
                 $('#page').val(1);
                 $('#moja').submit();
             });

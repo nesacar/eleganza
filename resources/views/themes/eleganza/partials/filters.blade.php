@@ -4,9 +4,17 @@
         <div class=filter>
             <h4 class=filter__name>cijena</h4>
             <div class=e-slider>
-                <div data-is-slider=true id=jsPriceSlider></div>
+                @if(request('max-price') > 0)
+                    <div data-is-slider=true data-min-value={{ request('min-price') }} data-max-value={{ request('max-price') }} data-value-range={{ $max->price_small }} id=jsPriceSlider></div>
+                @else
+                    <div data-is-slider=true data-min-value=0 data-max-value={{ $max->price_small }} data-value-range={{ $max->price_small }} id=jsPriceSlider></div>
+                @endif
                 <div class=e-slider__labels>
-                    <span class="e-slider__label e-slider__label--kn" data-label-for=min data-for-slider=jsPriceSlider></span> - <span class="e-slider__label e-slider__label--kn" data-label-for=max data-for-slider=jsPriceSlider></span>
+                    <input type=text name=min-price class=hidden data-label-for=min data-for-slider=jsPriceSlider readonly=readonly />
+                    <span class="e-slider__label e-slider__label--kn" data-label-for=min data-for-slider=jsPriceSlider></span>
+                    -
+                    <input type=text name=max-price class=hidden data-label-for=max data-for-slider=jsPriceSlider readonly=readonly />
+                    <span class="e-slider__label e-slider__label--kn" data-label-for=max data-for-slider=jsPriceSlider></span>
                 </div>
             </div>
         </div>
@@ -39,116 +47,24 @@
                                 </li>
                             @endif
                         @endforeach
-                        @if(false)
-                            <li class=filter-list__item>
-                                <div class=e-list__item>
-                                    <div class=e-checkbox>
-                                        <input id=cb-1 type=checkbox class=e-checkbox__control>
-                                        <div class=e-checkbox__background>
-                                            <svg class=e-checkbox__checkmark viewBox="0 0 24 24"> <path class=e-checkbox__path fill=none stroke=white d="M1.73,12.91 8.1,19.28 22.79,4.59"></path> </svg>
-                                        </div>
-                                    </div>
-                                    <label for=cb-1>filter value1</label>
-                                </div>
-                            </li>
-                            <li class=filter-list__item>
-                                <div class=e-list__item>
-                                    <div class=e-checkbox>
-                                        <input id=cb-3 type=checkbox class=e-checkbox__control>
-                                        <div class=e-checkbox__background>
-                                            <svg class=e-checkbox__checkmark viewBox="0 0 24 24"> <path class=e-checkbox__path fill=none stroke=white d="M1.73,12.91 8.1,19.28 22.79,4.59"></path> </svg>
-                                        </div>
-                                    </div>
-                                    <label for=cb-3>filter value3</label>
-                                    <span class=e-collapse-toggler data-toggle=collapse href=#collapseExample4 role=button aria-expanded=false aria-controls=collapseExample4>&plus;</span>
-                                </div>
-                                <div class=collapse id=collapseExample4>
-                                    <ul class=filter-list>
-                                        <li class=filter-list__item>
-                                            <div class=e-list__item>
-                                                <div class=e-checkbox>
-                                                    <input id=cb-4 type=checkbox class=e-checkbox__control>
-                                                    <div class=e-checkbox__background>
-                                                        <svg class=e-checkbox__checkmark viewBox="0 0 24 24"> <path class=e-checkbox__path fill=none stroke=white d="M1.73,12.91 8.1,19.28 22.79,4.59"></path> </svg>
-                                                    </div>
-                                                </div>
-                                                <label for=cb-4>filter value4</label>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                        @endif
                     </ul>
                 </div>
             @endforeach
-        @else
-            <div class=filter>
-                <h4 class=filter__name>filter name</h4>
-                <ul class=filter-list>
-                    <li class=filter-list__item>
-                        <div class=e-list__item>
-                            <div class=e-checkbox>
-                                <input id=cb-1 type=checkbox class=e-checkbox__control>
-                                <div class=e-checkbox__background>
-                                    <svg class=e-checkbox__checkmark viewBox="0 0 24 24"> <path class=e-checkbox__path fill=none stroke=white d="M1.73,12.91 8.1,19.28 22.79,4.59"></path> </svg>
-                                </div>
-                            </div>
-                            <label for=cb-1>filter value1</label>
-                            <span class=e-collapse-toggler data-toggle=collapse href=#collapseExample3 role=button aria-expanded=false aria-controls=collapseExample3>&plus;</span>
-                        </div>
-                        <div class=collapse id=collapseExample3>
-                            <ul class=filter-list>
-                                <li class=filter-list__item>
-                                    <div class=e-list__item>
-                                        <div class=e-checkbox>
-                                            <input id=cb-2 type=checkbox class=e-checkbox__control>
-                                            <div class=e-checkbox__background>
-                                                <svg class=e-checkbox__checkmark viewBox="0 0 24 24"> <path class=e-checkbox__path fill=none stroke=white d="M1.73,12.91 8.1,19.28 22.79,4.59"></path> </svg>
-                                            </div>
-                                        </div>
-                                        <label for=cb-2>filter value2</label>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class=filter-list__item>
-                        <div class=e-list__item>
-                            <div class=e-checkbox>
-                                <input id=cb-3 type=checkbox class=e-checkbox__control>
-                                <div class=e-checkbox__background>
-                                    <svg class=e-checkbox__checkmark viewBox="0 0 24 24"> <path class=e-checkbox__path fill=none stroke=white d="M1.73,12.91 8.1,19.28 22.79,4.59"></path> </svg>
-                                </div>
-                            </div>
-                            <label for=cb-3>filter value3</label>
-                            <span class=e-collapse-toggler data-toggle=collapse href=#collapseExample4 role=button aria-expanded=false aria-controls=collapseExample4>&plus;</span>
-                        </div>
-                        <div class=collapse id=collapseExample4>
-                            <ul class=filter-list>
-                                <li class=filter-list__item>
-                                    <div class=e-list__item>
-                                        <div class=e-checkbox>
-                                            <input id=cb-4 type=checkbox class=e-checkbox__control>
-                                            <div class=e-checkbox__background>
-                                                <svg class=e-checkbox__checkmark viewBox="0 0 24 24"> <path class=e-checkbox__path fill=none stroke=white d="M1.73,12.91 8.1,19.28 22.79,4.59"></path> </svg>
-                                            </div>
-                                        </div>
-                                        <label for=cb-4>filter value4</label>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-            </div>
         @endif
         <div class=filter>
             <h4 class=filter__name>promjer kucista</h4>
             <div class=e-slider>
-                <div data-is-slider=true id=jsHousingSlider></div>
+                @if(request('max-promer') > 0)
+                    <div data-is-slider=true data-min-value={{ request('min-promer') }} data-max-value={{ request('max-promer') }} data-value-range=50 id=jsHousingSlider></div>
+                @else
+                    <div data-is-slider=true data-min-value=0 data-max-value=50 data-value-range=50 id=jsHousingSlider></div>
+                @endif
                 <div class=e-slider__labels>
-                    <span class="e-slider__label e-slider__label--mm" data-label-for=min data-for-slider=jsHousingSlider></span> - <span class="e-slider__label e-slider__label--mm" data-label-for=max data-for-slider=jsHousingSlider></span>
+                    <input type=text name=min-promer class=hidden data-label-for=min data-for-slider=jsHousingSlider readonly=readonly />
+                    <span class="e-slider__label e-slider__label--mm" data-label-for=min data-for-slider=jsHousingSlider></span>
+                    -
+                    <input type=text name=max-promer class=hidden data-label-for=max data-for-slider=jsHousingSlider readonly=readonly />
+                    <span class="e-slider__label e-slider__label--mm" data-label-for=max data-for-slider=jsHousingSlider></span>
                 </div>
             </div>
         </div>
