@@ -205,7 +205,7 @@
         }
     @endif
 
-    $('input[type="submit"]:not(".lang")').hover(function(){
+    /*$('input[type="submit"]:not(".lang")').hover(function(){
         $(this).parent().parent().parent().parent().parent().addClass('active');
     }, function(){
         $(this).parent().parent().parent().parent().parent().removeClass('active');
@@ -215,5 +215,5 @@
         $(this).parent().parent().parent().parent().parent().parent().parent().addClass('active');
     }, function(){
         $(this).parent().parent().parent().parent().parent().parent().parent().removeClass('active');
-    });
+    });*/
 @endsection

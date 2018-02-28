@@ -44,7 +44,7 @@
                                         {{ $a->id }}
                                     </div>
                                     <div class="col-md-3 vcenter">
-                                        {{ $a->{'title:sr'} }}
+                                        {{ $a->{'title:hr'} }}
                                     </div>
                                     <div class="col-md-3 vcenter">
                                         {{ $a->property->{'title:sr'} }}

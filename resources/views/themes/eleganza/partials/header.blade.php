@@ -15,7 +15,7 @@
         @foreach($menus as $menu)
             <li class=nav-list__item>
                 @php $submenu = \App\Menu::find(3)->menuLinks()->where('publish', 1)->where('parent', $menu->cat_id)->orderBy('order', 'ASC')->get(); @endphp
-                <a href="{{ url($menu->link) }}" class="nav-list__item__link @if(count($submenu)>0) with-arrow @endif"> {{ $menu->title }} </a>
+                <a href="{{ url($menu->link) }}" class="nav-list__item__link @if(count($submenu)>0) with-arrow @endif"> @if($menu->title == 'Kitchen') <i class="far fa-heart"></i> @endif {{ $menu->title }} </a>
                 @if(count($submenu)>0)
                     <div class=nav-list__item__submenu>
                         <div class="container submenu">
@@ -24,11 +24,11 @@
                                 <div class=submenu__title>{{ $sub->title }}</div>
                                 @php $submenu2 = \App\Menu::find(3)->menuLinks()->where('publish', 1)->where('parent', $sub->cat_id)->orderBy('order', 'ASC')->get(); @endphp
                                 @if(count($submenu2)>0)
-                                <ul class=submenu__list>
-                                    @foreach($submenu2 as $sub2)
-                                        <li class=submenu__list__item> <a href="{{ $sub2->link }}">{{ $sub2->title }}</a> </li>
-                                    @endforeach
-                                </ul>
+                                    <ul class=submenu__list>
+                                        @foreach($submenu2 as $sub2)
+                                            <li class=submenu__list__item> <a href="{{ url($sub2->link . $sub2->sufix ) }}">{{ $sub2->title }}</a> </li>
+                                        @endforeach
+                                    </ul>
                                 @endif
                             </div>
                             @endforeach

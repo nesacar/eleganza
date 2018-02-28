@@ -10,7 +10,7 @@ class MenuLink extends Model
 
     protected $table = 'menu_links';
 
-    protected $fillable = ['id', 'menu_id', 'cat_id', 'title', 'link' , 'desc', 'sufix', 'type', 'order', 'parent', 'level' , 'image', 'locale', 'publish'];
+    protected $fillable = ['id', 'menu_id', 'cat_id', 'title', 'link' , 'desc', 'sufix', 'type', 'order', 'parent', 'level' , 'image', 'image2', 'locale', 'publish'];
 
     public static function save_cat_order($menuLinksIds, $niz){
         $i=-1;
