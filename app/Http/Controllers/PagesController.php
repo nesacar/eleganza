@@ -498,7 +498,7 @@ class PagesController extends Controller
             $watches2 = array_slice($watches2, 0, 3);
 
             $posts = $category->post()->where('posts.publish', 1)->where('posts.publish_at', '<=', (new \Carbon\Carbon()))->orderby('posts.publish_at', 'DESC')->paginate(10);
-            $topParent = PCategory::getTopParent($category->id);
+            $topParent = null;
             $sliders = $category->post()->where('posts.publish', 1)->where('posts.publish_at', '<=', (new \Carbon\Carbon()))->orderby('posts.publish_at', 'DESC')->take(5)->get();
 
             if($category->id == 2){ $collections = Category::getCollections(5); }else{ $collections = []; }

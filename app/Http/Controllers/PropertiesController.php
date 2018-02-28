@@ -101,7 +101,7 @@ class PropertiesController extends Controller {
         $property = Property::find($id);
 		$request->input('publish')? $property->publish = 1 : $property->publish = 0;
         $property->update($request->except('publish'));
-		return redirect('admin/properties')->with('done', 'Osobina je izmenjena.');
+        return redirect('admin/properties/'.$id.'/edit')->with('done', 'Osobina je izmenjena.');
 	}
 
 	public function updateLang(Requests\CreatePropertyRequest $request, $id)

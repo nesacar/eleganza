@@ -19,11 +19,8 @@
 
     <div class=page-header>
         <div class="container page-header__container">
-            <h2 class=page-header__title>Page title</h2>
-            <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, alias sint. Repellat repellendus consectetur, incidunt non blanditiis debitis quisquam voluptatem iste laudantium quia,
-                aspernatur distinctio asperiores expedita ut mollitia illum.
-            </p>
+            <h2 class=page-header__title>{{ $category->title }}</h2>
+            <p>{{ $category->desc }}</p>
         </div>
     </div>
 

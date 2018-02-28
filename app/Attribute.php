@@ -61,7 +61,7 @@ class Attribute extends Model {
         if(count($attributes) > 0){
             $str .=  "<ol class='sortable'>";
             foreach($attributes as $a){
-                $str .= "<li id='list_{$a->id}'><div>".$a->translate('sr')->title."</div>";
+                $str .= "<li id='list_{$a->id}'><div>".$a->title."</div>";
                 $str .= Property::getSortOsobina($a->id);
                 $str .= "</li>";
             }

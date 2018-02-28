@@ -25,6 +25,12 @@
                 <div class="panel-body">
                     {!! Form::open(['action' => ['PropertiesController@update', $property->id], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
                     <div class="form-group">
+                        <label for="order" class="col-sm-3 control-label">Redosled</label>
+                        <div class="col-sm-9">
+                            {!! Form::text('order', $property->order, array('class' => 'form-control')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="publish" class="col-sm-3 control-label">Vidljivo</label>
                         <div class="col-sm-9">
                             {!! Form::checkbox('publish', 1, $property->publish, ['class' => 'switch-state', 'data-on-color' => 'success', 'data-off-color' => 'danger', 'data-on-text' => 'DA', 'data-off-text' => 'NE', 'id' => 'active']) !!}
@@ -87,7 +93,7 @@
         <div class="col-md-12">
             <div class="panel panel-white">
                 <div class="panel-heading clearfix">
-                    <h4 class="panel-title">Atributi za osobinu: {{ $property->{'title:sr'} }}</h4>
+                    <h4 class="panel-title">Atributi za osobinu: {{ $property->{'title:hr'} }}</h4>
                 </div>
                 <div class="panel-body">
                     <div class="panel-header-stats">
@@ -110,7 +116,7 @@
                                         {{ $a->id }}
                                     </div>
                                     <div class="col-md-4 vcenter">
-                                        {{ $a->{'title:sr'} }}
+                                        {{ $a->{'title:hr'} }}
                                     </div>
                                     <div class="col-md-4">
                                         <div class="btn-group pull-right" role="group" aria-label="...">
