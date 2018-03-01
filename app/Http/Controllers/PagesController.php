@@ -12,6 +12,7 @@ use App\Click;
 use App\Customer;
 use App\Helper;
 use App\Http\Requests\CartOrderRequest;
+use App\Http\Requests\CustomerRegisterRequest;
 use App\Http\Requests\ListKupovineRequest;
 use App\Http\Requests\SendKontaktFormRequest;
 use App\Http\Requests\SubscribeRequest;
@@ -71,16 +72,18 @@ class PagesController extends Controller
             //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
             request('max-price') ? $price[0] = request('max-price') : $price[0] = 0;
             request('min-price') ? $price[1] = request('max-price') : $price[1] = 0;
+            request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
+            request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
             request('sort') ? $sort = request('sort') : $sort = 2;
             request('page') ? $page = request('page') : $page = 1;
             request('limit') ? $limit = request('limit') : $limit = 9;
 
             $count = Property::countPropertyFilter($filters);
-            $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1]);
+            $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1]);
             //$properties = Property::getPropertiesAndAttributesByCategory($category->id);
 
-            $filteri = Product::getFiltersByCheckboxes($products);
-            //$filteri = Product::getFiltersByCategory($category->id);
+            $filteri = Product::getFiltersByCategory($category->id);
+
             if($count > 0){
                 $oo = Property::sredi($filters);
                 $products = Product::filtered($products, $count, $limit, $sort, $oo);
@@ -94,7 +97,7 @@ class PagesController extends Controller
             $topCat = [];
             $active = $slug;
             $s2 = null; $s3 = null; $s4 = null;
-            return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max', 'price'));
+            return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max', 'price', 'set'));
         }else{
             return 'error 404';
         }
@@ -149,12 +152,14 @@ class PagesController extends Controller
                 //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
                 request('max-price') ? $price[0] = request('max-price') : $price[0] = 0;
                 request('min-price') ? $price[1] = request('max-price') : $price[1] = 0;
+                request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
+                request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
                 request('sort') ? $sort = request('sort') : $sort = 2;
                 request('page') ? $page = request('page') : $page = 1;
                 request('limit') ? $limit = request('limit') : $limit = 9;
 
                 $count = Property::countPropertyFilter($filters);
-                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1]);
+                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1]);
                 //$properties = Property::getPropertiesAndAttributesByCategory($category->id);
 
                 //$filteri = Product::getFiltersByCheckboxes($products);
@@ -168,7 +173,7 @@ class PagesController extends Controller
                 $topCat = [];
                 $max = Product::newMaxPrice($category->id, $filters);
                 $s3 = null; $s4 = null;
-                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max'));
+                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max', 'set'));
             }else{
                 return 'error 404';
             }
@@ -219,12 +224,14 @@ class PagesController extends Controller
                 //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
                 request('max-price') ? $price[0] = request('max-price') : $price[0] = 0;
                 request('min-price') ? $price[1] = request('max-price') : $price[1] = 0;
+                request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
+                request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
                 request('sort') ? $sort = request('sort') : $sort = 2;
                 request('page') ? $page = request('page') : $page = 1;
                 request('limit') ? $limit = request('limit') : $limit = 9;
 
                 $count = Property::countPropertyFilter($filters);
-                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1]);
+                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1]);
                 //$properties = Property::getPropertiesAndAttributesByCategory($category->id);
 
                 //$filteri = Product::getFiltersByCheckboxes($products);
@@ -240,7 +247,7 @@ class PagesController extends Controller
                 $topCat = [];
                 $max = Product::newMaxPrice($category->id, $filters);
                 $s4 = null;
-                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max'));
+                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max', 'set'));
             }else{
                 return 'error 404';
             }
@@ -291,12 +298,14 @@ class PagesController extends Controller
                 //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
                 request('max-price') ? $price[0] = request('max-price') : $price[0] = 0;
                 request('min-price') ? $price[1] = request('max-price') : $price[1] = 0;
+                request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
+                request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
                 request('sort') ? $sort = request('sort') : $sort = 2;
                 request('page') ? $page = request('page') : $page = 1;
                 request('limit') ? $limit = request('limit') : $limit = 9;
 
                 $count = Property::countPropertyFilter($filters);
-                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1]);
+                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1]);
                 //$properties = Property::getPropertiesAndAttributesByCategory($category->id);
 
                 //$filteri = Product::getFiltersByCheckboxes($products);
@@ -309,7 +318,7 @@ class PagesController extends Controller
                 }
                 $topCat = [];
                 $max = Product::newMaxPrice($category->id, $filters);
-                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max'));
+                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max', 'set'));
             }else{
                 return 'error 404';
             }
@@ -363,12 +372,14 @@ class PagesController extends Controller
                 //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
                 request('max-price') ? $price[0] = request('max-price') : $price[0] = 0;
                 request('min-price') ? $price[1] = request('max-price') : $price[1] = 0;
+                request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
+                request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
                 request('sort') ? $sort = request('sort') : $sort = 2;
                 request('page') ? $page = request('page') : $page = 1;
                 request('limit') ? $limit = request('limit') : $limit = 9;
 
                 $count = Property::countPropertyFilter($filters);
-                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1]);
+                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1]);
                 //$properties = Property::getPropertiesAndAttributesByCategory($category->id);
 
                 //$filteri = Product::getFiltersByCheckboxes($products);
@@ -381,7 +392,7 @@ class PagesController extends Controller
                 }
                 $topCat = [];
                 $max = Product::newMaxPrice($category->id, $filters);
-                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 's5', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max'));
+                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 's5', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max', 'set'));
             }else{
                 return 'error 404';
             }
@@ -436,12 +447,14 @@ class PagesController extends Controller
                 //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
                 request('max-price') ? $price[0] = request('max-price') : $price[0] = 0;
                 request('min-price') ? $price[1] = request('max-price') : $price[1] = 0;
+                request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
+                request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
                 request('sort') ? $sort = request('sort') : $sort = 2;
                 request('page') ? $page = request('page') : $page = 1;
                 request('limit') ? $limit = request('limit') : $limit = 9;
 
                 $count = Property::countPropertyFilter($filters);
-                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1]);
+                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1]);
                 //$properties = Property::getPropertiesAndAttributesByCategory($category->id);
 
                 //$filteri = Product::getFiltersByCheckboxes($products);
@@ -454,7 +467,7 @@ class PagesController extends Controller
                 }
                 $topCat = [];
                 $max = Product::newMaxPrice($category->id, $filters);
-                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 's5', 's6', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max'));
+                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 's5', 's6', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max', 'set'));
             }else{
                 return 'error 404';
             }
@@ -864,28 +877,6 @@ class PagesController extends Controller
         return 'done';
     }
 
-    public function outlock(){
-        $array = [
-            'dejan.radic@ministudio.rs',
-        ];
-        foreach ($array as $email){
-            \Mail::to($email)->send(new LuxLifeNewsletter());
-        }
-
-        return 'poslato na dejan.radic@ministudio.rs';
-    }
-
-    public function gmail(){
-        $array = [
-            'radic.dejan.nbg@gmail.com'
-        ];
-        foreach ($array as $email){
-            \Mail::to($email)->send(new LuxLifeNewsletter());
-        }
-
-        return 'poslato na radic.dejan.nbg@gmail.com';
-    }
-
     public function eleganza(){
         $settings = Setting::first();
         $theme = Theme::where('active', 1)->first();
@@ -940,6 +931,22 @@ class PagesController extends Controller
         $settings = Setting::first();
         $theme = Theme::where('active', 1)->first();
         return view('themes.'.$theme->slug.'.pages.registration', compact('settings', 'theme'));
+    }
+
+    public function login(){
+        $settings = Setting::first();
+        $theme = Theme::where('active', 1)->first();
+        return view('themes.'.$theme->slug.'.pages.login', compact('settings', 'theme'));
+    }
+
+    public function register(){
+        $settings = Setting::first();
+        $theme = Theme::where('active', 1)->first();
+        return view('themes.'.$theme->slug.'.pages.registration', compact('settings', 'theme'));
+    }
+
+    public function registerUpdate(CustomerRegisterRequest $request){
+        return 'customer register';
     }
 
 }

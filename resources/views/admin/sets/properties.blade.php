@@ -30,9 +30,9 @@
                                         <li>
                                             <?php
                                             if(in_array($p->id, $propertyIds)){ ?>
-                                            {!! Form::checkbox('properties[]', $p->id , 1) !!} id: {{ $p->id }} / {{ $p->{'title:sr'} }}
+                                            {!! Form::checkbox('properties[]', $p->id , 1) !!} id: {{ $p->id }} / {{ $p->{'title:hr'} }}
                                             <?php }else{ ?>
-                                            {!! Form::checkbox('properties[]', $p->id, null) !!} id: {{ $p->id }} / {{ $p->{'title:sr'} }}
+                                            {!! Form::checkbox('properties[]', $p->id, null) !!} id: {{ $p->id }} / {{ $p->{'title:hr'} }}
                                             <?php } ?>
                                         </li>
                                     @endforeach

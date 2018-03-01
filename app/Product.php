@@ -29,7 +29,7 @@ class Product extends Model {
 
     public $translatedAttributes = ['title', 'slug', 'short', 'body', 'body2'];
 
-    protected $fillable = ['brand_id', 'user_id', 'set_id', 'code', 'image', 'tmb', 'price_small', 'price_outlet', 'views', 'amount', 'color', 'featured', 'discount', 'sold', 'publish_at', 'publish'];
+    protected $fillable = ['brand_id', 'user_id', 'set_id', 'code', 'image', 'tmb', 'price_small', 'price_outlet', 'diameter', 'views', 'amount', 'color', 'featured', 'discount', 'sold', 'publish_at', 'publish'];
 
     public static function getAtt($product_id, $category_id){
         $category = PCategory::find($category_id);
@@ -229,7 +229,7 @@ class Product extends Model {
         }
     }
 
-    public static function getFiltersByCategory($cat, $locale='sr'){
+    public static function getFiltersByCategory($cat, $locale='hr'){
         return Attribute::select('attributes.id')
             ->join('attribute_translations', 'attributes.id', '=', 'attribute_translations.attribute_id')
             ->join('attribute_product', 'attributes.id', '=', 'attribute_product.attribute_id')
@@ -536,7 +536,7 @@ class Product extends Model {
         return $cena;
     }
 
-    public static function getProductSelect($locale='sr'){
+    public static function getProductSelect($locale='hr'){
         return self::join('product_translations', 'products.id', '=', 'product_translations.product_id')
             ->where('product_translations.locale', $locale)->where('products.publish', 1)->where('products.publish_at', '<=', (new \Carbon\Carbon()))
             ->pluck('product_translations.title', 'products.id');
@@ -596,7 +596,7 @@ class Product extends Model {
         }
     }
 
-    public static function filteredProducts($cat=0, $fil, $sort=2, $min=0, $max=0){
+    public static function filteredProducts($cat=0, $fil, $sort=2, $min=0, $max=0, $minPromer=0, $maxPromer=0){
         if($sort == 2){ $field = 'products.price_small'; $param = 'ASC'; }elseif($sort == 3){ $field = 'products.price_small'; $param = 'DESC'; }else{ $field = 'products.publish_at'; $param = 'DESC'; }
         if($cat == 0){
             if(count($fil) > 0){
@@ -616,6 +616,12 @@ class Product extends Model {
                             $query->whereBetween('products.price_outlet', [$min, $max]);
                         }
                     })
+                    ->where(function($query) use ($minPromer, $maxPromer)
+                    {
+                        if($maxPromer > 0){
+                            $query->whereBetween('products.diameter', [$minPromer, $maxPromer]);
+                        }
+                    })
                     ->where('products.publish', 1)
                     ->groupby('products.id')
                     ->orderby($field, $param)
@@ -626,6 +632,12 @@ class Product extends Model {
                     {
                         if($max > 0){
                             $query->whereBetween('products.price_outlet', [$min, $max]);
+                        }
+                    })
+                    ->where(function($query) use ($minPromer, $maxPromer)
+                    {
+                        if($maxPromer > 0){
+                            $query->whereBetween('products.diameter', [$minPromer, $maxPromer]);
                         }
                     })
                     ->where('products.publish', 1)
@@ -654,6 +666,12 @@ class Product extends Model {
                             $query->whereBetween('products.price_outlet', [$min, $max]);
                         }
                     })
+                    ->where(function($query) use ($minPromer, $maxPromer)
+                    {
+                        if($maxPromer > 0){
+                            $query->whereBetween('products.diameter', [$minPromer, $maxPromer]);
+                        }
+                    })
                     ->where('products.publish', 1)
                     ->groupby('products.id')
                     ->orderby($field, $param)
@@ -667,6 +685,12 @@ class Product extends Model {
                     {
                         if($max > 0){
                             $query->whereBetween('products.price_outlet', [$min, $max]);
+                        }
+                    })
+                    ->where(function($query) use ($minPromer, $maxPromer)
+                    {
+                        if($maxPromer > 0){
+                            $query->whereBetween('products.diameter', [$minPromer, $maxPromer]);
                         }
                     })
                     ->where('products.publish', 1)
@@ -769,7 +793,7 @@ class Product extends Model {
         return self::whereIn('id', $products->pluck('id')->toArray())->orderby($field, $param)->paginate($limit);
     }
 
-    public static function getFiltersByCheckboxes($products, $locale = 'sr'){
+    public static function getFiltersByCheckboxes($products, $locale = 'hr'){
         return Attribute::select('attributes.id')
             ->join('attribute_translations', 'attributes.id', '=', 'attribute_translations.attribute_id')
             ->join('attribute_product', 'attributes.id', '=', 'attribute_product.attribute_id')

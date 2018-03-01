@@ -15,6 +15,12 @@ Route::get('/', 'PagesController@index');
 Route::get('pretraga', 'PagesController@search');
 Route::post('subscribe', 'PagesController@subscribe');
 
+Route::get('login', 'PagesController@login');
+Route::get('register', 'PagesController@register');
+Route::get('profile', 'CustomersController@profile');
+
+Route::post('register', 'PagesController@registerUpdate')->name('user-register');
+
 Route::get('eleganza', 'PagesController@eleganza');
 Route::get('eleganza/shop', 'PagesController@eleganzaShop');
 Route::get('eleganza/blog', 'PagesController@eleganzaBlog');
@@ -42,8 +48,6 @@ Route::get('korpa', 'PagesController@korpa');
 Route::post('kupovina', 'PagesController@kupovina');
 
 Route::get('proba', 'PagesController@proba');
-Route::get('outlock', 'PagesController@outlock');
-Route::get('gmail', 'PagesController@gmail');
 
 Route::get('shop/{slug1}/{slug2}/{slug3}/{slug4}/{slug5}/{slug6}', 'PagesController@shopCategory6');
 Route::get('shop/{slug1}/{slug2}/{slug3}/{slug4}/{slug5}', 'PagesController@shopCategory5');

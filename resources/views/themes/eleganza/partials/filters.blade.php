@@ -1,23 +1,26 @@
 <div class=filters>
     <div class=filters__header>osnovni filter</div>
     <div class=filters__body>
-        <div class=filter>
-            <h4 class=filter__name>cijena</h4>
-            <div class=e-slider>
-                @if(request('max-price') > 0)
-                    <div data-is-slider=true data-min-value={{ request('min-price') }} data-max-value={{ request('max-price') }} data-value-range={{ $max->price_small }} id=jsPriceSlider></div>
-                @else
-                    <div data-is-slider=true data-min-value=0 data-max-value={{ $max->price_small }} data-value-range={{ $max->price_small }} id=jsPriceSlider></div>
-                @endif
-                <div class=e-slider__labels>
-                    <input type=text name=min-price class=hidden data-label-for=min data-for-slider=jsPriceSlider readonly=readonly />
-                    <span class="e-slider__label e-slider__label--kn" data-label-for=min data-for-slider=jsPriceSlider></span>
-                    -
-                    <input type=text name=max-price class=hidden data-label-for=max data-for-slider=jsPriceSlider readonly=readonly />
-                    <span class="e-slider__label e-slider__label--kn" data-label-for=max data-for-slider=jsPriceSlider></span>
+        @if(!empty($max))
+            <div class="filter cijena">
+                <h4 class=filter__name>cijena</h4>
+                <div class=e-slider>
+                    @if(request('max-price') > 0)
+                        <div data-is-slider=true data-min-value={{ request('min-price') }} data-max-value={{ request('max-price') }} data-value-range={{ $max->price_small }} id=jsPriceSlider></div>
+                    @else
+                        <div data-is-slider=true data-min-value=0 data-max-value={{ $max->price_small }} data-value-range={{ $max->price_small }} id=jsPriceSlider></div>
+                    @endif
+                    <div class=e-slider__labels>
+                        <input type=text name=min-price class=hidden data-label-for=min data-for-slider=jsPriceSlider readonly=readonly />
+                        <span class="e-slider__label e-slider__label--kn" data-label-for=min data-for-slider=jsPriceSlider></span>
+                        -
+                        <input type=text name=max-price class=hidden data-label-for=max data-for-slider=jsPriceSlider readonly=readonly />
+                        <span class="e-slider__label e-slider__label--kn" data-label-for=max data-for-slider=jsPriceSlider></span>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
+
         @if(count($props)>0)
             @foreach($props as $prop)
                 @php $atts = \App\Attribute::getFilteredAttributes($prop->id, $category->id); @endphp
@@ -51,22 +54,25 @@
                 </div>
             @endforeach
         @endif
-        <div class=filter>
-            <h4 class=filter__name>promjer kucista</h4>
-            <div class=e-slider>
-                @if(request('max-promer') > 0)
-                    <div data-is-slider=true data-min-value={{ request('min-promer') }} data-max-value={{ request('max-promer') }} data-value-range=50 id=jsHousingSlider></div>
-                @else
-                    <div data-is-slider=true data-min-value=0 data-max-value=50 data-value-range=50 id=jsHousingSlider></div>
-                @endif
-                <div class=e-slider__labels>
-                    <input type=text name=min-promer class=hidden data-label-for=min data-for-slider=jsHousingSlider readonly=readonly />
-                    <span class="e-slider__label e-slider__label--mm" data-label-for=min data-for-slider=jsHousingSlider></span>
-                    -
-                    <input type=text name=max-promer class=hidden data-label-for=max data-for-slider=jsHousingSlider readonly=readonly />
-                    <span class="e-slider__label e-slider__label--mm" data-label-for=max data-for-slider=jsHousingSlider></span>
+
+        @if($set->id == 4)
+            <div class="filter promjer">
+                <h4 class=filter__name>promjer kucista</h4>
+                <div class=e-slider>
+                    @if(request('max-promer') > 0)
+                        <div data-is-slider=true data-min-value={{ request('min-promer') }} data-max-value={{ request('max-promer') }} data-value-range=50 id=jsHousingSlider></div>
+                    @else
+                        <div data-is-slider=true data-min-value=0 data-max-value=50 data-value-range=50 id=jsHousingSlider></div>
+                    @endif
+                    <div class=e-slider__labels>
+                        <input type=text name=min-promer class=hidden data-label-for=min data-for-slider=jsHousingSlider readonly=readonly />
+                        <span class="e-slider__label e-slider__label--mm" data-label-for=min data-for-slider=jsHousingSlider></span>
+                        -
+                        <input type=text name=max-promer class=hidden data-label-for=max data-for-slider=jsHousingSlider readonly=readonly />
+                        <span class="e-slider__label e-slider__label--mm" data-label-for=max data-for-slider=jsHousingSlider></span>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
     </div>
 </div>

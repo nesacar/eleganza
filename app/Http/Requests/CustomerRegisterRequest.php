@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateAdminUserRequest extends FormRequest
+class CustomerRegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,24 +25,29 @@ class CreateAdminUserRequest extends FormRequest
     {
         return [
             'email' => 'required|unique:users|email',
-            'username' => 'required|unique:users',
             'password' => 'required|confirmed',
-            'role' => 'required|min:0'
+            'name' => 'required',
+            'lastname' => 'required',
+            'address' => 'required',
+            'phone' => 'required',
+            'town' => 'required',
+            'postcode' => 'required',
         ];
     }
 
     public function messages()
     {
         return [
+            'email.required' => 'Email adresa je obavezna.',
+            'email.unique' => 'Email adresa je zauteta. Pokušajte sa drugom.',
+            'password.required' => 'Lozinka je obavezna.',
+            'password.confirmed' => 'Niste dobro potvrdili lozinku, pokušajte ponovo.',
             'name.required' => 'Ime je obavezno.',
             'lastname.required' => 'Prezime je obavezno.',
-            'email.required' => 'Email adresa je obavezna.',
-            'username.required' => 'Korisničko ime je obavezno.',
-            'password.required' => 'Lozinka je obavezna.',
-            'username.unique' => 'Korisničko ime je zauteto, pokušajte sa drugim.',
-            'email.unique' => 'Email adresa je zauteta. Pokušajte sa drugom.',
-            'password.confirmed' => 'Niste dobro potvrdili lozinku, pokušajte ponovo.',
-            'role.min' => 'Niste odabrali pravo pristupa'
+            'address.required' => 'Adresa je obavezno.',
+            'phone.required' => 'Telefon je obavezan.',
+            'town.required' => 'Mjesto je obavezano.',
+            'postcode.required' => 'Poštanski broj je obavezan.',
         ];
     }
 }

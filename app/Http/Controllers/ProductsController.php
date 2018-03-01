@@ -180,7 +180,8 @@ class ProductsController extends Controller {
         $languages = Language::where('publish', 1)->orderBy('order', 'ASC')->get();
         $attributeIds = $product->attribute()->pluck('attributes.id')->toArray();
         if($product->brand_id > 0){
-            $collection = Brand::find($product->brand_id)->attribute()->where('publish', 1)->orderBy('order', 'ASC')->get();
+            $brand = Brand::find($product->brand_id);
+            $brand? $collection = $brand->attribute()->where('publish', 1)->orderBy('order', 'ASC')->get() : $collection = [];
         }else{
             $collection = [];
         }
@@ -555,12 +556,16 @@ class ProductsController extends Controller {
 		return 'da';
 	}
 
-	public function updateaAttribute(Request $request, $id){
+	public function updateAttribute(Request $request, $id){
 	    $product = Product::find($id);
-	    if(count($request->input('attributes')) == 0){
+	    if(count(request('attributes')) == 0){
 	        $product->attribute()->sync([]);
         }else{
-            $product->attribute()->sync($request->input('attributes'));
+            $product->attribute()->sync(request('attributes'));
+        }
+        if(!empty(request('diameter'))){
+            $product->diameter = request('diameter');
+            $product->update();
         }
         return redirect()->back()->with('done', 'Atributi su izmenjeni');
     }

@@ -109,7 +109,7 @@ Route::get('admin/products/clear', 'ProductsController@clearSearch');
 Route::post('admin/products/{id}/upload', 'ProductsController@upload');
 Route::post('admin/products/checkUpdate', 'ProductsController@checkUpdate');
 Route::post('admin/products/{id}/updateLang', 'ProductsController@updateLang');
-Route::post('admin/products/{id}/updateaAttribute', 'ProductsController@updateaAttribute');
+Route::post('admin/products/{id}/updateAttribute', 'ProductsController@updateAttribute');
 Route::resource('admin/products', 'ProductsController');
 Route::post('admin/products/search', 'ProductsController@search');
 Route::get('admin/products/publish/{id}', 'ProductsController@publish');

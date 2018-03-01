@@ -41,17 +41,23 @@
             </div>
 
             <div class="col-md-6 e-col--right">
-                <form class=e-form action=POST>
+                <form class="e-form" method="POST" action="{{ route('login') }}">
+                    {{ csrf_field() }}
                     <div class=e-form__section>
                         <h3 class=e-form__title>već imaš korisnički račun?</h3>
                         <p class=e-form__description>Prijavi se putem emaila za brzu kupnju</p>
                         <div class=e-form__group>
                             <label for=log-email>Email</label>
-                            <input type=text name=log-email id=log-email class=nl-input>
+                            <input type=email name=email id=log-email class=nl-input>
+                            @if ($errors->has('email'))
+                                <span class="help-block">
+                                    <strong style="color: red">Kombinacija emaila i lozinke nije isptavna</strong>
+                                </span>
+                            @endif
                         </div>
                         <div class=e-form__group>
                             <label for=log-pass>Lozinka</label>
-                            <input type=password name=log-pass id=log-pass class=nl-input>
+                            <input type=password name=password id=log-pass class=nl-input>
                         </div>
                         <div class=e-form__cb-group>
                             <div class=e-checkbox>
@@ -68,7 +74,7 @@
                 </form>
                 <div class=login>
                     <div class=login__help>
-                        <p><a href=#>Otvori novi korisnički račun</a></p>
+                        <p><a href="{{ url('register') }}">Otvori novi korisnički račun</a></p>
                         <p>Zaboravio/la si lozinku? <a href=#>Zatraži novu lozinku</a></p>
                     </div>
                     <div class=login__alt>

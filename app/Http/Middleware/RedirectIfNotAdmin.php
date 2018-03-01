@@ -16,7 +16,9 @@ class RedirectIfNotAdmin
     public function handle($request, Closure $next)
     {
         if(\Auth::check()){
-            if(!$request->user()->isAdmin() || $request->user()->block == 1){
+            if($request->user()->isCustomer()){
+                return redirect('profile');
+            }elseif(!$request->user()->isAdmin() || $request->user()->block == 1){
                 return redirect('/');
             }
         }else{

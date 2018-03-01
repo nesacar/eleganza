@@ -8,7 +8,7 @@
         </div>
     </div>
     <h1 class=logo>
-        <a href=index.html>eleganza</a>
+        <a href={{ url('/') }}>eleganza</a>
     </h1>
     @if(!empty($menus))
     <ul class=nav-list>

@@ -247,8 +247,16 @@
                     <h4 class="panel-title">Atributi</h4>
                 </div>
                 <div class="panel-body">
-                    {!! Form::open(['action' => ['ProductsController@updateaAttribute', $product->id], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+                    {!! Form::open(['action' => ['ProductsController@updateAttribute', $product->id], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
                         @if(!empty($set) && count($set->property)>0)
+
+                            @if($set->id == 4)
+                                <div class="col-sm-3">
+                                    <h3>Promjer kućišta (mm)</h3>
+                                    {!! Form::text('diameter', $product->diameter, array('class' => 'form-control')) !!}
+                                </div>
+                            @endif
+
                             @foreach($set->property as $property)
                                 <div class="col-sm-3">
                                     <h3>{{ $property->title }}</h3>

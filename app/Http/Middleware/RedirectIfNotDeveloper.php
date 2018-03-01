@@ -16,7 +16,9 @@ class RedirectIfNotDeveloper
     public function handle($request, Closure $next)
     {
         if(\Auth::check()){
-            if(!$request->user()->isDeveloper() || $request->user()->block == 1){
+            if($request->user()->isCustomer()){
+                return redirect('profile');
+            }elseif(!$request->user()->isDeveloper() || $request->user()->block == 1){
                 return redirect('/');
             }
         }else{

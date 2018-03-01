@@ -77,7 +77,7 @@
                             <div class=product-item__img-box>
                                 {!! HTML::Image($product->image, $product->title) !!}
                                 <ul class=product-item__actions>
-                                    <li class="icon-btn icon-btn--inverse"> <i class="fas fa-shopping-cart"></i> </li>
+                                    <li class="icon-btn icon-btn--inverse"><a href="{{ url('cart') }}" style="z-index: 1;"><i class="fas fa-shopping-cart"></i></a> </li>
                                     <li class="icon-btn icon-btn--inverse"> <i class="fas fa-heart"></i> </li>
                                     <li class="icon-btn icon-btn--inverse"> <i class="fas fa-search"></i> </li>
                                 </ul>
@@ -138,6 +138,13 @@
                 e.preventDefault();
                 $('#page').val(1);
                 $('#moja').submit();
+            });
+
+            $('.filter').not('.cijena').not('.promjer').each(function () {
+                var count = $(this).find('input[type="checkbox"]').length;
+                if(count == 0){
+                    $(this).remove();
+                }
             });
         });
     </script>
