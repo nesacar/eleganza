@@ -980,8 +980,7 @@ class PagesController extends Controller
             $array[] = $product;
         }
         $cookie->store('eleganza', $array, 259200);//180 dana
-        //return $cookie->get('eleganza');
-        return back();
+        return $cookie->get('eleganza');
     }
 
     public function addToCart($id){
