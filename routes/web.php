@@ -22,8 +22,8 @@ Route::get('profil', 'CustomersController@profile');
 
 Route::get('lista-zelja', 'PagesController@wishList');
 Route::post('register', 'PagesController@registerUpdate')->name('user-register');
-Route::post('add-to-wishlist/{id}', 'PagesController@addToWishList');
-Route::post('add-to-cart/{id}', 'PagesController@addToCart');
+Route::middleware('cors')->post('add-to-wishlist/{id}', 'PagesController@addToWishList');
+Route::middleware('cors')->post('add-to-cart/{id}', 'PagesController@addToCart');
 
 Route::get('eleganza', 'PagesController@eleganza');
 Route::get('eleganza/shop', 'PagesController@eleganzaShop');

@@ -64,5 +64,6 @@ class Kernel extends HttpKernel
         'menager' => \App\Http\Middleware\RedirectIfNotMenager::class,
         'admin' => \App\Http\Middleware\RedirectIfNotAdmin::class,
         'developer' => \App\Http\Middleware\RedirectIfNotDeveloper::class,
+        'cors' => \Barryvdh\Cors\HandleCors::class,
     ];
 }

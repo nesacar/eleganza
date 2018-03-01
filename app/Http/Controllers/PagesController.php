@@ -955,7 +955,8 @@ class PagesController extends Controller
     public function wishList(){
         $settings = Setting::first();
         $theme = Theme::where('active', 1)->first();
-        $product = Product::first();
+        $cookie = Product::getCookie();
+        dd($cookie);
         return view('themes.'.$theme->slug.'.pages.wishList', compact('settings', 'theme', 'cookie'));
     }
 
@@ -974,12 +975,12 @@ class PagesController extends Controller
                 $array[] = $o;
             }
             if($br){
-                $array[] = $product;
+                $array[] = $product->id;
             }
         }else{
-            $array[] = $product;
+            $array[] = $product->id;
         }
-        $cookie->store('eleganza', $array, 259200);//180 dana
+        $cookie->store('eleganza', [29], 259200);//180 dana
         return $cookie->get('eleganza');
     }
 
