@@ -72,14 +72,15 @@
             </div>
             <ul class="product-list">
                 @foreach($products as $product)
+                    @php $link = url(\App\Product::getProductLink($product->id)); @endphp
                     <li class="product-item product-list__item with-shadow">
-                        <a href="{{ url(\App\Product::getProductLink($product->id)) }}">
+                        <a href="{{ $link }}">
                             <div class=product-item__img-box>
                                 {!! HTML::Image($product->image, $product->title) !!}
                                 <ul class=product-item__actions>
-                                    <li class="icon-btn icon-btn--inverse"><a href="{{ url('cart') }}" style="z-index: 1;"><i class="fas fa-shopping-cart"></i></a> </li>
-                                    <li class="icon-btn icon-btn--inverse"> <i class="fas fa-heart"></i> </li>
-                                    <li class="icon-btn icon-btn--inverse"> <i class="fas fa-search"></i> </li>
+                                    <li class="icon-btn icon-btn--inverse"><a href="{{ url('add-to-cart/'.$product->id) }}" class="addCart" style="z-index: 1;"><i class="fas fa-shopping-cart"></i></a> </li>
+                                    <li class="icon-btn icon-btn--inverse"> <a href="{{ url('add-to-wishlist/'.$product->id) }}" class="addWish" style="z-index: 1;"><i class="fas fa-heart"></i></a> </li>
+                                    <li class="icon-btn icon-btn--inverse"> <a href="{{ $link }}" style="z-index: 1;"><i class="fas fa-search"></i></a> </li>
                                 </ul>
                             </div>
                             <div class=product-item__info-box>
@@ -145,6 +146,20 @@
                 if(count == 0){
                     $(this).remove();
                 }
+            });
+
+            $('.addWish').click(function(e){
+                e.preventDefault();
+                var link = $(this).attr('href');
+                console.log('list');
+                $.post(link, {_token: '{{ csrf_token() }}' }, function(data){ console.log(data); });
+            });
+
+            $('.addCart').click(function(e){
+                e.preventDefault();
+                var link = $(this).attr('href');
+                console.log('kosarica');
+                $.post(link, {_token: '{{ csrf_token() }}' }, function(data){ console.log(data); });
             });
         });
     </script>

@@ -33,6 +33,7 @@ use App\Tag;
 use App\Theme;
 use App\User;
 use Illuminate\Http\Request;
+use Cookie;
 
 class PagesController extends Controller
 {
@@ -946,7 +947,45 @@ class PagesController extends Controller
     }
 
     public function registerUpdate(CustomerRegisterRequest $request){
-        return 'customer register';
+        $user = Customer::createCustomer();
+        auth()->login($user);
+        return redirect('profil');
+    }
+
+    public function wishList(){
+        $settings = Setting::first();
+        $theme = Theme::where('active', 1)->first();
+        $product = Product::first();
+        return view('themes.'.$theme->slug.'.pages.wishList', compact('settings', 'theme', 'cookie'));
+    }
+
+    public function addToWishList($id){
+        $product = Product::find($id);
+        $cookie = \App::make('CodeZero\Cookie\Cookie');
+        //$cookie->delete('eleganza');
+        $array = array();
+        $old = $cookie->get('eleganza');
+        $br = true;
+        if(count($old)>0){
+            foreach($old as $o){
+                if($o['id'] == $id){
+                    $br = false;
+                }
+                $array[] = $o;
+            }
+            if($br){
+                $array[] = $product;
+            }
+        }else{
+            $array[] = $product;
+        }
+        $cookie->store('eleganza', $array, 259200);//180 dana
+        //return $cookie->get('eleganza');
+        return back();
+    }
+
+    public function addToCart($id){
+        return $product = Product::find($id);
     }
 
 }

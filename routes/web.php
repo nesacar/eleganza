@@ -15,11 +15,15 @@ Route::get('/', 'PagesController@index');
 Route::get('pretraga', 'PagesController@search');
 Route::post('subscribe', 'PagesController@subscribe');
 
-Route::get('login', 'PagesController@login');
-Route::get('register', 'PagesController@register');
-Route::get('profile', 'CustomersController@profile');
+Route::get('logovanje', 'PagesController@login');
+Route::get('registracija', 'PagesController@register');
 
+Route::get('profil', 'CustomersController@profile');
+
+Route::get('lista-zelja', 'PagesController@wishList');
 Route::post('register', 'PagesController@registerUpdate')->name('user-register');
+Route::post('add-to-wishlist/{id}', 'PagesController@addToWishList');
+Route::post('add-to-cart/{id}', 'PagesController@addToCart');
 
 Route::get('eleganza', 'PagesController@eleganza');
 Route::get('eleganza/shop', 'PagesController@eleganzaShop');

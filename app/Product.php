@@ -780,12 +780,12 @@ class Product extends Model {
 
     public static function getCookie(){
         $cookie = \App::make('CodeZero\Cookie\Cookie');
-        return $cookie->get('S-L');
+        return $cookie->get('eleganza');
     }
 
     public static function getCookieCart(){
         $cookie = \App::make('CodeZero\Cookie\Cookie');
-        return $cookie->get('S-L-shop');
+        return $cookie->get('eleganzaCart');
     }
 
     public static function paginateRender($products, $limit, $sort=2){

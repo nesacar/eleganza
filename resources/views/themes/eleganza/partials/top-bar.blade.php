@@ -32,10 +32,10 @@
         </div>
         <div class=top-bar__box>
             @if(auth()->check())
-                <a class=top-bar__link href="{{ url('profile') }}"> <span>profil</span> <i class="fas fa-user-circle"></i> </a>
-                <a class=top-bar__link href="{{ url('cart') }}"> <span>košarica</span> <i class="fas fa-shopping-cart"></i> </a>
+                <a class=top-bar__link href="{{ url('profil') }}"> <span>profil</span> <i class="fas fa-user-circle"></i> </a>
+                <a class=top-bar__link href="{{ url('kosarica') }}"> <span>košarica</span> <i class="fas fa-shopping-cart"></i> </a>
             @else
-                <a class=top-bar__link href="{{ url('login') }}"> <span>prijavi se</span> <i class="fas fa-user-circle"></i> </a>
+                <a class=top-bar__link href="{{ url('logovanje') }}"> <span>prijavi se</span> <i class="fas fa-user-circle"></i> </a>
             @endif
             <div class=top-bar__link data-e-controls=#jsSearch>
                 <span>pretraži</span> <i class="fas fa-search"></i>

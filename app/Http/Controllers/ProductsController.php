@@ -253,6 +253,8 @@ class ProductsController extends Controller {
             $request->file('image')->move(base_path() . '/public/images/products/', $imageName);
             $product->image = $imagePath;
             $product->tmb = 'images/products/tmb/' . $filename;
+
+            $product->update();
         }
 
 		$request->input('featured')? $product->featured = 1 : $product->featured = 0;

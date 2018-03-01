@@ -6,9 +6,8 @@
         <div class=container>
             <nav aria-label=breadcrumb>
                 <ol class=breadcrumb>
-                    <li class=breadcrumb-item><a href=#>Home</a></li>
-                    <li class=breadcrumb-item><a href=#>Something</a></li>
-                    <li class="breadcrumb-item active" aria-current=page>Library</li>
+                    <li class=breadcrumb-item><a href="{{ url('/') }}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current=page>Logovanje</li>
                 </ol>
             </nav>
         </div>
@@ -16,7 +15,7 @@
 
     <div class=page-header>
         <div class="container page-header__container">
-            <h2 class=page-header__title>Page title</h2>
+            <h2 class=page-header__title>Logovanje</h2>
             <p>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, alias sint. Repellat repellendus consectetur, incidunt non blanditiis debitis quisquam voluptatem iste laudantium quia,
                 aspernatur distinctio asperiores expedita ut mollitia illum.
@@ -74,7 +73,7 @@
                 </form>
                 <div class=login>
                     <div class=login__help>
-                        <p><a href="{{ url('register') }}">Otvori novi korisnički račun</a></p>
+                        <p><a href="{{ url('registracija') }}">Otvori novi korisnički račun</a></p>
                         <p>Zaboravio/la si lozinku? <a href=#>Zatraži novu lozinku</a></p>
                     </div>
                     <div class=login__alt>

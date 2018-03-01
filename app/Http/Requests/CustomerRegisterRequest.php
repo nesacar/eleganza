@@ -44,7 +44,7 @@ class CustomerRegisterRequest extends FormRequest
             'password.confirmed' => 'Niste dobro potvrdili lozinku, pokušajte ponovo.',
             'name.required' => 'Ime je obavezno.',
             'lastname.required' => 'Prezime je obavezno.',
-            'address.required' => 'Adresa je obavezno.',
+            'address.required' => 'Adresa je obavezna.',
             'phone.required' => 'Telefon je obavezan.',
             'town.required' => 'Mjesto je obavezano.',
             'postcode.required' => 'Poštanski broj je obavezan.',

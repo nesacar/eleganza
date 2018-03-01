@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Customer;
+use App\Http\Requests\CustomerRegisterRequest;
 use App\Setting;
 use App\Theme;
+use App\User;
 use Illuminate\Http\Request;
 
 class CustomersController extends Controller
