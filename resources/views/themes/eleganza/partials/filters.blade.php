@@ -55,7 +55,7 @@
             @endforeach
         @endif
 
-        @if($set->id == 4)
+        @if(!empty($set) && $set->id == 4)
             <div class="filter promjer">
                 <h4 class=filter__name>promjer kucista</h4>
                 <div class=e-slider>

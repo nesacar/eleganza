@@ -334,6 +334,14 @@ class MenuLink extends Model
         return self::where('publish', 1)->where('parent', 0)->orderby('order', 'ASC')->first();
     }
 
+    public static function cropTitle($str){
+        if (strpos($str, '(') !== false) {
+            return substr($str, 0, strpos($str, "("));
+        }else{
+            return $str;
+        }
+    }
+
     public function menu(){
         return $this->belongsTo(Menu::class);
     }

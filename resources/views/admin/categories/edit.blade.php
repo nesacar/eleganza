@@ -240,7 +240,7 @@
         $.post('{{ url("admin/images/delete") }}', { _token: '{{ csrf_token() }}', id: id }, function(data){ if(data == 'yes'){ place.fadeOut(); }else{ console.log(data); } })
     });
 
-    $('input[type="submit"]:not(".lang")').hover(function(){
+    /*$('input[type="submit"]:not(".lang")').hover(function(){
         $(this).parent().parent().parent().parent().parent().addClass('active');
     }, function(){
         $(this).parent().parent().parent().parent().parent().removeClass('active');
@@ -250,5 +250,5 @@
         $(this).parent().parent().parent().parent().parent().parent().parent().addClass('active');
     }, function(){
         $(this).parent().parent().parent().parent().parent().parent().parent().removeClass('active');
-    });
+    });*/
 @endsection

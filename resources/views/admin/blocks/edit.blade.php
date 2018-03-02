@@ -82,7 +82,7 @@
                                         {{ $b->id }}
                                     </div>
                                     <div class="col-md-3 vcenter">
-                                        {{ $b->{'title:sr'} }}
+                                        {{ $b->{'title:hr'} }}
                                     </div>
                                     <div class="col-md-3 vcenter">
                                         {{ $b->block->title }}

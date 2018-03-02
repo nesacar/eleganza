@@ -64,8 +64,8 @@ class PagesController extends Controller
         $s1 = $category;
         if(isset($category)){
             $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug)->first();
-            $props = $set->property;
-            $topParent = PCategory::getTopParentBySlug($slug);
+            !empty($set)? $props = $set->property : $props = null;
+            //$topParent = PCategory::getTopParentBySlug($slug);
             $bred = Category::getBredcrumb($category->id);
             $bred = array_reverse($bred);
             $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
@@ -144,7 +144,7 @@ class PagesController extends Controller
             $category = $s2;
             if(isset($category)){
                 $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
-                $props = $set->property;
+                !empty($set)? $props = $set->property : $props = null;
                 $topParent = PCategory::getTopParentBySlug($slug2);
                 $bred = Category::getBredcrumb($category->id);
                 $bred = array_reverse($bred);
@@ -871,12 +871,7 @@ class PagesController extends Controller
             $product->update();
         }
         return 'done';*/
-        $products = Product::all();
-        foreach ($products as $product){
-            $product->price_outlet = Product::calculateDiscount(0, $product);
-            $product->update();
-        }
-        return 'done';
+        return MenuLink::cropTitle('ajde (akcija)');
     }
 
     public function eleganza(){

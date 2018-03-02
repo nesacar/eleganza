@@ -26,7 +26,7 @@
                                 @if(count($submenu2)>0)
                                     <ul class=submenu__list>
                                         @foreach($submenu2 as $sub2)
-                                            <li class=submenu__list__item> <a href="{{ url($sub2->link . $sub2->sufix ) }}">{{ $sub2->title }}</a> </li>
+                                            <li class=submenu__list__item> <a href="{{ url($sub2->link . $sub2->sufix ) }}">{{ \App\MenuLink::cropTitle($sub2->title, '(') }}</a> </li>
                                         @endforeach
                                     </ul>
                                 @endif
@@ -45,7 +45,6 @@
                         </div>
                     </div>
                 @endif
-
             </li>
         @endforeach
     </ul>

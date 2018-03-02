@@ -4,7 +4,7 @@
 <head>
 
     <!-- Title -->
-    <title>P-Grupacija | Admin Dashboard</title>
+    <title>Eleganza | Admin Dashboard</title>
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <meta charset="UTF-8">
