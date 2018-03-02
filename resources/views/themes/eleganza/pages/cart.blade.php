@@ -48,11 +48,11 @@
                     <div class="col-lg-8 col-md-6 cart-list__item__cell">
                         <div class=cart-list__item__img>
                             <div class="e-thumbnail e-image e-image--11">
-                                {!! HTML::Image($product->image, $product->title) !!}
+                                <a href="{{ \App\Product::getProductLink($product->id) }}">{!! HTML::Image($product->image, $product->title) !!}</a>
                             </div>
                         </div>
                         <div class=cart-list__item__about>
-                            <div class=cart-list__item__brand>{{ $product->brand->title }}</div>
+                            <div class=cart-list__item__brand>@if(isset($product->brand)) {{ $product->brand->title }} @endif</div>
                             <div class=cart-list__item__model>{{ $product->title }}</div>
                             <hr>
                             <div class=e-form__cb-group>
@@ -68,17 +68,13 @@
                     </div>
                     <div class="col-lg-4 col-md-6 cart-list__item__cell">
                         <div class=cart-list__item__count>
-                            <input class=nl-input type=text name=count value=1> X
+                            <input class=nl-input type=text name=count value=1> <span class="remove" style="cursor:pointer;" data-href="{{ url('remove-from-cart/'.$product->id) }}">X</span>
                         </div>
                         <div class="cart-list__item__digit cart-list__item__price"> hrk {{ $product->price_outlet }}.00 </div>
                         <div class="cart-list__item__digit cart-list__item__total"> hrk {{ $product->price_outlet }}.00 </div>
                     </div>
                 </li>
                 @endforeach
-                @if(false)
-                <li class="cart-list__item row"> <div class="col-lg-8 col-md-6 cart-list__item__cell"> <div class=cart-list__item__img> <div class="e-thumbnail e-image e-image--11"> {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!} </div> </div> <div class=cart-list__item__about> <div class=cart-list__item__brand>movado</div> <div class=cart-list__item__model>movado edge</div> <hr> <div class=e-form__cb-group> <div class=e-checkbox> <input id=gift type=checkbox class=e-checkbox__control> <div class=e-checkbox__background> <svg class=e-checkbox__checkmark viewBox="0 0 24 24"> <path class=e-checkbox__path fill=none stroke=white d="M1.73,12.91 8.1,19.28 22.79,4.59"></path> </svg> </div> </div> <label for=gift>Umotaj ovaj artikal kao poklon <span>(+ hrk 16.41)</span></label> </div> </div> </div> <div class="col-lg-4 col-md-6 cart-list__item__cell"> <div class=cart-list__item__count> <input class=nl-input type=text name=count value=1> X </div> <div class="cart-list__item__digit cart-list__item__price"> hrk 123.45 </div> <div class="cart-list__item__digit cart-list__item__total"> hrk 123.45 </div> </div> </li>
-                <li class="cart-list__item row"> <div class="col-lg-8 col-md-6 cart-list__item__cell"> <div class=cart-list__item__img> <div class="e-thumbnail e-image e-image--11"> {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!} </div> </div> <div class=cart-list__item__about> <div class=cart-list__item__brand>movado</div> <div class=cart-list__item__model>movado edge</div> <hr> <div class=e-form__cb-group> <div class=e-checkbox> <input id=gift type=checkbox class=e-checkbox__control> <div class=e-checkbox__background> <svg class=e-checkbox__checkmark viewBox="0 0 24 24"> <path class=e-checkbox__path fill=none stroke=white d="M1.73,12.91 8.1,19.28 22.79,4.59"></path> </svg> </div> </div> <label for=gift>Umotaj ovaj artikal kao poklon <span>(+ hrk 16.41)</span></label> </div> </div> </div> <div class="col-lg-4 col-md-6 cart-list__item__cell"> <div class=cart-list__item__count> <input class=nl-input type=text name=count value=1> X </div> <div class="cart-list__item__digit cart-list__item__price"> hrk 123.45 </div> <div class="cart-list__item__digit cart-list__item__total"> hrk 123.45 </div> </div> </li>
-                @endif
             </ul>
         </div>
 
@@ -156,4 +152,24 @@
 
     @include('themes.'.$theme->slug.'.partials.newsletter')
 
+@endsection
+
+@section('footer_scripts')
+    {!! HTML::script('themes/'.$theme->slug.'/js/jquery-2.2.4.min.js') !!}
+    <script>
+        $(function () {
+            $('.remove').click(function(e){
+                e.preventDefault();
+                var el = $(this);
+                var link = el.attr('data-href');
+                $.post(link, {_token: '{{ csrf_token() }}' }, function(data){
+                    if(data == 'done'){
+                        el.parent().parent().parent().remove();
+                    }else{
+                        console.log('error');
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

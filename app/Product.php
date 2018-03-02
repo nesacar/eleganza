@@ -2,10 +2,10 @@
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Dimsav\Translatable\Translatable;
 use File;
+use Illuminate\Http\Request;
 
 
 class Product extends Model {
@@ -747,15 +747,29 @@ class Product extends Model {
     }
 
     public static function addToCart($id){
-        $cart = Session::get('cart');
-        if(!empty($cart)){
-            Session::set('cart', [$id]);
+        $cart = session('cart');
+        if(count($cart)>0){
+            session()->put('cart', [$id]);
         }else{
             $old = session('cart');
             $old[] = $id;
-            Session::set('cart', $old);
+            session()->put('cart', $old);
         }
-        return Session::get('cart');
+        return session('cart');
+    }
+
+    public static function removeFromCart($id){
+        $cart = session('cart');
+        if(count($cart)>0){
+            $array = array();
+            foreach($cart as $o){
+                if($o != $id){
+                    $array[] = $o;
+                }
+            }
+            session()->put('cart', $array);
+        }
+        return session('cart');
     }
 
     public static function countCookieProduct(){
