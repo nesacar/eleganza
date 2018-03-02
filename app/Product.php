@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Dimsav\Translatable\Translatable;
 use File;
 
+
 class Product extends Model {
 
     use Translatable;
@@ -746,15 +747,15 @@ class Product extends Model {
     }
 
     public static function addToCart($id){
-        $cart = session('cart');
+        $cart = Session::get('cart');
         if(!empty($cart)){
-            session('cart', [$id]);
+            Session::set('cart', [$id]);
         }else{
             $old = session('cart');
             $old[] = $id;
-            session('cart', $old);
+            Session::set('cart', $old);
         }
-        return session('cart');
+        return Session::get('cart');
     }
 
     public static function countCookieProduct(){
@@ -767,21 +768,6 @@ class Product extends Model {
             }
         }
         return $br;
-    }
-
-    public static function removeCookieProduct($id){
-        $cookie = \App::make('CodeZero\Cookie\Cookie');
-        $old = self::getCookie();
-        $array = array();
-        if(count($old)>0){
-            foreach($old as $c){
-                if($c['id'] != $id){
-                    $array[] = $c;
-                }
-            }
-        }
-        $cookie->store('S-L', $array, 20);//20 min
-        return $id;
     }
 
     public static function cropImage($product){

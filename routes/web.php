@@ -21,6 +21,7 @@ Route::get('registracija', 'PagesController@register');
 Route::get('profil', 'CustomersController@profile');
 
 Route::get('lista-zelja', 'PagesController@wishList');
+Route::get('kosarica', 'PagesController@cart');
 Route::post('register', 'PagesController@registerUpdate')->name('user-register');
 
 Route::post('add-to-wishlist/{id}', 'PagesController@addToWishList');

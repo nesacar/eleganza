@@ -34,6 +34,7 @@ use App\Theme;
 use App\User;
 use Illuminate\Http\Request;
 use Cookie;
+use Illuminate\Support\Facades\Session;
 
 class PagesController extends Controller
 {
@@ -956,8 +957,18 @@ class PagesController extends Controller
         $settings = Setting::first();
         $theme = Theme::where('active', 1)->first();
         $cookie = Product::getCookie();
-        count($cookie)>0? $products = Product::whereIn('id', $cookie)->where('publish', 1)->get() : $products = [];
+        count($cookie)>0? $products = Product::with('Brand')->whereIn('id', $cookie)->where('publish', 1)->get() : $products = [];
         return view('themes.'.$theme->slug.'.pages.wishList', compact('settings', 'theme', 'products'));
+    }
+
+    public function cart(){
+        $settings = Setting::first();
+        $theme = Theme::where('active', 1)->first();
+        $session = Session::get('cart');
+        Product::addToCart(29);
+        dd($session);
+        count($session)>0? $products = Product::whereIn('id', $session)->where('publish', 1)->get() : $products = [];
+        return view('themes.'.$theme->slug.'.pages.cart', compact('settings', 'theme', 'products'));
     }
 
     public function addToWishList($id){
@@ -969,7 +980,9 @@ class PagesController extends Controller
     }
 
     public function addToCartFromWishList($id){
-
+        Product::removeFromWishList($id);
+        Product::addToCart($id);
+        return 'done';
     }
 
     public function addToCart($id){

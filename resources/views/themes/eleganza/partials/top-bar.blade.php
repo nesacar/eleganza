@@ -27,7 +27,7 @@
                 </div>
             </div>
             @endif
-            <a class=top-bar__link href=#>
+            <a class=top-bar__link href="{{ url('lista-zelja') }}">
                 <span>lista želja</span> <i class="fas fa-heart"></i> </a>
         </div>
         <div class=top-bar__box>

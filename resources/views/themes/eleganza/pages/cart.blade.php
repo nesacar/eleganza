@@ -6,9 +6,8 @@
         <div class=container>
             <nav aria-label=breadcrumb>
                 <ol class=breadcrumb>
-                    <li class=breadcrumb-item><a href=#>Home</a></li>
-                    <li class=breadcrumb-item><a href=#>Something</a></li>
-                    <li class="breadcrumb-item active" aria-current=page>Library</li>
+                    <li class=breadcrumb-item><a href="{{ url('cart') }}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current=page>Košarica</li>
                 </ol>
             </nav>
         </div>
@@ -16,7 +15,7 @@
 
     <div class=page-header>
         <div class="container page-header__container">
-            <h2 class=page-header__title>Page title</h2>
+            <h2 class=page-header__title>Košarica</h2>
             <p>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, alias sint. Repellat repellendus consectetur, incidunt non blanditiis debitis quisquam voluptatem iste laudantium quia,
                 aspernatur distinctio asperiores expedita ut mollitia illum.
@@ -26,9 +25,15 @@
 
     <section class="container content">
         <div class="cart-section">
-            <div class=cart-nav> <a href=# class="e-btn e-btn--fat e-btn--invert">&lt; nastavi kupovinu</a> <a href=# class="e-btn e-btn--fat e-btn--primary">sigurna uplata</a> </div>
+            <div class=cart-nav>
+                <a href="{{ url('/') }}" class="e-btn e-btn--fat e-btn--invert">&lt; nastavi kupovinu</a>
+                @if(count($products)>0)
+                <a href=# class="e-btn e-btn--fat e-btn--primary">sigurna uplata</a>
+                @endif
+            </div>
         </div>
 
+        @if(count($products)>0)
         <div class="cart-section">
             <div class="cart-header">
                 <div class="cart-header__label cart-header__label--artikal">artikal</div>
@@ -38,11 +43,42 @@
                 <div class="cart-header__label cart-header__label--total">sveukupnu</div>
             </div>
             <ul class="cart-list">
-
-                <li class="cart-list__item row"> <div class="col-lg-8 col-md-6 cart-list__item__cell"> <div class=cart-list__item__img> <div class="e-thumbnail e-image e-image--11"> {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!}  </div> </div> <div class=cart-list__item__about> <div class=cart-list__item__brand>movado</div> <div class=cart-list__item__model>movado edge</div> <hr> <div class=e-form__cb-group> <div class=e-checkbox> <input id=gift type=checkbox class=e-checkbox__control> <div class=e-checkbox__background> <svg class=e-checkbox__checkmark viewBox="0 0 24 24"> <path class=e-checkbox__path fill=none stroke=white d="M1.73,12.91 8.1,19.28 22.79,4.59"></path> </svg> </div> </div> <label for=gift>Umotaj ovaj artikal kao poklon <span>(+ hrk 16.41)</span></label> </div> </div> </div> <div class="col-lg-4 col-md-6 cart-list__item__cell"> <div class=cart-list__item__count> <input class=nl-input type=text name=count value=1> X </div> <div class="cart-list__item__digit cart-list__item__price"> hrk 123.45 </div> <div class="cart-list__item__digit cart-list__item__total"> hrk 123.45 </div> </div> </li>
+                @foreach($products as $product)
+                <li class="cart-list__item row">
+                    <div class="col-lg-8 col-md-6 cart-list__item__cell">
+                        <div class=cart-list__item__img>
+                            <div class="e-thumbnail e-image e-image--11">
+                                {!! HTML::Image($product->image, $product->title) !!}
+                            </div>
+                        </div>
+                        <div class=cart-list__item__about>
+                            <div class=cart-list__item__brand>{{ $product->brand->title }}</div>
+                            <div class=cart-list__item__model>{{ $product->title }}</div>
+                            <hr>
+                            <div class=e-form__cb-group>
+                                <div class=e-checkbox>
+                                    <input id=gift type=checkbox class=e-checkbox__control>
+                                    <div class=e-checkbox__background>
+                                        <svg class=e-checkbox__checkmark viewBox="0 0 24 24"> <path class=e-checkbox__path fill=none stroke=white d="M1.73,12.91 8.1,19.28 22.79,4.59"></path> </svg>
+                                    </div>
+                                </div>
+                                <label for=gift>Umotaj ovaj artikal kao poklon <span>(+ hrk 16.41)</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 cart-list__item__cell">
+                        <div class=cart-list__item__count>
+                            <input class=nl-input type=text name=count value=1> X
+                        </div>
+                        <div class="cart-list__item__digit cart-list__item__price"> hrk {{ $product->price_outlet }}.00 </div>
+                        <div class="cart-list__item__digit cart-list__item__total"> hrk {{ $product->price_outlet }}.00 </div>
+                    </div>
+                </li>
+                @endforeach
+                @if(false)
                 <li class="cart-list__item row"> <div class="col-lg-8 col-md-6 cart-list__item__cell"> <div class=cart-list__item__img> <div class="e-thumbnail e-image e-image--11"> {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!} </div> </div> <div class=cart-list__item__about> <div class=cart-list__item__brand>movado</div> <div class=cart-list__item__model>movado edge</div> <hr> <div class=e-form__cb-group> <div class=e-checkbox> <input id=gift type=checkbox class=e-checkbox__control> <div class=e-checkbox__background> <svg class=e-checkbox__checkmark viewBox="0 0 24 24"> <path class=e-checkbox__path fill=none stroke=white d="M1.73,12.91 8.1,19.28 22.79,4.59"></path> </svg> </div> </div> <label for=gift>Umotaj ovaj artikal kao poklon <span>(+ hrk 16.41)</span></label> </div> </div> </div> <div class="col-lg-4 col-md-6 cart-list__item__cell"> <div class=cart-list__item__count> <input class=nl-input type=text name=count value=1> X </div> <div class="cart-list__item__digit cart-list__item__price"> hrk 123.45 </div> <div class="cart-list__item__digit cart-list__item__total"> hrk 123.45 </div> </div> </li>
                 <li class="cart-list__item row"> <div class="col-lg-8 col-md-6 cart-list__item__cell"> <div class=cart-list__item__img> <div class="e-thumbnail e-image e-image--11"> {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!} </div> </div> <div class=cart-list__item__about> <div class=cart-list__item__brand>movado</div> <div class=cart-list__item__model>movado edge</div> <hr> <div class=e-form__cb-group> <div class=e-checkbox> <input id=gift type=checkbox class=e-checkbox__control> <div class=e-checkbox__background> <svg class=e-checkbox__checkmark viewBox="0 0 24 24"> <path class=e-checkbox__path fill=none stroke=white d="M1.73,12.91 8.1,19.28 22.79,4.59"></path> </svg> </div> </div> <label for=gift>Umotaj ovaj artikal kao poklon <span>(+ hrk 16.41)</span></label> </div> </div> </div> <div class="col-lg-4 col-md-6 cart-list__item__cell"> <div class=cart-list__item__count> <input class=nl-input type=text name=count value=1> X </div> <div class="cart-list__item__digit cart-list__item__price"> hrk 123.45 </div> <div class="cart-list__item__digit cart-list__item__total"> hrk 123.45 </div> </div> </li>
-
+                @endif
             </ul>
         </div>
 
@@ -113,6 +149,9 @@
             </div>
         </div>
         <div class=cart-nav> <a href=# class="e-btn e-btn--fat e-btn--invert">&lt; nastavi kupovinu</a> <a href=# class="e-btn e-btn--fat e-btn--primary">sigurna uplata</a> </div>
+        @else
+            <h2>Vaša košarica je prazna.</h2>
+        @endif
     </section>
 
     @include('themes.'.$theme->slug.'.partials.newsletter')

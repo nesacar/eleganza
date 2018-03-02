@@ -36,7 +36,7 @@
                             <div>{{ $product->title }}</div>
                             <div>{{ $product->price_outlet }},00 kn</div>
                             <div class="wish-list__item__actions">
-                                <button class="e-btn e-btn--fat e-btn--primary">dodaj u košaricu</button>
+                                <button class="e-btn e-btn--fat e-btn--primary add" data-href="{{ url('add-to-cart-from-wishlist/'.$product->id) }}">dodaj u košaricu</button>
                                 <button class="e-btn e-btn--fat e-btn--primary e-gray remove" data-href="{{ url('remove-from-wishlist/'.$product->id) }}">ukloni</button>
                             </div>
                         </div>
@@ -62,6 +62,19 @@
                 var el = $(this);
                 var link = el.attr('data-href');
                 $.post(link, {_token: '{{ csrf_token() }}' }, function(data){ el.parent().parent().parent().parent().remove(); });
+            });
+
+            $('.add').click(function(e){
+                e.preventDefault();
+                var el = $(this);
+                var link = el.attr('data-href');
+                $.post(link, {_token: '{{ csrf_token() }}' }, function(data){
+                    if(data == 'done'){
+                        el.parent().parent().parent().parent().remove();
+                    }else{
+                        console.log('error');
+                    }
+                });
             });
         });
     </script>
