@@ -204,19 +204,6 @@ class Product extends Model {
         return $status;
     }
 
-    public static function productInWishlist($id){
-        $status = false;
-        $cookie = \App::make('CodeZero\Cookie\Cookie');
-        if(count($cookie->get('korpa')) > 0){
-            foreach($cookie->get('korpa') as $pr){
-                if($pr == $id){
-                    $status = true;
-                }
-            }
-        }
-        return $status;
-    }
-
     public static function setSlug($id){
         $product = self::find($id);
         if(Product::where('slug', $product->slug)->where('id', '<>', $product->id)->first()){
@@ -719,26 +706,55 @@ class Product extends Model {
         }
     }
 
-    public static function addToWishList($prod){
+    public static function addToWishList($id){
         $cookie = \App::make('CodeZero\Cookie\Cookie');
+        //$cookie->delete('eleganza');
         $array = array();
-        $old = $cookie->get('S-L');
+        $old = $cookie->get('eleganza');
         $br = true;
         if(count($old)>0){
             foreach($old as $o){
-                if($o['id'] == $prod['id']){
+                if($o == $id){
                     $br = false;
                 }
                 $array[] = $o;
             }
             if($br){
-                $array[] = $prod;
+                $array[] = $id;
             }
         }else{
-            $array[] = $prod;
+            $array[] = $id;
         }
-        $cookie->store('S-L', $array, 259200);//180 dana
-        return $cookie->get('S-L');
+        $cookie->store('eleganza', $array, 259200);//180 dana
+        return $cookie->get('eleganza');
+    }
+
+    public static function removeFromWishList($id){
+        $cookie = \App::make('CodeZero\Cookie\Cookie');
+        //$cookie->delete('eleganza');
+        $array = array();
+        $old = $cookie->get('eleganza');
+        if(count($old)>0){
+            foreach($old as $o){
+                if($o != $id){
+                    $array[] = $o;
+                }
+            }
+        }
+        $cookie->store('eleganza', $array, 259200);//180 dana
+        return $cookie->get('eleganza');
+    }
+
+    public static function addToCart($id){
+        $cart = session('cart');
+        if(!empty($cart)){
+            session('cart', [$id]);
+        }else{
+            $old = session('cart');
+            $old[] = $id;
+            session('cart', $old);
+        }
+        return session('cart');
     }
 
     public static function countCookieProduct(){
@@ -781,11 +797,6 @@ class Product extends Model {
     public static function getCookie(){
         $cookie = \App::make('CodeZero\Cookie\Cookie');
         return $cookie->get('eleganza');
-    }
-
-    public static function getCookieCart(){
-        $cookie = \App::make('CodeZero\Cookie\Cookie');
-        return $cookie->get('eleganzaCart');
     }
 
     public static function paginateRender($products, $limit, $sort=2){

@@ -956,32 +956,20 @@ class PagesController extends Controller
         $settings = Setting::first();
         $theme = Theme::where('active', 1)->first();
         $cookie = Product::getCookie();
-        dd($cookie);
-        return view('themes.'.$theme->slug.'.pages.wishList', compact('settings', 'theme', 'cookie'));
+        count($cookie)>0? $products = Product::whereIn('id', $cookie)->where('publish', 1)->get() : $products = [];
+        return view('themes.'.$theme->slug.'.pages.wishList', compact('settings', 'theme', 'products'));
     }
 
     public function addToWishList($id){
-        $product = Product::find($id);
-        $cookie = \App::make('CodeZero\Cookie\Cookie');
-        //$cookie->delete('eleganza');
-        $array = array();
-        $old = $cookie->get('eleganza');
-        $br = true;
-        if(count($old)>0){
-            foreach($old as $o){
-                if($o['id'] == $id){
-                    $br = false;
-                }
-                $array[] = $o;
-            }
-            if($br){
-                $array[] = $product->id;
-            }
-        }else{
-            $array[] = $product->id;
-        }
-        $cookie->store('eleganza', [29], 259200);//180 dana
-        return $cookie->get('eleganza');
+        return Product::addToWishList($id);
+    }
+
+    public function removeFromWishList($id){
+        return Product::removeFromWishList($id);
+    }
+
+    public function addToCartFromWishList($id){
+
     }
 
     public function addToCart($id){
