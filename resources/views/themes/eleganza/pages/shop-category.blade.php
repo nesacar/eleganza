@@ -1,5 +1,10 @@
 @extends('themes.'.$theme->slug.'.index')
 
+
+@section('header-style')
+    {!! HTML::style('themes/'.$theme->slug.'/css/jquery.toastmessage.css') !!}
+@endsection
+
 @section('content')
     <div>
         <div class=container>
@@ -116,8 +121,10 @@
 
 @section('footer_scripts')
     {!! HTML::script('themes/'.$theme->slug.'/js/jquery-2.2.4.min.js') !!}
+    {!! HTML::script('themes/'.$theme->slug.'/js/jquery.toastmessage.js') !!}
     <script>
         $(function () {
+
             $('input[type="checkbox"]').click(function(){
                 $('#page').val(1);
                 $('#moja').submit();
@@ -152,14 +159,18 @@
                 e.preventDefault();
                 var link = $(this).attr('href');
                 console.log('list');
-                $.post(link, {_token: '{{ csrf_token() }}' }, function(data){ console.log(data); });
+                $.post(link, {_token: '{{ csrf_token() }}' }, function(data){
+                    $().toastmessage('showSuccessToast', "proizvod je dodat u listu želja");
+                });
             });
 
             $('.addCart').click(function(e){
                 e.preventDefault();
                 var link = $(this).attr('href');
                 console.log('kosarica');
-                $.post(link, {_token: '{{ csrf_token() }}' }, function(data){ console.log(data); });
+                $.post(link, {_token: '{{ csrf_token() }}' }, function(data){
+                    $().toastmessage('showSuccessToast', "proizvod je dodat u košaricu");
+                });
             });
         });
     </script>

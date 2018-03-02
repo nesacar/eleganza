@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&amp;subset=latin-ext" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Fjalla+One&amp;subset=latin-ext" rel="stylesheet">
     {!! HTML::style('themes/'.$theme->slug.'/css/style.css') !!}
+    @yield('header-style')
 </head>
 <body>
 
