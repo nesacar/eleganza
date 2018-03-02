@@ -1,6 +1,5 @@
 @extends('themes.'.$theme->slug.'.index')
 
-
 @section('header-style')
     {!! HTML::style('themes/'.$theme->slug.'/css/jquery.toastmessage.css') !!}
 @endsection

@@ -1,5 +1,9 @@
 @extends('themes.'.$theme->slug.'.index')
 
+@section('header-style')
+    {!! HTML::style('themes/'.$theme->slug.'/css/jquery.toastmessage.css') !!}
+@endsection
+
 @section('content')
 
     <div>
@@ -156,6 +160,7 @@
 
 @section('footer_scripts')
     {!! HTML::script('themes/'.$theme->slug.'/js/jquery-2.2.4.min.js') !!}
+    {!! HTML::script('themes/'.$theme->slug.'/js/jquery.toastmessage.js') !!}
     <script>
         $(function () {
             $('.remove').click(function(e){
@@ -164,6 +169,7 @@
                 var link = el.attr('data-href');
                 $.post(link, {_token: '{{ csrf_token() }}' }, function(data){
                     if(data == 'done'){
+                        $().toastmessage('showSuccessToast', "proizvod je obrisan iz košarice");
                         el.parent().parent().parent().remove();
                     }else{
                         console.log('error');
