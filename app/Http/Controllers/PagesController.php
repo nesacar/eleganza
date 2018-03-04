@@ -991,7 +991,7 @@ class PagesController extends Controller
     public function cartUpdate(Request $request){
         $sum = Product::whereIn('id', request('ids'))->sum('price_outlet');
         $omot = Cart::omot(16);
-        Cart::storeCart(auth()->user()->id, $sum + $omot);
+        Cart::storeCart(auth()->user()->customer()->id, $sum + $omot);
         Product::removeFromCart();
         return redirect('profile')->with('done', 'Vaša košarica je naručena');
     }

@@ -83,12 +83,11 @@ class Cart extends Model {
     }
 
     public static function filteredCarts($s, $od, $do, $datod, $datdo){
-        return self::select('carts.*', 'customers.email as email', 'customers.name as name', 'customers.lastname as lastname')
+        return self::select('carts.*', 'customers.email as email')
             ->join('customers', 'carts.customer_id', '=', 'customers.id')
-            ->join('cart_product', 'carts.id', '=', 'cart_product.cart_id')
             ->where(function($query) use ($s){
                 if(!empty($s)){
-                    $query->where('users.email', 'LIKE', "%$s%");
+                    $query->where('customers.email', 'LIKE', "%$s%");
                 }
             })->where(function($query) use ($od, $do){
                 if(!empty($od)){

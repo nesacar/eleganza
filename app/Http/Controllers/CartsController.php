@@ -26,7 +26,7 @@ class CartsController extends Controller {
 	public function index()
 	{
 		$slug = 'carts';
-		$carts = Cart::filteredCarts(Session::get('cart_title'), Session::get('cart_od'), Session::get('cart_do'), Session::get('cart_datod'), Session::get('cart_datdo'), Session::get('cart_end'));
+		$carts = Cart::filteredCarts(Session::get('cart_title'), Session::get('cart_od'), Session::get('cart_do'), Session::get('cart_datod'), Session::get('cart_datdo'));
 		$ends = array('0' => 'Aktivne kupovine', '1' => 'Zavrsene kupovine', '2' => 'Sve kupovine');
 		return view('admin.carts.index', compact('carts', 'slug', 'ends'));
 	}
