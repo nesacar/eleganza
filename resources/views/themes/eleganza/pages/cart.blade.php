@@ -156,7 +156,13 @@
             </section>
         {!! Form::close() !!}
     @else
-        <h2>Vaša košarica je prazna.</h2>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 style="margin-top: 50px">Vaša košarica je prazna.</h2>
+                </div>
+            </div>
+        </div>
     @endif
 
     @include('themes.'.$theme->slug.'.partials.newsletter')

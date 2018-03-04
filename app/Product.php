@@ -746,14 +746,27 @@ class Product extends Model {
         return $cookie->get('eleganza');
     }
 
-    public static function addToCart($id){
+    public static function addToCart($id, $count=1, $omot=false){
         $cart = session('cart');
-        if(count($cart)>0){
-            session()->put('cart', [$id]);
+        $array = [];
+        if(!isset($cart[0])){
+            $array[] = array('id' => $id, 'count' => $count, 'omot' => $omot);
+            session()->put('cart', $array);
         }else{
-            $old = session('cart');
-            $old[] = $id;
-            session()->put('cart', $old);
+            dd($cart[0]);
+            $bool = false;
+            foreach ($cart[0] as $item){
+                //dd($item);
+                $array[] = $item;
+                if($item['id'] != $id){
+                    $bool = true;
+                }
+            }
+            if($bool){
+                $array[] =  array('id' => $id, 'count' => $count, 'omot' => $omot);
+                session()->put('cart', $array);
+                //dd($array);
+            }
         }
         return session('cart');
     }
@@ -770,6 +783,16 @@ class Product extends Model {
             session()->put('cart', $array);
         }
         return session('cart');
+    }
+
+    public static function getCartIds(){
+        $array = [];
+        if(session('cart')>0){
+            foreach (session('cart') as $product){
+                $array[] = $product['id'];
+            }
+        }
+        return $array;
     }
 
     public static function countCookieProduct(){
