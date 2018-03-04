@@ -36,7 +36,7 @@
                         @if(auth()->check())
                             @if(count($products)>0) <a href=# class="e-btn e-btn--fat e-btn--primary submit">sigurna uplata</a> @endif
                         @else
-                            <a href="{{ url('login') }}" class="e-btn e-btn--fat e-btn--primary">prijavi se</a>
+                            <a href="{{ url('logovanje') }}" class="e-btn e-btn--fat e-btn--primary">prijavi se</a>
                         @endif
                     </div>
                 </div>
@@ -159,7 +159,7 @@
                     @if(auth()->check())
                         @if(count($products)>0) <a href=# class="e-btn e-btn--fat e-btn--primary submit">sigurna uplata</a> @endif
                     @else
-                        <a href="{{ url('login') }}" class="e-btn e-btn--fat e-btn--primary">prijavi se</a>
+                        <a href="{{ url('logovanje') }}" class="e-btn e-btn--fat e-btn--primary">prijavi se</a>
                     @endif
                 </div>
             </section>

@@ -72,8 +72,8 @@ class PagesController extends Controller
 
             request('filters') ? $filters = request('filters') : $filters = [];
             //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
-            request('max-price') ? $price[0] = request('max-price') : $price[0] = 0;
-            request('min-price') ? $price[1] = request('max-price') : $price[1] = 0;
+            request('min-price') ? $price[0] = request('max-price') : $price[0] = 0;
+            request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
             request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
             request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
             request('sort') ? $sort = request('sort') : $sort = 2;
@@ -152,8 +152,8 @@ class PagesController extends Controller
 
                 request('filters') ? $filters = request('filters') : $filters = [];
                 //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
-                request('max-price') ? $price[0] = request('max-price') : $price[0] = 0;
-                request('min-price') ? $price[1] = request('max-price') : $price[1] = 0;
+                request('min-price') ? $price[0] = request('max-price') : $price[0] = 0;
+                request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
                 request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
                 request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
                 request('sort') ? $sort = request('sort') : $sort = 2;
@@ -218,14 +218,14 @@ class PagesController extends Controller
                 $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
                 $props = $set->property;
                 $topParent = PCategory::getTopParentBySlug($slug2);
-                $bred = Category::getBredcrumb($category->id);
-                $bred = array_reverse($bred);
+                //$bred = Category::getBredcrumb($category->id);
+                //$bred = array_reverse($bred);
                 $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
 
                 request('filters') ? $filters = request('filters') : $filters = [];
                 //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
-                request('max-price') ? $price[0] = request('max-price') : $price[0] = 0;
-                request('min-price') ? $price[1] = request('max-price') : $price[1] = 0;
+                request('min-price') ? $price[0] = request('max-price') : $price[0] = 0;
+                request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
                 request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
                 request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
                 request('sort') ? $sort = request('sort') : $sort = 2;
@@ -292,14 +292,14 @@ class PagesController extends Controller
                 $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
                 $props = $set->property;
                 $topParent = PCategory::getTopParentBySlug($slug2);
-                $bred = Category::getBredcrumb($category->id);
-                $bred = array_reverse($bred);
+                //$bred = Category::getBredcrumb($category->id);
+                //$bred = array_reverse($bred);
                 $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
 
                 request('filters') ? $filters = request('filters') : $filters = [];
                 //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
-                request('max-price') ? $price[0] = request('max-price') : $price[0] = 0;
-                request('min-price') ? $price[1] = request('max-price') : $price[1] = 0;
+                request('min-price') ? $price[0] = request('max-price') : $price[0] = 0;
+                request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
                 request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
                 request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
                 request('sort') ? $sort = request('sort') : $sort = 2;
@@ -366,14 +366,14 @@ class PagesController extends Controller
                 $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
                 $props = $set->property;
                 $topParent = PCategory::getTopParentBySlug($slug2);
-                $bred = Category::getBredcrumb($category->id);
-                $bred = array_reverse($bred);
+                //$bred = Category::getBredcrumb($category->id);
+                //$bred = array_reverse($bred);
                 $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
 
                 request('filters') ? $filters = request('filters') : $filters = [];
                 //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
-                request('max-price') ? $price[0] = request('max-price') : $price[0] = 0;
-                request('min-price') ? $price[1] = request('max-price') : $price[1] = 0;
+                request('min-price') ? $price[0] = request('max-price') : $price[0] = 0;
+                request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
                 request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
                 request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
                 request('sort') ? $sort = request('sort') : $sort = 2;
@@ -441,14 +441,14 @@ class PagesController extends Controller
                 $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
                 $props = $set->property;
                 $topParent = PCategory::getTopParentBySlug($slug2);
-                $bred = Category::getBredcrumb($category->id);
-                $bred = array_reverse($bred);
+                //$bred = Category::getBredcrumb($category->id);
+                //$bred = array_reverse($bred);
                 $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
 
                 request('filters') ? $filters = request('filters') : $filters = [];
                 //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
-                request('max-price') ? $price[0] = request('max-price') : $price[0] = 0;
-                request('min-price') ? $price[1] = request('max-price') : $price[1] = 0;
+                request('min-price') ? $price[0] = request('max-price') : $price[0] = 0;
+                request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
                 request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
                 request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
                 request('sort') ? $sort = request('sort') : $sort = 2;
@@ -989,7 +989,11 @@ class PagesController extends Controller
     }
 
     public function cartUpdate(Request $request){
-        return request()->all();
+        $sum = Product::whereIn('id', request('ids'))->sum('price_outlet');
+        $omot = Cart::omot(16);
+        Cart::storeCart(auth()->user()->id, $sum + $omot);
+        Product::removeFromCart();
+        return redirect('profile')->with('done', 'Vaša košarica je naručena');
     }
 
 }

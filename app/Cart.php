@@ -19,7 +19,7 @@ class Cart extends Model {
      *
      * @var array
      */
-    protected $fillable = ['customer_id', 'payment_id', 'sum', 'status'];
+    protected $fillable = ['customer_id', 'payment_id', 'sum', 'status', 'delivery'];
 
     public static function cartSum($id){
         $cart = Cart::find($id);
@@ -135,108 +135,23 @@ class Cart extends Model {
         \Session::put('korpa', $korpa); \Session::put('qty', $qty); \Session::put('size', $size); \Session::put('color', $color); \Session::put('material', $material);
     }
 
-    public static function addToWishlist($id, $q, $s, $c){
-        $minutes = self::$minutes;
-        $korpa = array(); $qty = array(); $size = array(); $color = array();
-        $cookie = \App::make('CodeZero\Cookie\Cookie');
-        if(count($cookie->get('korpa')) > 0){ //id
-            $korpa = $cookie->get('korpa');
-        }
-        if(count($cookie->get('qty')) > 0){ //id
-            $qty = $cookie->get('qty');
-        }
-        if(count($cookie->get('size')) > 0){ //id
-            $size = $cookie->get('size');
-        }
-        if(count($cookie->get('color')) > 0){ //id
-            $color = $cookie->get('color');
-        }
-        if(isset($id)){
-            $korpa[] = $id;
-            $qty[] = $q;
-            $size[] = $s;
-            $color[] = $c;
-        }
-        $korpa = array_unique($korpa);
-        $cookie->store('korpa', $korpa, $minutes); $cookie->store('qty', $qty, $minutes); $cookie->store('size', $size, $minutes); $cookie->store('color', $color, $minutes);
-    }
-
-    public static function removeToSession($req){
-        $new = array(); $new2 = array(); $new3 = array(); $new4 = array(); $new5 = array();
-        if(\Session::has('korpa') && is_array(\Session::get('korpa'))) {
-            $korpa = \Session::get('korpa'); $qty = \Session::get('qty'); $size = \Session::get('size'); $color = \Session::get('color'); $material = \Session::get('material');
-            for($i=0;$i<count($korpa);$i++){
-                if(!in_array($korpa[$i], $req)){
-                    $new[] = $korpa[$i];
-                    $new2[] = $qty[$i];
-                    $new3[] = $size[$i];
-                    $new4[] = $color[$i];
-                    $new5[] = $material[$i];
-                }
-            }
-            \Session::set('korpa', $new); \Session::set('qty', $new2); \Session::set('size', $new3); \Session::set('color', $new4); \Session::set('material', $new5);
-        }
-    }
-
-    public static function removeToWishlist($req){
-        $new = array(); $new2 = array(); $new3 = array(); $new4 = array();
-        $minutes = self::$minutes;
-        $cookie = \App::make('CodeZero\Cookie\Cookie');
-        if(count($cookie->get('korpa')) > 0) {
-            $korpa = $cookie->get('korpa'); $qty = $cookie->get('qty'); $size = $cookie->get('size'); $color = $cookie->get('color');
-            for($i=0;$i<count($korpa);$i++){
-                if(!in_array($req, $korpa)){
-                    $new[] = $korpa[$i];
-                    $new2[] = $qty[$i];
-                    $new3[] = $size[$i];
-                    $new4[] = $color[$i];
-                }
-            }
-            $cookie->store('korpa', $new, $minutes); $cookie->store('qty', $new2, $minutes); $cookie->store('size', $new3, $minutes); $cookie->store('color', $new4, $minutes);
-        }
-    }
-
-    public static function addToFilterSession($req){
-        $filter = array();
-        if(\Session::has('filter')){
-            $filter = \Session::pull('$filter');
-        }
-        if(isset($req)){
-            foreach($req as $r){
-                $filter[] = $r;
-            }
-        }
-        $filter = array_unique($filter);
-        \Session::put('filter', $filter);
-    }
-
-    public static function removeToFilterSession($req){
-        $new = array();
-        if(\Session::has('filter') && is_array(\Session::get('filter'))) {
-            $filter = \Session::get('filter');
-            foreach($filter as $f) {
-                if(!in_array($f, $req)){
-                    $new[] = $f;
-                }
-            }
-            \Session::set('filter', $new);
-        }
-    }
-
-    public static function storeCart($user, $suma, $id, $kol){
+    public static function storeCart($user, $suma, $pay=0){
         $cart = new Cart();
-        $cart->user_id = $user;
-        $cart->new = 1;
+        $cart->customer_id = $user;
         $cart->country_id = 1;
         $cart->sum = $suma;
-        $cart->status = 1;
-        $cart->payment = 1;
-        $cart->end = 1;
+        $cart->status = $pay;
+        $cart->payment_id = 1;
+        request('delivery')? $cart->delivery = 1 : $cart->delivery = 0;
         $cart->save();
 
-        for($i=0;$i<count($id);$i++){
-            for($j=0;$j<$kol[$i];$j++){
-                $cart->product()->attach($id[$i]);
+        for($i=0;$i<count(request('ids'));$i++){
+            for($j=0;$j<request('counts')[$i];$j++){
+                if(!empty(request('gift_'.request('ids')[$i]))){
+                    $cart->product()->attach(request('ids')[$i], ['material' => 1]);
+                }else{
+                    $cart->product()->attach(request('ids')[$i], ['material' => 0]);
+                }
             }
         }
         return $cart;
@@ -330,6 +245,18 @@ class Cart extends Model {
         }else{
             return '';
         }
+    }
+
+    public static function omot($price){
+        $sum = 0;
+        if(count(request('ids'))>0){
+            for ($i=0;$i<count(request('ids'));$i++){
+                if(!empty(request('gift_'.request('ids')[$i]))){
+                    $sum += $price * request('counts')[$i];
+                }
+            }
+        }
+        return $sum;
     }
 
     public function user(){

@@ -18,7 +18,7 @@ Route::post('subscribe', 'PagesController@subscribe');
 Route::get('logovanje', 'PagesController@login');
 Route::get('registracija', 'PagesController@register');
 
-Route::get('profil', 'CustomersController@profile');
+Route::get('profile', 'CustomersController@profile');
 
 Route::get('lista-zelja', 'PagesController@wishList');
 Route::get('kosarica', 'PagesController@cart');

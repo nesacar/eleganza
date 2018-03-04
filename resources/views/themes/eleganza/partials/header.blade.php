@@ -40,7 +40,7 @@
                                 @foreach($images as $image)
                                     <div class=submenu__col>
                                         <div class="e-image e-image--custom">
-                                            <a href="{{ url($image->link) }}">{!! HTML::Image($image->image, $image->title) !!}</a>
+                                            <a href="{{ url($image->{'link:hr'}) }}">{!! HTML::Image($image->image, $image->title) !!}</a>
                                         </div>
                                     </div>
                                 @endforeach

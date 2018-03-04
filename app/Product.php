@@ -585,7 +585,7 @@ class Product extends Model {
     }
 
     public static function filteredProducts($cat=0, $fil, $sort=2, $min=0, $max=0, $minPromer=0, $maxPromer=0){
-        if($sort == 2){ $field = 'products.price_small'; $param = 'ASC'; }elseif($sort == 3){ $field = 'products.price_small'; $param = 'DESC'; }else{ $field = 'products.publish_at'; $param = 'DESC'; }
+        if($sort == 2){ $field = 'products.price_outlet'; $param = 'ASC'; }elseif($sort == 3){ $field = 'products.price_outlet'; $param = 'DESC'; }else{ $field = 'products.publish_at'; $param = 'DESC'; }
         if($cat == 0){
             if(count($fil) > 0){
                 return Product::select('products.*', DB::raw('count(products.id) as broj'))
@@ -768,16 +768,20 @@ class Product extends Model {
         return 'done';
     }
 
-    public static function removeFromCart($id){
+    public static function removeFromCart($id=false){
         $cart = session('cart');
-        if(count($cart)>0){
-            $array = array();
-            foreach($cart as $o){
-                if($o['id'] != $id){
-                    $array[] = $o;
+        if($id){
+            if(count($cart)>0){
+                $array = array();
+                foreach($cart as $o){
+                    if($o['id'] != $id){
+                        $array[] = $o;
+                    }
                 }
+                session()->put('cart', $array);
             }
-            session()->put('cart', $array);
+        }else{
+            session()->put('cart', []);
         }
         return 'done';
     }
