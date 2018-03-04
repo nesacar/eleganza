@@ -959,12 +959,7 @@ class PagesController extends Controller
     public function cart(){
         $settings = Setting::first();
         $theme = Theme::where('active', 1)->first();
-        session()->forget('cart');
-        Product::addToCart(6);
-        Product::addToCart(6);
-        Product::addToCart(29);
         $cart = session('cart');
-        dd($cart);
         count($cart)>0? $products = Product::with('Brand')->whereIn('id', Product::getCartIds())->where('publish', 1)->get() : $products = [];
         return view('themes.'.$theme->slug.'.pages.cart', compact('settings', 'theme', 'products'));
     }

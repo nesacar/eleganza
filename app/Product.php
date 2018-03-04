@@ -753,10 +753,8 @@ class Product extends Model {
             $array[] = array('id' => $id, 'count' => $count, 'omot' => $omot);
             session()->put('cart', $array);
         }else{
-            dd($cart[0]);
             $bool = false;
-            foreach ($cart[0] as $item){
-                //dd($item);
+            foreach ($cart as $item){
                 $array[] = $item;
                 if($item['id'] != $id){
                     $bool = true;
@@ -765,10 +763,9 @@ class Product extends Model {
             if($bool){
                 $array[] =  array('id' => $id, 'count' => $count, 'omot' => $omot);
                 session()->put('cart', $array);
-                //dd($array);
             }
         }
-        return session('cart');
+        return 'done';
     }
 
     public static function removeFromCart($id){
@@ -776,18 +773,18 @@ class Product extends Model {
         if(count($cart)>0){
             $array = array();
             foreach($cart as $o){
-                if($o != $id){
+                if($o['id'] != $id){
                     $array[] = $o;
                 }
             }
             session()->put('cart', $array);
         }
-        return session('cart');
+        return 'done';
     }
 
     public static function getCartIds(){
         $array = [];
-        if(session('cart')>0){
+        if(count(session('cart'))>0){
             foreach (session('cart') as $product){
                 $array[] = $product['id'];
             }

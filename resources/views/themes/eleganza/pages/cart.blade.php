@@ -33,8 +33,10 @@
                 <div class="cart-section">
                     <div class=cart-nav>
                         <a href="{{ url('/') }}" class="e-btn e-btn--fat e-btn--invert">&lt; nastavi kupovinu</a>
-                        @if(count($products)>0)
-                        <a href=# class="e-btn e-btn--fat e-btn--primary submit">sigurna uplata</a>
+                        @if(auth()->check())
+                            @if(count($products)>0) <a href=# class="e-btn e-btn--fat e-btn--primary submit">sigurna uplata</a> @endif
+                        @else
+                            <a href="{{ url('login') }}" class="e-btn e-btn--fat e-btn--primary">prijavi se</a>
                         @endif
                     </div>
                 </div>
@@ -152,7 +154,14 @@
                         </div>
                     </div>
                 </div>
-                <div class=cart-nav> <a href=# class="e-btn e-btn--fat e-btn--invert">&lt; nastavi kupovinu</a> <a href=# class="e-btn e-btn--fat e-btn--primary submit">sigurna uplata</a> </div>
+                <div class=cart-nav>
+                    <a href=# class="e-btn e-btn--fat e-btn--invert">&lt; nastavi kupovinu</a>
+                    @if(auth()->check())
+                        @if(count($products)>0) <a href=# class="e-btn e-btn--fat e-btn--primary submit">sigurna uplata</a> @endif
+                    @else
+                        <a href="{{ url('login') }}" class="e-btn e-btn--fat e-btn--primary">prijavi se</a>
+                    @endif
+                </div>
             </section>
         {!! Form::close() !!}
     @else
