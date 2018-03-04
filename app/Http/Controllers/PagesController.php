@@ -979,7 +979,8 @@ class PagesController extends Controller
     }
 
     public function addToCart($id){
-        return $product = Product::find($id);
+        Product::addToCart($id);
+        return 'done';
     }
 
     public function removeFromCart($id){

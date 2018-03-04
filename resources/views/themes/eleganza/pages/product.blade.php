@@ -1,5 +1,9 @@
 @extends('themes.'.$theme->slug.'.index')
 
+@section('header-style')
+    {!! HTML::style('themes/'.$theme->slug.'/css/jquery.toastmessage.css') !!}
+@endsection
+
 @section('content')
 
     <div>
@@ -92,10 +96,10 @@
                         <p class="product__hint-text">dodatnih 5% popusta na online placanje</p>
                     </div>
                     <div class="product-info__section">
-                        <button class="e-btn e-btn--primary e-btn--fat e-btn--block">
+                        <button class="e-btn e-btn--primary e-btn--fat e-btn--block addCart" data-href="{{ url('add-to-cart/'.$product->id) }}">
                             dodaj u košaricu
                         </button>
-                        <button class="e-btn e-btn--primary e-btn--fat e-btn--block">
+                        <button class="e-btn e-btn--primary e-btn--fat e-btn--block addWish" data-href="{{ url('add-to-wishlist/'.$product->id) }}">
                             dodaj u listu zelja
                         </button>
                     </div>
@@ -172,4 +176,29 @@
 
     @include('themes.'.$theme->slug.'.partials.newsletter')
 
+@endsection
+
+@section('footer_scripts')
+    {!! HTML::script('themes/'.$theme->slug.'/js/jquery-2.2.4.min.js') !!}
+    {!! HTML::script('themes/'.$theme->slug.'/js/jquery.toastmessage.js') !!}
+    <script>
+        $(function () {
+
+            $('.addWish').click(function(e){
+                e.preventDefault();
+                var link = $(this).attr('data-href');
+                $.post(link, {_token: '{{ csrf_token() }}' }, function(data){
+                    $().toastmessage('showSuccessToast', "proizvod je dodat u listu želja");
+                });
+            });
+
+            $('.addCart').click(function(e){
+                e.preventDefault();
+                var link = $(this).attr('data-href');
+                $.post(link, {_token: '{{ csrf_token() }}' }, function(data){
+                    $().toastmessage('showSuccessToast', "proizvod je dodat u košaricu");
+                });
+            });
+        });
+    </script>
 @endsection

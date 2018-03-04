@@ -26,7 +26,7 @@
 
                             <div class="nav-grid__item">
                                 <div class="nav-grid__item__wrap">
-                                    <a href="#">
+                                    <a href="{{ url($box->link) }}">
                                         <div class="nav-grid__item__content with-zoom">
                                             {!! HTML::Image($box->image, $box->title, array('class' => 'center')) !!}
                                             <div class="diamond center">

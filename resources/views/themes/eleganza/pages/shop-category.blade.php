@@ -157,7 +157,6 @@
             $('.addWish').click(function(e){
                 e.preventDefault();
                 var link = $(this).attr('href');
-                console.log('list');
                 $.post(link, {_token: '{{ csrf_token() }}' }, function(data){
                     $().toastmessage('showSuccessToast', "proizvod je dodat u listu želja");
                 });
@@ -166,7 +165,6 @@
             $('.addCart').click(function(e){
                 e.preventDefault();
                 var link = $(this).attr('href');
-                console.log('kosarica');
                 $.post(link, {_token: '{{ csrf_token() }}' }, function(data){
                     $().toastmessage('showSuccessToast', "proizvod je dodat u košaricu");
                 });
