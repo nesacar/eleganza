@@ -31,6 +31,8 @@ Route::post('add-to-cart/{id}', 'PagesController@addToCart');
 Route::post('add-to-cart-from-wishlist/{id}', 'PagesController@addToCartFromWishList');
 Route::post('remove-from-cart/{id}', 'PagesController@removeFromCart');
 
+Route::post('cart', 'PagesController@cartUpdate');
+
 Route::get('eleganza', 'PagesController@eleganza');
 Route::get('eleganza/shop', 'PagesController@eleganzaShop');
 Route::get('eleganza/blog', 'PagesController@eleganzaBlog');

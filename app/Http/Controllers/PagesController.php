@@ -988,4 +988,8 @@ class PagesController extends Controller
         return 'done';
     }
 
+    public function cartUpdate(Request $request){
+        return request()->all();
+    }
+
 }
