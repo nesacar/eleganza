@@ -584,6 +584,70 @@ class Product extends Model {
         }
     }
 
+    public static function newFilteredDiscountAdminProducts($title=false, $cat=0, $brand=0, $limit=50){
+        if($cat == 0 || $brand == 0){
+            return Product::select('products.*')
+                ->join('product_translations', 'products.id', '=', 'product_translations.product_id')
+                ->where(function($query) use ($title)
+                {
+                    if($title){
+                        $query->where('product_translations.title', 'LIKE', "%$title%")->orWhere('products.id', 'LIKE', "%$title%")->orWhere('product_translations.slug', 'LIKE', "%$title%")
+                            ->orWhere('products.code', 'LIKE', "%$title%")->orWhere('product_translations.short', 'LIKE', "%$title%");
+                    }
+                })
+                ->groupby('products.id')
+                ->orderby('id', 'desc')
+                ->paginate($limit);
+        }elseif($brand == 0){
+            return Product::select('products.*')
+                ->join('product_translations', 'products.id', '=', 'product_translations.product_id')
+                ->join('category_product', 'products.id', '=', 'category_product.product_id')
+                ->join('categories', 'category_product.category_id', '=', 'categories.id')
+                ->where('categories.id', $cat)
+                ->where(function($query) use ($title)
+                {
+                    if($title){
+                        $query->where('product_translations.title', 'LIKE', "%$title%")->orWhere('products.id', 'LIKE', "%$title%")->orWhere('product_translations.slug', 'LIKE', "%$title%")
+                            ->orWhere('products.code', 'LIKE', "%$title%")->orWhere('product_translations.short', 'LIKE', "%$title%");
+                    }
+                })
+                ->groupby('products.id')
+                ->orderby('id', 'desc')
+                ->paginate($limit);
+        }elseif($cat == 0){
+            return Product::select('products.*')
+                ->join('product_translations', 'products.id', '=', 'product_translations.product_id')
+                ->where('products.brand_id', $brand)
+                ->where(function($query) use ($title)
+                {
+                    if($title){
+                        $query->where('product_translations.title', 'LIKE', "%$title%")->orWhere('products.id', 'LIKE', "%$title%")->orWhere('product_translations.slug', 'LIKE', "%$title%")
+                            ->orWhere('products.code', 'LIKE', "%$title%")->orWhere('product_translations.short', 'LIKE', "%$title%");
+                    }
+                })
+                ->groupby('products.id')
+                ->orderby('id', 'desc')
+                ->paginate($limit);
+        }else{
+            return Product::select('products.*')
+                ->join('product_translations', 'products.id', '=', 'product_translations.product_id')
+                ->join('category_product', 'products.id', '=', 'category_product.product_id')
+                ->join('categories', 'category_product.category_id', '=', 'categories.id')
+                ->where('categories.id', $cat)
+                ->where('products.brand_id', $brand)
+                ->where(function($query) use ($title)
+                {
+                    if($title){
+                        $query->where('product_translations.title', 'LIKE', "%$title%")->orWhere('products.id', 'LIKE', "%$title%")->orWhere('product_translations.slug', 'LIKE', "%$title%")
+                            ->orWhere('products.code', 'LIKE', "%$title%")->orWhere('product_translations.short', 'LIKE', "%$title%");
+                    }
+                })
+                ->groupby('products.id')
+                ->orderby('id', 'desc')
+                ->paginate($limit);
+        }
+    }
+
     public static function filteredProducts($cat=0, $fil, $sort=2, $min=0, $max=0, $minPromer=0, $maxPromer=0){
         if($sort == 2){ $field = 'products.price_outlet'; $param = 'ASC'; }elseif($sort == 3){ $field = 'products.price_outlet'; $param = 'DESC'; }else{ $field = 'products.publish_at'; $param = 'DESC'; }
         if($cat == 0){

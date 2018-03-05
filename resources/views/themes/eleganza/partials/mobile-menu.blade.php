@@ -17,7 +17,7 @@
                                     @if(count($submenu2)>0)
                                         <li class=mobile-nav-list__item>
                                             <div class="e-list__item e-list__item--big">
-                                                <a href="{{ $sub->link }}">{{ $sub->title }}</a>
+                                                <a href="#">{{ $sub->title }}</a>
                                                 <span class=e-collapse-toggler data-toggle=collapse href=#collapseExample{{ $sub->id }} role=button aria-expanded=false aria-controls=collapseExample{{ $sub->id }}>&plus;</span>
                                             </div>
                                             <div class=collapse id=collapseExample{{ $sub->id }}>
@@ -25,7 +25,7 @@
                                                     @foreach($submenu2 as $sub2)
                                                         <li class=mobile-nav-list__item>
                                                             <div class="e-list__item e-list__item--big">
-                                                                <a href="{{ url($sub2->link) }}">{{ $sub2->title }}</a>
+                                                                <a href="{{ url($sub2->link . $sub2->sufix) }}">{{ $sub2->title }}</a>
                                                             </div>
                                                         </li>
                                                     @endforeach

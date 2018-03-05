@@ -104,6 +104,8 @@ Route::get('admin/pcategories/{id}/deleteimage', 'PCategoriesController@deleteim
 Route::get('admin/pcategories/publish/{id}', 'PCategoriesController@publish');
 
 Route::get('admin/products/table', 'ProductsController@table');
+Route::get('admin/products/discount', 'ProductsController@discount');
+Route::post('admin/products/discount', 'ProductsController@discountUpdate');
 Route::post('admin/products/table', 'ProductsController@tableUpdate');
 Route::get('admin/products/clear', 'ProductsController@clearSearch');
 Route::post('admin/products/{id}/upload', 'ProductsController@upload');

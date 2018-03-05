@@ -104,7 +104,7 @@
                     <h3>Cene</h3>
                     <hr>
                     <div class="form-group">
-                        <label for="price_small" class="col-sm-2 control-label">Maloprodajna cena <span class="crvena-zvezdica">*</span></label>
+                        <label for="price_small" class="col-sm-2 control-label">Maloprodajna cijena <span class="crvena-zvezdica">*</span></label>
                         <div class="col-sm-10">
                             {!! Form::text('price_small', null, array('class' => 'form-control')) !!}
                         </div>
@@ -116,7 +116,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="price_outlet" class="col-sm-2 control-label">Outlet cena</label>
+                        <label for="price_outlet" class="col-sm-2 control-label">Snižena cijena</label>
                         <div class="col-sm-10">
                             {!! Form::text('price_outlet', null, array('class' => 'form-control')) !!}
                         </div>

@@ -27,10 +27,12 @@
         <h2 class="profile-title">Pozdrav, Eleganza</h2>
         <div class="row">
             <div class="col-md-5">
-                <a href="#" class="e-btn e-btn--invert e-btn--block profile-link">
-                    <i class="fas fa-user"></i>
-                    Moj profil
-                </a>
+                @if(false)
+                    <a href="#" class="e-btn e-btn--invert e-btn--block profile-link">
+                        <i class="fas fa-user"></i>
+                        Moj profil
+                    </a>
+                @endif
                 <a href="#" class="e-btn e-btn--invert e-btn--block profile-link">
                     <i class="fas fa-archive"></i>
                     Moje narudžbine
@@ -65,4 +67,14 @@
         </div>
     </section>
 
+@endsection
+
+@section('footer_scripts')
+    {!! HTML::script('themes/'.$theme->slug.'/js/jquery-2.2.4.min.js') !!}
+    {!! HTML::script('themes/'.$theme->slug.'/js/jquery.toastmessage.js') !!}
+    <script>
+        @if(Session::has('done'))
+             $().toastmessage('showSuccessToast', "{{ Session::get('done') }}");
+        @endif
+    </script>
 @endsection

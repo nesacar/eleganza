@@ -28,7 +28,7 @@
     </div>
 
     @if(count($products)>0)
-        {!! Form::open(['action' => ['PagesController@cartUpdate'], 'method' => 'POST', 'class' => 'form-horizontal', 'id' => 'forma']) !!}
+        {!! Form::open(['action' => ['CustomersController@cartUpdate'], 'method' => 'POST', 'class' => 'form-horizontal', 'id' => 'forma']) !!}
             <section class="container content">
                 <div class="cart-section">
                     <div class=cart-nav>
@@ -217,16 +217,9 @@
                 var sum=0;
                 $('.cart-list__item').each(function(){
                     var el = $(this);
-                    var count = parseInt(el.find('.count').val());
-                    var price = parseFloat(el.find('.js-price').text());
-                    var omot = 0;
-                    if(el.find('.e-checkbox__control').prop('checked')){
-                        omot = parseFloat(el.find('.js-omot').text());
-                    }
-                    sum += count * (price + omot);
-
+                    var price = parseFloat(el.find('.js-total').text());
+                    sum += parseFloat(price.toFixed(2));
                 });
-                console.log('cena je: ' + sum);
                 $('#ukupno').text(sum);
                 $('#sveukupno').text(sum);
             }
@@ -235,11 +228,12 @@
                 $('.count').change(function(){
                     var li = $(this).parent().parent().parent();
                     var count = parseInt($(this).val());
-                    console.log('count: ' + count);
                     var price = parseFloat(li.find('.js-price').text());
-                    console.log('price: ' + price);
-                    var sum = parseFloat(count * price).toFixed(2);
-                    console.log('sum: ' + sum);
+                    var omot = 0;
+                    if(li.find('.gift').prop('checked')){
+                        omot = parseFloat(li.find('.js-omot').text());
+                    }
+                    var sum = parseFloat(count * (price + omot)).toFixed(2);
                     li.find('.js-total').text(sum);
 
                     cart();
@@ -247,14 +241,16 @@
             }
 
             function omotCheckbox() {
-                $('.e-checkbox__control').change(function(){
-                    var li = $(this).parent().parent().parent().parent();
+                $('.gift').click(function(){
+                    var el = $(this);
+                    var li = el.parent().parent().parent().parent().parent();
                     var count = parseInt(li.find('.count').val());
-                    console.log(count);
                     var price = parseFloat(li.find('.js-price').text());
-                    console.log('price: ' + price);
-                    var sum = parseFloat(count * price).toFixed(2);
-                    console.log('sum: ' + sum);
+                    var omot = 0;
+                    if(el.prop('checked')){
+                        omot = parseFloat(li.find('.js-omot').text());
+                    }
+                    var sum = parseFloat(count * (price + omot)).toFixed(2);
                     li.find('.js-total').text(sum);
 
                     cart();

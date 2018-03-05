@@ -66,6 +66,12 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="publish" class="col-sm-3 control-label">Poručeno</label>
+                        <div class="col-sm-9">
+                            <p>{{ \Carbon\Carbon::parse($cart->created_at)->format('d/m/Y') }}</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="status" class="col-sm-3 control-label">Plaćeno</label>
                         <div class="col-sm-9">
                             <p>@if($cart->status) Da @else Ne @endif</p>

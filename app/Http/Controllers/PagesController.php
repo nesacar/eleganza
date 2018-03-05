@@ -601,9 +601,9 @@ class PagesController extends Controller
             $products = Product::select('products.*')->where(function ($query) use ($text){
                 $query->whereTranslationLike('title', '%'.$text.'%')->orWhereTranslationLike('slug', '%'.$text.'%')->orWhereTranslationLike('short', '%'.$text.'%')->orWhere('code', 'like', '%'.$text.'%');
             })->where('publish', 1)->orderBy('publish_at', 'DESC')->take(18)->get();
-            $posts = Post::select('posts.*')->where(function ($query) use ($text){
+            /*$posts = Post::select('posts.*')->where(function ($query) use ($text){
                 $query->whereTranslationLike('title', '%'.$text.'%')->orWhereTranslationLike('slug', '%'.$text.'%');
-            })->where('publish', 1)->orderBy('publish_at', 'DESC')->take(18)->get();
+            })->where('publish', 1)->orderBy('publish_at', 'DESC')->take(18)->get();*/
             $home = true;
             return view('themes.'.$theme->slug.'.pages.search', compact('settings', 'theme', 'products', 'text', 'posts', 'home', 'active'));
         }
@@ -986,14 +986,6 @@ class PagesController extends Controller
     public function removeFromCart($id){
         Product::removeFromCart($id);
         return 'done';
-    }
-
-    public function cartUpdate(Request $request){
-        $sum = Product::whereIn('id', request('ids'))->sum('price_outlet');
-        $omot = Cart::omot(16);
-        Cart::storeCart(auth()->user()->customer()->id, $sum + $omot);
-        Product::removeFromCart();
-        return redirect('profile')->with('done', 'Vaša košarica je naručena');
     }
 
 }

@@ -686,4 +686,21 @@ class ProductsController extends Controller {
         return request()->all();
     }
 
+    public function discount(){
+        $primary = Language::getPrimary();
+        app()->setLocale($primary->locale);
+        $slug = 'products';
+        $products = Product::newFilteredDiscountAdminProducts(Session::get('title'), Session::get('category_id'),  Session::get('brand_id'));
+        $catids = Category::join('category_translations', 'categories.id', '=', 'category_translations.category_id')
+            ->pluck('category_translations.title', 'categories.id');
+        $brandIds = Brand::join('brand_translations', 'brands.id', '=', 'brand_translations.brand_id')
+            ->pluck('brand_translations.title', 'brands.id')->prepend('Svi brendovi', 0);
+
+        return view('admin.products.discount', compact('products', 'slug', 'catids', 'brandIds'));
+    }
+
+    public function discountUpdate(){
+        return request()->all();
+    }
+
 }

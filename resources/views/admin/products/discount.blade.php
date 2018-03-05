@@ -17,7 +17,7 @@
             <div class="panel panel-white">
 
                 <div class="panel-heading clearfix">
-                    <h3 class="panel-title"><i class="glyphicon glyphicon-gift" aria-hidden="true" style="margin-right: 5px"></i>Proizvodi</h3>
+                    <h3 class="panel-title"><i class="glyphicon glyphicon-gift" aria-hidden="true" style="margin-right: 5px"></i>Grupni popusti</h3>
                     <div class="panel-control">
                         <a href="{{ url('admin/products/discount') }}" data-toggle="tooltip" data-placement="top" title="" class="panel-reload" data-original-title="Grupni popusti"><i class="fa fa-line-chart"></i></a>
                         @if(auth()->user()->id)<a href="{{ url('admin/products/table') }}" data-toggle="tooltip" data-placement="top" title="" class="panel-reload" data-original-title="Brzi unos"><i class="fa fa-table"></i></a>@endif
@@ -27,33 +27,24 @@
 
                 <hr>
 
-                <h3 class="panel-title" style="margin-bottom: 10px">Upload tabelice</h3>
-                {!! Form::open(['action' => ['ProductsController@checkUpdate'], 'method' => 'POST', 'class' => 'form-horizontal', 'files' => true]) !!}
-                    {!! Form::file('file') !!}
-                    <input type="submit" value="Upload" class="btn btn-success" style="margin-top: 10px; display: inline-block">
-                {!! Form::close() !!}
-
-                <hr>
-
                 <div class="row" style="background-color: white">
-                    {!! Form::open(['action' => 'ProductsController@search', 'method' => 'POST', 'id' => 'form-add-setting']) !!}
+                    {!! Form::open(['action' => 'ProductsController@discount', 'method' => 'GET', 'id' => 'form-add-setting']) !!}
                         <div class="col-md-12">
-                            <div class="col-sm-2">
+                            <div class="col-sm-3">
                                 <input type="text" name="title" placeholder="Pretraga..." id="title" class="form-control input-sm" value="@if(Session::get('title')){{Session::get('title')}}@endif">
                             </div>
-                            <div class="col-sm-2">
-                                {!! \App\Category::getSortCategorySelectAdmin() !!}
+                            <div class="col-sm-3">
+                                {!! \App\Category::getSortCategorySelectAdmin(request('category_id')) !!}
                             </div>
                             <div class="col-sm-2">
-                                <input type="text" placeholder="cena od..." name="od" id="od" maxlength="6" value="@if(Session::get('od')){{Session::get('od')}}@endif" class="form-control input-sm" style="margin-bottom: 10px;">
+                                {!! Form::select('brand_id', $brandIds, request('brand_id'), array('class' => 'sele')) !!}
                             </div>
                             <div class="col-sm-2">
-                                <input type="text" placeholder=" cena do..." name="do" id="do" maxlength="6" value="@if(Session::get('do')){{Session::get('do')}}@endif" class="form-control input-sm">
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-23">
                                 <div class="btn-group" role="group">
-                                    <input type="submit" value="Pretraga" id="submit" class="btn btn-success">
-                                    <a class="btn btn-danger" href="{{ url('admin/products/clear') }}">X</a>
+                                    <input type="submit" value="Pretraga" id="submit" class="btn btn-success btn-block">
+                                    @if(false) <a class="btn btn-danger" href="{{ url('admin/products/clear') }}">X</a> @endif
                                 </div>
                             </div>
                         </div>
@@ -63,54 +54,42 @@
                     <div class="panel-header-stats">
                         @if(count($products) > 0)
                             <div class="row">
-                                @if(false)
-                                <div class="col-md-1">
-                                    <b>--</b>
+                                <div class="col-md-2">
+                                    <b class="all" data-trigger="0">--</b>
                                 </div>
-                                @endif
-                                <div class="col-md-1">
+                                <div class="col-md-2">
                                     <b>ID</b>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <b>Naziv</b>
                                 </div>
-                                <div class="col-md-1">
+                                <div class="col-md-2">
                                     <b>Šifra</b>
                                 </div>
-                                <div class="col-md-1">
+                                <div class="col-md-2">
                                     <b>Slika</b>
                                 </div>
-                                <div class="col-md-1">
+                                <div class="col-md-2">
                                     <b>Cena</b>
-                                </div>
-                                <div class="col-md-2">
-                                    <b>Kategorija</b>
-                                </div>
-                                <div class="col-md-1">
-                                    <b>Vidljivo</b>
-                                </div>
-                                <div class="col-md-2">
-                                    <b class="pull-right">Uredi</b>
                                 </div>
                             </div>
                             <hr>
+                            {!! Form::open(['action' => 'ProductsController@discountUpdate', 'method' => 'POST', 'id' => 'form-add-setting']) !!}
                             @foreach($products as $p)
                                 <div class="row @if($p->publish == 0) crvena @endif">
-                                    @if(false)
-                                    <div class="col-md-1 ima-padding">
+                                    <div class="col-md-2 ima-padding">
                                         {!! Form::checkbox('all[]', $p->id, null) !!}
                                     </div>
-                                    @endif
-                                    <div class="col-md-1 ima-padding">
+                                    <div class="col-md-2 ima-padding">
                                         {{ $p->id }}
                                     </div>
-                                    <div class="col-md-3 ima-padding">
+                                    <div class="col-md-2 ima-padding">
                                         {{ $p->{'title:hr'} }}
                                     </div>
-                                    <div class="col-md-1 ima-padding">
+                                    <div class="col-md-2 ima-padding">
                                         {{ $p->code }}
                                     </div>
-                                    <div class="col-md-1">
+                                    <div class="col-md-2">
                                         @if($p->tmb != null || $p->tmb != '')
                                             {!! HTML::image($p->tmb, '', ['class' => 'thumb']) !!}
                                         @elseif($p->image != null || $p->image != '')
@@ -119,30 +98,25 @@
                                             <image-upload :product_id="{{ $p->id }}"></image-upload>
                                         @endif
                                     </div>
-                                    <div class="col-md-1 ima-padding">
-                                        {{ $p->price_small }} RSD
-                                    </div>
                                     <div class="col-md-2 ima-padding">
-                                        {{ \App\Product::getLastCategory($p->id) }}
-                                    </div>
-                                    <div class="col-md-1 ima-padding2">
-                                        {!! Form::checkbox('publish', 1, $p->publish, ['id' => $p->id, 'name' => 'primary[]', 'class' => 'switch-state', 'data-on-color' => 'success', 'data-off-color' => 'danger', 'data-on-text' => 'DA', 'data-off-text' => 'NE']) !!}
-                                    </div>
-                                    <div class="col-md-2 ima-padding2">
-                                        <div class="btn-group pull-right" role="group" aria-label="...">
-                                            <a  type="button" class="btn btn-success" href="{{ URL::action('ProductsController@edit', $p->id) }}" target="_blank">uredi</a>
-                                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="glyphicon glyphicon-triangle-bottom"></i></button>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                                <li><a href="{{ url(\App\Product::getProductLink($p->id)) }}" target="_blank">pregled</a></li>
-                                                <li><a href="{{ URL::action('ProductsController@cloneProduct', $p->id) }}">kloniraj</a></li>
-                                                <li><a href="{{ URL::action('ProductsController@image', $p->id) }}">slike</a></li>
-                                                <li role="separator" class="divider"></li>
-                                                <li><a href="{{ URL::action('ProductsController@delete', $p->id) }}" onclick="return confirm('Da li ste sigurni da hoćete da obrišete ovaj proizvod?')" title="Obrišite proizvod">obriši</a></li>
-                                            </ul>
-                                        </div>
+                                        {{ $p->price_small }} RSD
                                     </div>
                                 </div>
                             @endforeach
+                            <div class="row" style="margin-top: 100px">
+                                <div class="form-group">
+                                    <div class="col-md-6">
+                                        <label for="discount" class="col-sm-2 control-label">Popust</label>
+                                        <div class="col-sm-10">
+                                            {!! Form::text('discount', request('discount'), array('class' => 'form-control')) !!}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="submit" value="Primeni" class="btn btn-success">
+                                    </div>
+                                </div>
+                            </div>
+                            {!! Form::close() !!}
                             <div class="row">
                                 <div class="col-sm-12 text-center">
                                     {!! str_replace('/?', '?', $products->render()) !!}
@@ -222,5 +196,21 @@
     function reset(){
         $('#title').val(''); $('#od').val(''); $('#do').val(''); $('#kategorija').val(0);
     }
+
+    $('.all').click(function(){
+        var trigger = $(this).attr('data-trigger');
+        console.log(trigger);
+        if(trigger == 0){
+            $(this).prop('data-trigger', 1);
+            $('input[type="checkbox"]').each(function(){
+                $(this).attr('checked', 1);
+            });
+        }else{
+            $(this).prop('data-trigger', 0;
+            $('input[type="checkbox"]').each(function(){
+                $(this).attr('checked', 0);
+            });
+        }
+    });
 
 @endsection

@@ -356,7 +356,7 @@ class Category extends Model
         return $str;
     }
 
-    public static function getSortCategorySelectAdmin(){
+    public static function getSortCategorySelectAdmin($cat=false){
         $category = self::where(array('parent' => 0))->orderby('order', 'ASC')->get();
         $str="";
         if(isset($category)){
@@ -365,7 +365,11 @@ class Category extends Model
             foreach($category as $c){
                 $separator = self::getSeparator($c->level);
                 $str .=  "<option value='{$c->id}'";
-                if(Session::get('cat') == $c->id){ $str .= "selected>"; }else{ $str .= ">"; }
+                if($cat){
+                    if($cat == $c->id){ $str .= "selected>"; }else{ $str .= ">"; }
+                }else{
+                    if(Session::get('cat') == $c->id){ $str .= "selected>"; }else{ $str .= ">"; }
+                }
                 $str .= $separator." {$c->order}. {$c->{'title:hr'}}";
                 $str .= "</option>";
                 $str .= self::getSortCategorySelectParentAdmin($c->id);

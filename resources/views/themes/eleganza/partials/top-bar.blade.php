@@ -2,10 +2,10 @@
     <div class="container top-bar__wrapper" style=position:relative>
         <div class=e-search id=jsSearch>
             <button class="icon-btn icon-btn--primary" data-e-controls=#jsSearch> <i class="fas fa-times"></i> </button>
-            <form action=GET>
-                <input placeholder=Pretraživanje type=text name=search id=search>
+            {!! Form::open(['action' => ['PagesController@search'], 'method' => 'GET']) !!}
+                <input placeholder=Pretraživanje type=text name=text id=search>
                 <button class="icon-btn icon-btn--primary" type=submit> <i class="fas fa-search"></i> </button>
-            </form>
+            {!! Form::close() !!}
         </div>
         <div class=top-bar__box>
             @if(false)

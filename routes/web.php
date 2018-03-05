@@ -23,6 +23,7 @@ Route::get('profile', 'CustomersController@profile');
 Route::get('lista-zelja', 'PagesController@wishList');
 Route::get('kosarica', 'PagesController@cart');
 Route::post('register', 'PagesController@registerUpdate')->name('user-register');
+Route::get('pretraga', 'PagesController@search');
 
 Route::post('add-to-wishlist/{id}', 'PagesController@addToWishList');
 Route::post('remove-from-wishlist/{id}', 'PagesController@removeFromWishList');
@@ -31,7 +32,7 @@ Route::post('add-to-cart/{id}', 'PagesController@addToCart');
 Route::post('add-to-cart-from-wishlist/{id}', 'PagesController@addToCartFromWishList');
 Route::post('remove-from-cart/{id}', 'PagesController@removeFromCart');
 
-Route::post('kosarica', 'PagesController@cartUpdate');
+Route::post('kosarica', 'CustomersController@cartUpdate');
 
 Route::get('eleganza', 'PagesController@eleganza');
 Route::get('eleganza/shop', 'PagesController@eleganzaShop');
