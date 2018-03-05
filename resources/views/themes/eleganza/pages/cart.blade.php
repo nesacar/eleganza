@@ -67,21 +67,21 @@
                                         <hr>
                                         <div class=e-form__cb-group>
                                             <div class=e-checkbox>
-                                                <input id=gift type=checkbox class=e-checkbox__control name="gift_{{ $product->id }}[]" value="1">
+                                                <input id=gift type=checkbox class="e-checkbox__control gift" name="gift_{{ $product->id }}[]" value="1">
                                                 <div class=e-checkbox__background>
                                                     <svg class=e-checkbox__checkmark viewBox="0 0 24 24"> <path class=e-checkbox__path fill=none stroke=white d="M1.73,12.91 8.1,19.28 22.79,4.59"></path> </svg>
                                                 </div>
                                             </div>
-                                            <label for=gift>Umotaj ovaj artikal kao poklon <span>(+ hrk 16.41)</span></label>
+                                            <label for=gift>Umotaj ovaj artikal kao poklon (+ hrk <span class="js-omot">16.41</span>)</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6 cart-list__item__cell">
                                     <div class=cart-list__item__count>
-                                        <input class=nl-input type=text name=counts[] value=1> <span class="remove" style="cursor:pointer;" data-href="{{ url('remove-from-cart/'.$product->id) }}">X</span>
+                                        <input class="nl-input count" type=number name=counts[] value=1 min="1" max="10"> <span class="remove" style="cursor:pointer;" data-href="{{ url('remove-from-cart/'.$product->id) }}">X</span>
                                     </div>
-                                    <div class="cart-list__item__digit cart-list__item__price"> hrk {{ $product->price_outlet }}.00 </div>
-                                    <div class="cart-list__item__digit cart-list__item__total"> hrk {{ $product->price_outlet }}.00 </div>
+                                    <div class="cart-list__item__digit cart-list__item__price"> hrk <span class="js-price">{{ $product->price_outlet }}.00</span> </div>
+                                    <div class="cart-list__item__digit cart-list__item__total"> hrk <span class="js-total">{{ $product->price_outlet }}.00</span> </div>
                                 </div>
                             </li>
                         @endforeach
@@ -206,6 +206,61 @@
                 e.preventDefault();
                 $('#forma').submit();
             });
+
+            if($('.cart-list__item').length > 0){
+                cart();
+                countChange();
+                omotCheckbox();
+            }
+
+            function cart() {
+                var sum=0;
+                $('.cart-list__item').each(function(){
+                    var el = $(this);
+                    var count = parseInt(el.find('.count').val());
+                    var price = parseFloat(el.find('.js-price').text());
+                    var omot = 0;
+                    if(el.find('.e-checkbox__control').prop('checked')){
+                        omot = parseFloat(el.find('.js-omot').text());
+                    }
+                    sum += count * (price + omot);
+
+                });
+                console.log('cena je: ' + sum);
+                $('#ukupno').text(sum);
+                $('#sveukupno').text(sum);
+            }
+
+            function countChange() {
+                $('.count').change(function(){
+                    var li = $(this).parent().parent().parent();
+                    var count = parseInt($(this).val());
+                    console.log('count: ' + count);
+                    var price = parseFloat(li.find('.js-price').text());
+                    console.log('price: ' + price);
+                    var sum = parseFloat(count * price).toFixed(2);
+                    console.log('sum: ' + sum);
+                    li.find('.js-total').text(sum);
+
+                    cart();
+                });
+            }
+
+            function omotCheckbox() {
+                $('.e-checkbox__control').change(function(){
+                    var li = $(this).parent().parent().parent().parent();
+                    var count = parseInt(li.find('.count').val());
+                    console.log(count);
+                    var price = parseFloat(li.find('.js-price').text());
+                    console.log('price: ' + price);
+                    var sum = parseFloat(count * price).toFixed(2);
+                    console.log('sum: ' + sum);
+                    li.find('.js-total').text(sum);
+
+                    cart();
+                });
+            }
+
         });
     </script>
 @endsection

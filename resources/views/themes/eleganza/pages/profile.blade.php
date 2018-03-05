@@ -53,7 +53,7 @@
                     <i class="far fa-clone"></i>
                     Gdje je moja narudžbina?
                 </a>
-                <a href="#" class="e-btn e-btn--invert e-btn--block profile-link">
+                <a href="{{ url('info/povrat-i-zamjene/9') }}" class="e-btn e-btn--invert e-btn--block profile-link">
                     <i class="far fa-clone"></i>
                     Kako izvršiti povrat?
                 </a>
