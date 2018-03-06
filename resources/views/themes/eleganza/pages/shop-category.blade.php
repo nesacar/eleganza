@@ -100,6 +100,8 @@
                         </a>
                         @if($product->discount != null && $product->discount > 0)
                             <div class="status status--sale">popust {{ $product->discount }}</div>
+                        @elseif(\App\Product::isNewProduct($product))
+                            <div class="status status--sale">novo</div>
                         @endif
                     </li>
                 @endforeach

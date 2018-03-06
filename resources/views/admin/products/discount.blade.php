@@ -13,6 +13,7 @@
 
 @section('content')
     <div class="row">
+        @include('admin.partials.errors')
         <div class="col-md-12">
             <div class="panel panel-white">
 
@@ -54,22 +55,25 @@
                     <div class="panel-header-stats">
                         @if(count($products) > 0)
                             <div class="row">
-                                <div class="col-md-2">
-                                    <b class="all" data-trigger="0">--</b>
+                                <div class="col-md-1">
+                                    <b class="all" data-trigger="0" style="cursor: pointer">--</b>
                                 </div>
                                 <div class="col-md-2">
                                     <b>ID</b>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <b>Naziv</b>
+                                </div>
+                                <div class="col-md-2">
+                                    <b>Popust</b>
                                 </div>
                                 <div class="col-md-2">
                                     <b>Šifra</b>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-1">
                                     <b>Slika</b>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-1">
                                     <b>Cena</b>
                                 </div>
                             </div>
@@ -77,19 +81,22 @@
                             {!! Form::open(['action' => 'ProductsController@discountUpdate', 'method' => 'POST', 'id' => 'form-add-setting']) !!}
                             @foreach($products as $p)
                                 <div class="row @if($p->publish == 0) crvena @endif">
-                                    <div class="col-md-2 ima-padding">
+                                    <div class="col-md-1 ima-padding">
                                         {!! Form::checkbox('all[]', $p->id, null) !!}
                                     </div>
                                     <div class="col-md-2 ima-padding">
                                         {{ $p->id }}
                                     </div>
-                                    <div class="col-md-2 ima-padding">
+                                    <div class="col-md-3 ima-padding">
                                         {{ $p->{'title:hr'} }}
+                                    </div>
+                                    <div class="col-md-2 ima-padding">
+                                        {{ $p->discount }} %
                                     </div>
                                     <div class="col-md-2 ima-padding">
                                         {{ $p->code }}
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-1">
                                         @if($p->tmb != null || $p->tmb != '')
                                             {!! HTML::image($p->tmb, '', ['class' => 'thumb']) !!}
                                         @elseif($p->image != null || $p->image != '')
@@ -98,7 +105,7 @@
                                             <image-upload :product_id="{{ $p->id }}"></image-upload>
                                         @endif
                                     </div>
-                                    <div class="col-md-2 ima-padding">
+                                    <div class="col-md-1 ima-padding">
                                         {{ $p->price_small }} RSD
                                     </div>
                                 </div>
@@ -206,7 +213,7 @@
                 $(this).attr('checked', 1);
             });
         }else{
-            $(this).prop('data-trigger', 0;
+            $(this).prop('data-trigger', 0);
             $('input[type="checkbox"]').each(function(){
                 $(this).attr('checked', 0);
             });

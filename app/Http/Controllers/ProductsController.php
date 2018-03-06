@@ -690,7 +690,7 @@ class ProductsController extends Controller {
         $primary = Language::getPrimary();
         app()->setLocale($primary->locale);
         $slug = 'products';
-        $products = Product::newFilteredDiscountAdminProducts(Session::get('title'), Session::get('category_id'),  Session::get('brand_id'));
+        $products = Product::newFilteredDiscountAdminProducts(request('title'), request('category_id'),  request('brand_id'));
         $catids = Category::join('category_translations', 'categories.id', '=', 'category_translations.category_id')
             ->pluck('category_translations.title', 'categories.id');
         $brandIds = Brand::join('brand_translations', 'brands.id', '=', 'brand_translations.brand_id')
@@ -699,8 +699,16 @@ class ProductsController extends Controller {
         return view('admin.products.discount', compact('products', 'slug', 'catids', 'brandIds'));
     }
 
-    public function discountUpdate(){
-        return request()->all();
+    public function discountUpdate(Requests\UpdateGroupDiscountRequest $request){
+        $products = Product::whereIn('id', request('all'))->get();
+        if(count($products)>0){
+            foreach ($products as $product){
+                $product->discount = request('discount');
+                $product->price_outlet = Product::calculateDiscount(request('discount'), $product);
+                $product->update();
+            }
+        }
+        return redirect()->back()->with('done', 'Popusti su primenjeni');
     }
 
 }

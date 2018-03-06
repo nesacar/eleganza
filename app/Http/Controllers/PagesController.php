@@ -869,9 +869,8 @@ class PagesController extends Controller
         foreach ($products as $product){
             $product->price_small = rand(23,223);
             $product->update();
-        }
-        return 'done';*/
-        return MenuLink::cropTitle('ajde (akcija)');
+        }*/
+        return 'done';
     }
 
     public function eleganza(){

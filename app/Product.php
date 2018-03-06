@@ -1,5 +1,6 @@
 <?php namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Str;
@@ -585,7 +586,7 @@ class Product extends Model {
     }
 
     public static function newFilteredDiscountAdminProducts($title=false, $cat=0, $brand=0, $limit=50){
-        if($cat == 0 || $brand == 0){
+        if($cat == 0 && $brand == 0){
             return Product::select('products.*')
                 ->join('product_translations', 'products.id', '=', 'product_translations.product_id')
                 ->where(function($query) use ($title)
@@ -967,6 +968,14 @@ class Product extends Model {
         }
 
         return 'done';
+    }
+
+    public static function isNewProduct($product){
+        if(Carbon::now()->subDays(30) < $product->publish_at){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public function brand(){
