@@ -13,7 +13,7 @@ class CreateMessageRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,23 @@ class CreateMessageRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'product_id' => 'required|numeric',
+            'name' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required',
+            'message' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'product_id.required' => 'Product ID je obavezan',
+            'product_id.numeric' => 'Product ID nije broj',
+            'name.required' => 'Ime je obavezno',
+            'email.required' => 'Email je obavezan',
+            'phone.required' => 'Telefon je obavezan',
+            'message.required' => 'Poruka je obavezna',
         ];
     }
 }

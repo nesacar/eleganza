@@ -155,3 +155,7 @@ Route::resource('admin/sets', 'SetsController');
 Route::post('admin/sets/{id}/updateLang', 'SetsController@updateLang');
 Route::get('admin/sets/{id}/delete', 'SetsController@delete');
 Route::get('admin/sets/publish/{id}', 'SetsController@publish');
+
+Route::resource('admin/messages', 'MessagesController');
+Route::get('admin/messages/{id}/delete', 'MessagesController@delete');
+Route::post('admin/messages/{id}/add', 'MessagesController@add');
