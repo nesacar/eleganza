@@ -1014,5 +1014,9 @@ class Product extends Model {
     public function set(){
         return $this->belongsTo('App\Set');
     }
+
+    public function message(){
+        return $this->hasMany(Message::class);
+    }
 }
 
