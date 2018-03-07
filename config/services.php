@@ -34,5 +34,11 @@ return [
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
+//
+//    'facebook' => [
+//        'client_id' => env('1889517167756671'),
+//        'client_secret' => env('042269b192839f93055c55d7d64b0ea3'),
+//        'redirect' => 'http://eleganza.mia.rs/login/facebook/callback',
+//    ],
 
 ];

@@ -34,6 +34,9 @@ Route::post('remove-from-cart/{id}', 'PagesController@removeFromCart');
 
 Route::post('kosarica', 'CustomersController@cartUpdate');
 
+//Route::get('login/facebook', 'Auth\LoginController@redirectToProvider');
+//Route::get('login/facebook/callback', 'Auth\LoginController@handleProviderCallback');
+
 Route::get('eleganza', 'PagesController@eleganza');
 Route::get('eleganza/shop', 'PagesController@eleganzaShop');
 Route::get('eleganza/blog', 'PagesController@eleganzaBlog');
