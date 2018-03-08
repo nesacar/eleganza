@@ -76,6 +76,7 @@
                         <p><a href="{{ url('registracija') }}">Otvori novi korisnički račun</a></p>
                         <p>Zaboravio/la si lozinku? <a href=#>Zatraži novu lozinku</a></p>
                     </div>
+                    @if(false)
                     <div class=login__alt>
                         <h4>prijava putem društvenih mreža</h4>
                         <ul class=login__social-list>
@@ -83,6 +84,7 @@
                             <li class=login__social-list__item> <a href=#> <div class="icon-btn icon-btn--primary rounded"> <i class="fab fa-google-plus-g"></i> </div> <span>Google+</span> </a> </li>
                         </ul>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
