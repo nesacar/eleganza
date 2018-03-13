@@ -14,6 +14,7 @@
                 <th>Vidljivo od datuma</th>
                 <th>Količina</th>
                 <th>Cena</th>
+                <th>Popust</th>
                 <th>Outlet cena</th>
                 <th>Brend</th>
                 <th>Set</th>
@@ -54,6 +55,7 @@
 <script>
     import product from './product.vue';
     import swal from 'sweetalert2';
+    import { domain } from '../domain.config';
 
     export default{
         data(){
@@ -70,7 +72,7 @@
         methods: {
             save(){
                 console.log(this.products);
-                axios.post('http://croatia.mia.rs/api/save-products', {'products': this.products})
+                axios.post(domain + 'api/save-products', {'products': this.products})
                     .then((res) => {
                         if(res.status == 200){
                             swal({
@@ -105,6 +107,7 @@
                     publish_at: product.publish_at,
                     amount: product.amount,
                     price_small: product.price_small,
+                    discount: product.discount,
                     price_outlet: product.price_outlet,
                     brand_id: product.brand_id,
                     set_id: product.set_id,
@@ -187,6 +190,7 @@
                         publish_at: '2017-11-15 15:47:10',
                         amount: 0,
                         price_small: 0,
+                        discount: 0,
                         price_outlet: 0,
                         brand_id: null,
                         set_id: null,

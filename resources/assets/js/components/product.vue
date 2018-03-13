@@ -20,6 +20,7 @@
         <td><datetime v-model="product.publish_at" class="rasiri" :config="{format: 'YYYY-MM-DD H:s'}"></datetime></td>
         <td><input type="text" v-model="product.amount" class="form-control"></td>
         <td><input type="text" v-model="product.price_small" class="form-control"></td>
+        <td><input type="text" v-model="product.discount" class="form-control"></td>
         <td><input type="text" v-model="product.price_outlet" class="form-control"></td>
         <td>
             <select name="brand_id" v-model="product.brand_id">
@@ -145,6 +146,7 @@
 <script>
     import imagePreview from './imagePreview.vue';
     import datetime from 'vue-bootstrap-datetimepicker';
+    import { domain } from '../domain.config';
 
     export default{
         props: ['product'],
@@ -175,7 +177,7 @@
             },
             getBrands(){
                 if(this.brands.length == 0){
-                    axios.post('http://croatia.mia.rs/api/brands')
+                    axios.post(domain + 'api/brands')
                         .then((res) => {
                             this.brands = res.data.brands;
                         })
@@ -186,7 +188,7 @@
             },
             getLocales(){
                 if(this.locales.length == 0){
-                    axios.post('http://croatia.mia.rs/api/locales')
+                    axios.post(domain + 'api/locales')
                         .then((res) => {
                             this.locales = res.data.locales;
                         })
@@ -197,7 +199,7 @@
             },
             getSets(){
                 if(this.sets.length == 0){
-                    axios.post('http://croatia.mia.rs/api/sets')
+                    axios.post(domain + 'api/sets')
                         .then((res) => {
                             this.sets = res.data.sets;
                         })
@@ -208,7 +210,7 @@
             },
             getCats1(){
                 if(this.product.cats1.length == 0){
-                    axios.post('http://croatia.mia.rs/api/categories', {'category_id': 0, 'level': 1})
+                    axios.post(domain + 'api/categories', {'category_id': 0, 'level': 1})
                         .then((res) => {
                             this.product.cats1 = res.data.categories;
                             this.product.cats2 = [];
@@ -224,7 +226,7 @@
                 }
             },
             getCats2(cat_id){
-                axios.post('http://croatia.mia.rs/api/categories', {'category_id': cat_id, 'level': 2})
+                axios.post(domain + 'api/categories', {'category_id': cat_id, 'level': 2})
                     .then((res) => {
                         this.product.cats2 = res.data.categories;
                         this.product.cats3 = [];
@@ -237,7 +239,7 @@
                     });
             },
             getCats3(cat_id){
-                axios.post('http://croatia.mia.rs/api/categories', {'category_id': cat_id, 'level': 3})
+                axios.post(domain + 'api/categories', {'category_id': cat_id, 'level': 3})
                     .then((res) => {
                         this.product.cats3 = res.data.categories;
                         this.product.cats4 = [];
@@ -258,7 +260,7 @@
             },
             getProperties(){
                 if(this.product.set_id == null){
-                    axios.post('http://croatia.mia.rs/api/properties', {'set_id': 0})
+                    axios.post(domain + 'api/properties', {'set_id': 0})
                         .then((res) => {
                             this.product.prop1 = res.data.properties;
                             this.product.prop2 = res.data.properties;
@@ -273,7 +275,7 @@
                             console.log(e);
                         });
                 }else{
-                    axios.post('http://croatia.mia.rs/api/properties', {'set_id': this.product.set_id})
+                    axios.post(domain + 'api/properties', {'set_id': this.product.set_id})
                         .then((res) => {
                             this.product.prop1 = res.data.properties;
                             this.product.prop2 = res.data.properties;
@@ -290,7 +292,7 @@
                 }
             },
             getAttribute(property_id, index){
-                axios.post('http://croatia.mia.rs/api/attributes', {'property_id': property_id})
+                axios.post(domain + 'api/attributes', {'property_id': property_id})
                     .then((res) => {
                         console.log(property_id);
                         switch(index) {

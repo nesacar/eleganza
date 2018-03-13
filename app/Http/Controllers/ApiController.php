@@ -109,7 +109,8 @@ class ApiController extends Controller
                         $old->publish_at = Carbon::parse($product['publish_at']);
                         $old->amount = $product['amount'];
                         $old->price_small = $product['price_small'];
-                        $old->price_outlet = $product['price_outlet'];
+                        $old->discount = $product['discount'];
+                        $old->price_outlet = Product::calculateDiscount($product['discount'], $old);
                         $old->update();
 
                         if(!empty($product['image'])){
@@ -136,11 +137,15 @@ class ApiController extends Controller
                         $new->amount = $product['amount'];
                         $new->price_small = $product['price_small'];
                         $new->price_outlet = $product['price_outlet'];
+                        $new->discount = $product['discount'];
                         $new->save();
 
                         if(!empty($product['image'])){
                             Product::base64UploadImage($new->id, $product['image']);
                         }
+
+                        $new->price_outlet = Product::calculateDiscount($product['discount'], $new);
+                        $new->update();
 
                         $cats = Category::prepareCategoryFromVueExcelTable($product['cat1_id'], $product['cat2_id'], $product['cat3_id'], $product['cat4_id']);
                         $atts = Attribute::prepareAttributeFromVueExcelTable($product['att1_id'], $product['att2_id'], $product['att3_id'], $product['att4_id'], $product['att5_id'], $product['att6_id'], $product['att7_id'], $product['att8_id']);
