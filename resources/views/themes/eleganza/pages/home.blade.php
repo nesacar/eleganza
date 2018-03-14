@@ -9,6 +9,9 @@
                     <div class="e-jumbotron__cta e-jumbotron__cta--left">
                         <h2>{{ $hero->title }}</h2>
                         <a href="{{ url($hero->link) }}" class="e-cta with-shadow with-shadow">{{ $hero->button }}</a>
+                        @if(!empty($hero2))
+                            <a href="{{ url($hero2->link) }}" class="e-cta with-shadow with-shadow">{{ $hero2->button }}</a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -54,7 +57,10 @@
                 <div class="container e-jumbotron__content e-jumbotron__content--center">
                     <div class="e-jumbotron__cta e-jumbotron__cta--center">
                         <h2>{{ $home1->title }}</h2>
-                        <a href="#" class="e-cta with-shadow">{{ $home1->button }}</a>
+                        <a href="{{ $home1->link }}" class="e-cta with-shadow">{{ $home1->button }}</a>
+                        @if(!empty($home12))
+                            <a href="{{ $home12->link }}" class="e-cta with-shadow">{{ $home12->button }}</a>
+                        @endif
                     </div>
                 </div>
             </div>

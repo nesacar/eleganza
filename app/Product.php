@@ -1018,5 +1018,9 @@ class Product extends Model {
     public function message(){
         return $this->hasMany(Message::class);
     }
+
+    public function group(){
+        return $this->belongsToMany(Group::class);
+    }
 }
 

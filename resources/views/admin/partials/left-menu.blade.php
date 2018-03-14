@@ -42,6 +42,7 @@
             <li><a href="{{ url('admin/sets') }}"><i class="fa fa-flask rokni-desno"></i>Set</a></li>
             <li><a href="{{ url('admin/carts') }}"><i class="fa fa-shopping-cart rokni-desno"></i>Korpe</a></li>
             <li><a href="{{ url('admin/messages') }}"><i class="fa fa-envelope rokni-desno"></i>Poruke</a></li>
+            <li><a href="{{ url('admin/groups') }}"><i class="fa fa-cubes rokni-desno"></i>Grupe proizvoda</a></li>
         </ul>
     </li>
     @endif

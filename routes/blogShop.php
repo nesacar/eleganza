@@ -159,3 +159,7 @@ Route::get('admin/sets/publish/{id}', 'SetsController@publish');
 Route::resource('admin/messages', 'MessagesController');
 Route::get('admin/messages/{id}/delete', 'MessagesController@delete');
 Route::post('admin/messages/{id}/add', 'MessagesController@add');
+
+Route::resource('admin/groups', 'GroupsController');
+Route::get('admin/groups/{id}/delete', 'GroupsController@delete');
+Route::get('admin/groups/publish/{id}', 'GroupsController@publish');

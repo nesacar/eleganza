@@ -10,6 +10,7 @@ use App\Cart;
 use App\Category;
 use App\Click;
 use App\Customer;
+use App\Group;
 use App\Helper;
 use App\Http\Requests\CartOrderRequest;
 use App\Http\Requests\CustomerRegisterRequest;
@@ -50,10 +51,14 @@ class PagesController extends Controller
         $settings = Setting::first();
         $theme = Theme::where('active', 1)->first();
         $hero = Block::find(4)->box()->where('publish', 1)->orderBy('order', 'ASC')->first();
+        $hero2 = Block::find(4)->box()->where('publish', 1)->orderBy('order', 'ASC')->skip(1)->first();
         $home4 = Block::find(2)->box()->where('publish', 1)->orderBy('order', 'ASC')->get();
         $home1 = Block::find(3)->box()->where('publish', 1)->orderBy('order', 'ASC')->first();
+        $home12 = Block::find(3)->box()->where('publish', 1)->orderBy('order', 'ASC')->skip(1)->first();
         $posts = Post::where('publish', 1)->where('home', 1)->where('publish_at', '<=', (new \Carbon\Carbon()))->orderBy('publish_at', 'DESC')->take(3)->get();
-        return view('themes.'.$theme->slug.'.pages.home', compact('settings', 'theme', 'hero', 'home4', 'home1', 'posts'));
+        $bestSellers = Group::find(1);
+        $products = $bestSellers? $bestSellers->product()->where('publish', 1)->get() : [];
+        return view('themes.'.$theme->slug.'.pages.home', compact('settings', 'theme', 'hero', 'hero2', 'home4', 'home1', 'home12', 'posts', 'products'));
     }
 
     public function shopCategory($slug){
