@@ -5183,7 +5183,7 @@ body:not(.small-sidebar):not(.page-horizontal-bar) .menu.accordion-menu {
 .excel-tabela tr td{
     text-align: center;
     border: 1px solid #b7b7b7;
-    padding: 0 10px !important;
+    padding: 0 0 !important;
 }
 .excel-tabela tr th{
     text-align: center;

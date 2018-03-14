@@ -5,7 +5,7 @@
         <td><input type="text" v-model="product.title" class="form-control"></td>
         <td><input type="text" v-model="product.short" class="form-control"></td>
         <td><input type="text" v-model="product.body" class="form-control"></td>
-        <td><image-preview @imageAdded="getImage($event)"></image-preview></td>
+        <td><image-no-preview @imageAdded="getImage($event)"></image-no-preview></td>
         <td>
             <select name="language_id" v-model="product.language_id">
                 <option v-for="locale in locales" :value="locale.id">{{ locale.title }}</option>
@@ -144,9 +144,10 @@
 </template>
 
 <script>
-    import imagePreview from './imagePreview.vue';
+    import imageNoPreview from './imageNoPreview.vue';
     import datetime from 'vue-bootstrap-datetimepicker';
     import { domain } from '../domain.config';
+    import swal from 'sweetalert2';
 
     export default{
         props: ['product'],
@@ -158,7 +159,7 @@
             }
         },
         components: {
-            'image-preview': imagePreview,
+            'image-no-preview': imageNoPreview,
             'datetime': datetime
         },
         created(){
@@ -250,7 +251,7 @@
                     });
             },
             getCats4(cat_id){
-                axios.post('http://croatia.mia.rs/api/categories', {'category_id': cat_id, 'level': 4})
+                axios.post(domain + 'api/categories', {'category_id': cat_id, 'level': 4})
                     .then((res) => {
                         this.product.cats4 = res.data.categories;
                     })
@@ -339,6 +340,13 @@
             },
             getImage(image){
                 this.product.image = image;
+                swal({
+                    position: 'center',
+                    type: 'success',
+                    title: 'Uspeh',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             }
         }
     }

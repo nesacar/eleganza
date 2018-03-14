@@ -19,6 +19,7 @@ Vue.component('imageUpload', require('./components/imageUpload.vue'));
 Vue.component('excelTable', require('./components/excelTable.vue'));
 Vue.component('product', require('./components/product.vue'));
 Vue.component('imagePreview', require('./components/imagePreview.vue'));
+Vue.component('imageNoPreview', require('./components/imageNoPreview.vue'));
 Vue.component('date-picker', require('vue-bootstrap-datetimepicker'));
 
 const app = new Vue({
