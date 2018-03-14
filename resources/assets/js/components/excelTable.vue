@@ -56,6 +56,7 @@
     import product from './product.vue';
     import swal from 'sweetalert2';
     import { domain } from '../domain.config';
+    import moment from 'moment';
 
     export default{
         data(){
@@ -187,7 +188,7 @@
                         image: null,
                         language_id: 2,
                         publish: 1,
-                        publish_at: '2017-11-15 15:47:10',
+                        publish_at: moment().format('YYYY-MM-DD hh:mm:00'),
                         amount: 0,
                         price_small: 0,
                         discount: 0,
