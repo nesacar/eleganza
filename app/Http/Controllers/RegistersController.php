@@ -26,12 +26,12 @@ class RegistersController extends Controller
 
     public function registerUpdate(CustomerRegisterRequest $request){
         $user = Customer::createCustomer();
+        $thm = Theme::where('active', 1)->first();
+        \Mail::to($user->email)->send(new RegisterConfirmationMail($user, $thm));
 
+        $settings = Setting::first();
         $theme = Theme::where('active', 1)->first();
-
-        \Mail::to($user->email)->send(new RegisterConfirmationMail($user, $theme));
-
-        return 'Strana hvala sto ste se registrovali. Na Vaš mail ce stici potvrdni link za registraciju.';
+        return view('themes.'.$theme->slug.'.pages.thank-for-registration', compact('settings', 'theme'));
     }
 
     public function confirmRegistration($hash){

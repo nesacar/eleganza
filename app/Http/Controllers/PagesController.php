@@ -882,6 +882,10 @@ class PagesController extends Controller
 //
 //        \Mail::to('nebojsart1409@yahoo.com')->send(new RegisterConfirmationMail($user, $theme));
 
+//        $settings = Setting::first();
+//        $theme = Theme::where('active', 1)->first();
+//        return view('themes.'.$theme->slug.'.pages.thank-for-registration', compact('settings', 'theme'));
+
         return 'done';
     }
 
