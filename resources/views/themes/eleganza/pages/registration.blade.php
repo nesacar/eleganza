@@ -97,8 +97,8 @@
                                 </span>
                                 @endif
                             </div>
-                            <div class="col-sm-6 e-form__group">
-                                <label for="mjesto">Mjesto</label>
+                            <div class="col-sm-12 e-form__group">
+                                <label for="mjesto">Mjesto i poštanski broj</label>
                                 <input type="text" name="town" id="mjesto" class="nl-input">
                                 @if ($errors->has('town'))
                                     <span class="help-block">
@@ -106,15 +106,15 @@
                                 </span>
                                 @endif
                             </div>
-                            <div class="col-sm-6 e-form__group">
-                                <label for="postanski-broj">Poštanski broj</label>
-                                <input type="text" name="postcode" id="postanski-broj" class="nl-input">
-                                @if ($errors->has('postcode'))
-                                    <span class="help-block">
-                                    <strong style="color: red">{{ $errors->first('postcode') }}</strong>
-                                </span>
-                                @endif
-                            </div>
+                            {{--<div class="col-sm-6 e-form__group">--}}
+                                {{--<label for="postanski-broj">Poštanski broj</label>--}}
+                                {{--<input type="text" name="postcode" id="postanski-broj" class="nl-input">--}}
+                                {{--@if ($errors->has('postcode'))--}}
+                                    {{--<span class="help-block">--}}
+                                    {{--<strong style="color: red">{{ $errors->first('postcode') }}</strong>--}}
+                                {{--</span>--}}
+                                {{--@endif--}}
+                            {{--</div>--}}
                         </div>
                     </div>
                     @if(false)

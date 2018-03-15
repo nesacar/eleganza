@@ -31,7 +31,6 @@ class CustomerRegisterRequest extends FormRequest
             'address' => 'required',
             'phone' => 'required',
             'town' => 'required',
-            'postcode' => 'required',
         ];
     }
 
@@ -47,7 +46,6 @@ class CustomerRegisterRequest extends FormRequest
             'address.required' => 'Adresa je obavezna.',
             'phone.required' => 'Telefon je obavezan.',
             'town.required' => 'Mjesto je obavezano.',
-            'postcode.required' => 'Poštanski broj je obavezan.',
         ];
     }
 }

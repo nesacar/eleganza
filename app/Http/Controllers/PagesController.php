@@ -20,6 +20,7 @@ use App\Http\Requests\SubscribeRequest;
 use App\Language;
 use App\Mail\CartOrder;
 use App\Mail\LuxLifeNewsletter;
+use App\Mail\RegisterConfirmationMail;
 use App\Menu;
 use App\MenuLink;
 use App\Newsletter;
@@ -875,6 +876,12 @@ class PagesController extends Controller
             $product->price_small = rand(23,223);
             $product->update();
         }*/
+
+//        $user = User::find(25);
+//        $theme = Theme::where('active', 1)->first();
+//
+//        \Mail::to('nebojsart1409@yahoo.com')->send(new RegisterConfirmationMail($user, $theme));
+
         return 'done';
     }
 
@@ -932,24 +939,6 @@ class PagesController extends Controller
         $settings = Setting::first();
         $theme = Theme::where('active', 1)->first();
         return view('themes.'.$theme->slug.'.pages.registration', compact('settings', 'theme'));
-    }
-
-    public function login(){
-        $settings = Setting::first();
-        $theme = Theme::where('active', 1)->first();
-        return view('themes.'.$theme->slug.'.pages.login', compact('settings', 'theme'));
-    }
-
-    public function register(){
-        $settings = Setting::first();
-        $theme = Theme::where('active', 1)->first();
-        return view('themes.'.$theme->slug.'.pages.registration', compact('settings', 'theme'));
-    }
-
-    public function registerUpdate(CustomerRegisterRequest $request){
-        $user = Customer::createCustomer();
-        auth()->login($user);
-        return redirect('profil');
     }
 
     public function wishList(){

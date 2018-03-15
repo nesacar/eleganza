@@ -1,5 +1,5 @@
-<div class="mobile-drawer-holder mobile-drawer-holder--temporary" id=jsMobileMenu>
-    <aside class="e-drawer e-drawer--left">
+<div class="mobile-drawer-holder mobile-drawer-holder--temporary" id=jsMobileMenu data-e-is-overlay=true>
+    <aside class="e-drawer e-drawer--left" data-e-is-surface=true>
         @if(count($menus)>0)
         <ul class=mobile-nav-list>
             @foreach($menus as $menu)

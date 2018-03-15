@@ -24,6 +24,8 @@ class Customer extends Model {
         $user->email = request('email');
         $user->password = bcrypt(request('password'));
         $user->role = 0;
+        $user->active = 0;
+        $user->hash = str_random(20);
         $user->block = 0;
         $user->save();
 

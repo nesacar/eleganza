@@ -16,7 +16,7 @@ class RedirectIfNotCustomer
     public function handle($request, Closure $next)
     {
         if(\Auth::check()){
-            if(!$request->user()->isCustomer() || $request->user()->block == 1){
+            if(!$request->user()->isCustomer() || $request->user()->block == 1 || $request->user()->active == 0){
                 return redirect('/logout');
             }
         }else{

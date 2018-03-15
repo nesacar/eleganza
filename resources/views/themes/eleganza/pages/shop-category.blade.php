@@ -28,8 +28,8 @@
 
     <!-- Page content -->
     <section class="container content products-content">
-        <div class="mobile-drawer-holder filters-holder" id=jsFilters>
-            {!! Form::open(['method' => 'GET', 'class' => 'e-drawer e-drawer--right filters-drawer', 'id' => 'moja']) !!}
+        <div class="mobile-drawer-holder filters-holder" id=jsFilters data-e-is-overlay=true>
+            {!! Form::open(['method' => 'GET', 'class' => 'e-drawer e-drawer--right filters-drawer', 'id' => 'moja', 'data-e-is-surface' => true]) !!}
                 {!! Form::hidden('category_id', $category->id) !!}
                 {!! Form::hidden('page', 0, array('id' => 'page')) !!}
 

@@ -15,14 +15,15 @@ Route::get('/', 'PagesController@index');
 Route::get('pretraga', 'PagesController@search');
 Route::post('subscribe', 'PagesController@subscribe');
 
-Route::get('logovanje', 'PagesController@login');
-Route::get('registracija', 'PagesController@register');
+Route::get('logovanje', 'RegistersController@login');
+Route::get('registracija', 'RegistersController@register');
+Route::post('register', 'RegistersController@registerUpdate')->name('user-register');
+Route::get('user/verify/{hash}', 'RegistersController@confirmRegistration')->name('user-verify');
 
 Route::get('profile', 'CustomersController@profile');
 
 Route::get('lista-zelja', 'PagesController@wishList');
 Route::get('kosarica', 'PagesController@cart');
-Route::post('register', 'PagesController@registerUpdate')->name('user-register');
 Route::get('pretraga', 'PagesController@search');
 
 Route::post('add-to-wishlist/{id}', 'PagesController@addToWishList');
