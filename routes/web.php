@@ -18,7 +18,11 @@ Route::post('subscribe', 'PagesController@subscribe');
 Route::get('logovanje', 'RegistersController@login');
 Route::get('registracija', 'RegistersController@register');
 Route::post('register', 'RegistersController@registerUpdate')->name('user-register');
-Route::get('user/verify/{hash}', 'RegistersController@confirmRegistration')->name('user-verify');
+
+Route::get('user/verify/{hash}', 'RegistersController@confirmRegistration');
+Route::get('password/forget', 'RegistersController@passwordForgetForm');
+Route::post('password/forget', 'RegistersController@passwordForgetUpdate');
+Route::get('password/new/{hash}', 'RegistersController@passwordNewUpdate');
 
 Route::get('profile', 'CustomersController@profile');
 

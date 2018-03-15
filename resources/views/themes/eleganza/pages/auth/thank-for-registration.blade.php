@@ -15,7 +15,7 @@
 
     <div class=page-header>
         <div class="container page-header__container">
-            <h2 class=page-header__title>Hvala na registraciji</h2>
+            <h2 class=page-header__title>{{ $message }}</h2>
             <p>
                 Zahvaljujemo vam se na registraciji. Na vašu e-mail adresu će stići poruka s linkom na koji je potrebno kliknuti kako bismo verificirali valjanost upisane e-mail adrese i završili proces registracije.
             </p>

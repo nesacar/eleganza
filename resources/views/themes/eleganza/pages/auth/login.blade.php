@@ -74,7 +74,7 @@
                 <div class=login>
                     <div class=login__help>
                         <p><a href="{{ url('registracija') }}">Otvori novi korisnički račun</a></p>
-                        <p>Zaboravio/la si lozinku? <a href=#>Zatraži novu lozinku</a></p>
+                        <p>Zaboravio/la si lozinku? <a href="{{ url('password/forget') }}">Zatraži novu lozinku</a></p>
                     </div>
                     @if(false)
                     <div class=login__alt>

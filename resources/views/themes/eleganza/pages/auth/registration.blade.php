@@ -169,9 +169,10 @@
                         @if(false)
                         <p><a href=#>Otvori novi korisnički račun</a></p>
                         @endif
-                        <p>Zaboravio/la si lozinku? <a href=#>Zatraži novu lozinku</a></p>
+                        <p>Zaboravio/la si lozinku? <a href="{{ url('password/forget') }}">Zatraži novu lozinku</a></p>
                     </div>
                     <div class=login__alt>
+                        @if(false)
                         <h4>prijava putem društvenih mreža</h4>
                         <ul class=login__social-list>
                             <li class=login__social-list__item>
@@ -191,6 +192,7 @@
                                 </a>
                             </li>
                         </ul>
+                        @endif
                     </div>
                 </div>
             </div>
