@@ -20,6 +20,7 @@ use App\Http\Requests\SubscribeRequest;
 use App\Language;
 use App\Mail\CartOrder;
 use App\Mail\LuxLifeNewsletter;
+use App\Mail\OrderIsReadyMail;
 use App\Mail\RegisterConfirmationMail;
 use App\Menu;
 use App\MenuLink;
@@ -732,6 +733,7 @@ class PagesController extends Controller
 
     public function kupovina(CartOrderRequest $request){
         //return request()->all();
+        $theme = Theme::where('active', 1)->first();
         $customer = Customer::where('email', request('email'))->first();
         $user = User::where('email', request('email'))->first();
 
@@ -775,7 +777,7 @@ class PagesController extends Controller
         $cart->update();
 
         \Session::forget('korpa');
-        \Mail::to('nebojsart1409@yahoo.com')->queue(new CartOrder($cart));
+        \Mail::to('nebojsart1409@yahoo.com')->queue(new OrderIsReadyMail($user, $theme, $cart));
 
         return redirect('/korpa')->with('done', 'Vaša narudžbina je izvršena!');
 
@@ -877,14 +879,19 @@ class PagesController extends Controller
             $product->update();
         }*/
 
-//        $user = User::find(25);
-//        $theme = Theme::where('active', 1)->first();
-//
-//        \Mail::to('nebojsart1409@yahoo.com')->send(new RegisterConfirmationMail($user, $theme));
+        $user = User::with('Customer')->where('email', 'nebojsa.markovic@ministudio.rs')->first();
+        $theme = Theme::where('active', 1)->first();
+        $cart = Cart::with('Product')->first();
+
+        //return \Carbon\Carbon::parse($cart->publish_at)->format('d/m/Y h:m:s');
+
+        \Mail::to('nebojsart1409@yahoo.com')->send(new OrderIsReadyMail($user, $theme, $cart));
 
 //        $settings = Setting::first();
 //        $theme = Theme::where('active', 1)->first();
 //        return view('themes.'.$theme->slug.'.pages.thank-for-registration', compact('settings', 'theme'));
+
+
 
         return 'done';
     }
