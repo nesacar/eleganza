@@ -22,7 +22,8 @@ Route::post('register', 'RegistersController@registerUpdate')->name('user-regist
 Route::get('user/verify/{hash}', 'RegistersController@confirmRegistration');
 Route::get('password/forget', 'RegistersController@passwordForgetForm');
 Route::post('password/forget', 'RegistersController@passwordForgetUpdate');
-Route::get('password/new/{hash}', 'RegistersController@passwordNewUpdate');
+Route::get('password/new/{hash}', 'RegistersController@newPassword');
+Route::post('password/new', 'RegistersController@newPasswordUpdate');
 
 Route::get('profile', 'CustomersController@profile');
 

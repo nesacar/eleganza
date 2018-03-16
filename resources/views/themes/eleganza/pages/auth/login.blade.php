@@ -1,5 +1,11 @@
 @extends('themes.'.$theme->slug.'.index')
 
+@section('header-style')
+    @if(\Session()->has('done'))
+        {!! HTML::style('themes/'.$theme->slug.'/css/jquery.toastmessage.css') !!}
+    @endif
+@endsection
+
 @section('content')
 
     <div>
@@ -90,4 +96,16 @@
         </div>
     </section>
 
+@endsection
+
+@section('footer_scripts')
+    @if(\Session()->has('done'))
+        {!! HTML::script('themes/'.$theme->slug.'/js/jquery-2.2.4.min.js') !!}
+        {!! HTML::script('themes/'.$theme->slug.'/js/jquery.toastmessage.js') !!}
+        <script>
+            $(function(){
+                $().toastmessage('showSuccessToast', "{{ \Session()->get('done') }}");
+            });
+        </script>
+    @endif
 @endsection

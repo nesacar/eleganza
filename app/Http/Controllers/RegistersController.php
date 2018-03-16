@@ -67,14 +67,21 @@ class RegistersController extends Controller
         }
     }
 
-    public function passwordNewUpdate(UpdatePasswordRequest $request, $hash){
-        return 'slanje forme za reset';
+    public function newPassword($hash){
         $user = User::where('hash', $hash)->first();
         if(!empty($user)){
-            $user->password = bcrypt(request('password'));
-            $user->update();
-            return redirect('logovanje');
+            $settings = Setting::first();
+            $theme = Theme::where('active', 1)->first();
+            return view('themes.'.$theme->slug.'.pages.auth.new-password', compact('settings', 'theme', 'user'));
+        }else{
+            return redirect('/');
         }
-        return redirect('/');
+    }
+
+    public function newPasswordUpdate(UpdatePasswordRequest $request){
+        $user = User::where('hash', request('hash'))->first();
+        $user->password = bcrypt(request('password'));
+        $user->update();
+        return redirect('logovanje')->with('done', 'Lozinka je uspešno promenjena');
     }
 }

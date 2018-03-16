@@ -24,7 +24,7 @@ class UpdatePasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'password' => 'required|confirm',
+            'password' => 'required|confirmed',
         ];
     }
 
@@ -37,7 +37,7 @@ class UpdatePasswordRequest extends FormRequest
     {
         return [
             'password.required' => 'Lozinka je obavezna',
-            'password.confirm' => 'Lozinka nije ispravno potvrdjena',
+            'password.confirmed' => 'Lozinka nije ispravno potvrdjena',
         ];
     }
 }
