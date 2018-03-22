@@ -163,3 +163,7 @@ Route::post('admin/messages/{id}/add', 'MessagesController@add');
 Route::resource('admin/groups', 'GroupsController');
 Route::get('admin/groups/{id}/delete', 'GroupsController@delete');
 Route::get('admin/groups/publish/{id}', 'GroupsController@publish');
+
+Route::resource('admin/coupons', 'CouponsController');
+Route::get('admin/coupons/{id}/delete', 'CouponsController@delete');
+Route::get('admin/coupons/publish/{id}', 'CouponsController@publish');

@@ -26,6 +26,8 @@ Route::get('password/new/{hash}', 'RegistersController@newPassword');
 Route::post('password/new', 'RegistersController@newPasswordUpdate');
 
 Route::get('profile', 'CustomersController@profile');
+Route::post('kosarica', 'CustomersController@cartUpdate');
+Route::post('coupon', 'CustomersController@coupon');
 
 Route::get('lista-zelja', 'PagesController@wishList');
 Route::get('kosarica', 'PagesController@cart');
@@ -37,8 +39,6 @@ Route::post('remove-from-wishlist/{id}', 'PagesController@removeFromWishList');
 Route::post('add-to-cart/{id}', 'PagesController@addToCart');
 Route::post('add-to-cart-from-wishlist/{id}', 'PagesController@addToCartFromWishList');
 Route::post('remove-from-cart/{id}', 'PagesController@removeFromCart');
-
-Route::post('kosarica', 'CustomersController@cartUpdate');
 
 //Route::get('login/facebook', 'Auth\LoginController@redirectToProvider');
 //Route::get('login/facebook/callback', 'Auth\LoginController@handleProviderCallback');

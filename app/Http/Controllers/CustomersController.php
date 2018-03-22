@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Cart;
+use App\Coupon;
 use App\Customer;
 use App\Http\Requests\CustomerRegisterRequest;
+use App\Http\Requests\EnterCouponRequest;
 use App\Product;
 use App\Setting;
 use App\Theme;
@@ -29,5 +31,13 @@ class CustomersController extends Controller
         Cart::storeCart(auth()->user()->customer->id, $sum + $omot);
         Product::removeFromCart();
         return redirect('profile')->with('done', 'Vaša košarica je naručena');
+    }
+
+    public function coupon(Request $request){
+        if($coupon = Coupon::getDiscount(request('code'))){
+            \Session::put('coupon', $coupon->discount);
+            return 'done';
+        }
+        return 'error';
     }
 }

@@ -52,7 +52,9 @@
                                             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="glyphicon glyphicon-triangle-bottom"></i></button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                                 <li><a href="{{ URL::action('SetsController@properties', $s->id) }}">osobine</a></li>
+                                                @if(false)
                                                 <li><a href="{{ URL::action('SetsController@attributes', $s->id) }}">atributi</a></li>
+                                                @endif
                                                 <li><a href="{{ URL::action('SetsController@delete', $s->id) }}" onclick="return confirm('Da li ste sigurni da hoćete da obrišete ovaj set?')" title="Obrišite atribut">obriši</a></li>
                                             </ul>
                                         </div>

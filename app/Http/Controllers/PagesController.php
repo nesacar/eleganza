@@ -728,7 +728,7 @@ class PagesController extends Controller
         $theme = Theme::where('active', 1)->first();
         $category = PCategory::where('parent', 0)->where('order', '<>', 99)->where('publish', 1)->orderby('order', 'ASC')->first();
         $sum=0;
-        return view('themes.'.$theme->slug.'.pages.cart', compact('category', 'sum', 'settings', 'theme', 'active'));
+        return view('themes.'.$theme->slug.'.pages.cart', compact('category', 'sum', 'settings', 'theme', 'active', 'discount'));
     }
 
     public function kupovina(CartOrderRequest $request){
@@ -883,13 +883,9 @@ class PagesController extends Controller
         $theme = Theme::where('active', 1)->first();
         $cart = Cart::with('Product')->first();
 
-        //return \Carbon\Carbon::parse($cart->publish_at)->format('d/m/Y h:m:s');
-
         \Mail::to('nebojsart1409@yahoo.com')->send(new OrderIsReadyMail($user, $theme, $cart));
 
-//        $settings = Setting::first();
-//        $theme = Theme::where('active', 1)->first();
-//        return view('themes.'.$theme->slug.'.pages.thank-for-registration', compact('settings', 'theme'));
+
 
 
 
@@ -965,7 +961,8 @@ class PagesController extends Controller
         $theme = Theme::where('active', 1)->first();
         $cart = session('cart');
         count($cart)>0? $products = Product::with('Brand')->whereIn('id', Product::getCartIds())->where('publish', 1)->get() : $products = [];
-        return view('themes.'.$theme->slug.'.pages.cart', compact('settings', 'theme', 'products'));
+        $discount = \Session::has('coupon')? \Session::get('coupon') : 0;
+        return view('themes.'.$theme->slug.'.pages.cart', compact('settings', 'theme', 'products', 'discount'));
     }
 
     public function addToWishList($id){

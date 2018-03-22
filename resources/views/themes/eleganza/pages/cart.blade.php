@@ -95,8 +95,8 @@
                             <p>Ukoliko imate promotivan kod za popust, molimo da ga ovdje unesete:</p></div>
                         <div class="col-lg-6">
                             <div class="e-form__group">
-                                <input type="text" class="nl-input nl-input--fat" placeholder="Unesite kod ovdje...">
-                                <button class="e-btn e-btn--fat e-btn--primary" id="kupon">potvrdi</button>
+                                <input type="text" name="code" class="nl-input nl-input--fat" placeholder="Unesite kod ovdje...">
+                                <button class="e-btn e-btn--fat e-btn--primary" id="kupon" type="submit">potvrdi</button>
                             </div>
                         </div>
                     </div>
@@ -199,7 +199,15 @@
 
             $('#kupon').click(function(e){
                 e.preventDefault();
-                console.log('kupon');
+                var code = $(this).parent().find('input[type="text"]').val();
+                console.log(code);
+                $.post('{{ url('coupon') }}', {_token: '{{ csrf_token() }}', code: code }, function(data){
+                    if(data == 'done'){
+                        location.reload();
+                    }else{
+                        $().toastmessage('showWarningToast', "Kupon nije ispravan");
+                    }
+                });
             });
 
             $('.submit').click(function (e) {
@@ -220,8 +228,17 @@
                     var price = parseFloat(el.find('.js-total').text());
                     sum += parseFloat(price.toFixed(2));
                 });
-                $('#ukupno').text(sum);
-                $('#sveukupno').text(sum);
+                @if(!empty($discount))
+                    $('#ukupno').text(sum);
+                    var discount = parseInt('{{ $discount }}');
+                    discount = (discount / 100) * sum;
+                    sum = sum - discount;
+                    $('#popust').text(parseFloat(discount.toFixed(2)));
+                    $('#sveukupno').text(parseFloat(sum).toFixed(2));
+                @else
+                    $('#ukupno').text(sum);
+                    $('#sveukupno').text(sum);
+                @endif
             }
 
             function countChange() {

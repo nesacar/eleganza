@@ -52,6 +52,7 @@
             display: block;
             margin: 13px 0;
         }
+
     </style>
     <!--[if !mso]><!-->
     <style type="text/css">
@@ -515,23 +516,23 @@
                             <tr>
                                 <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                                     <div style="font-family:Helvetica;font-size:21px;line-height:1.4;text-align:left;color:rgba(0, 0, 0, .87);">
-                                        <div class="row" style="display: flex; justify-content: space-between;">
-                                            <span>Cijena bez PDV-a</span> <span>{{ $cart->sum }}<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
+                                        <div class="row">
+                                            <span>Cijena bez PDV-a</span> <span style="float: right;">{{ $cart->sum }}<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
                                         </div>
-                                        <div class="row" style="display: flex; justify-content: space-between;">
-                                            <span>Poštarina</span> <span>0<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
+                                        <div class="row">
+                                            <span>Poštarina</span> <span style="float: right;">0<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
                                         </div>
-                                        <div class="row" style="display: flex; justify-content: space-between;">
-                                            <span>Naknada za plaćanje pouzećem</span> <span>6<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
+                                        <div class="row">
+                                            <span>Naknada za plaćanje pouzećem</span> <span style="float: right;">6<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
                                         </div>
-                                        <div class="row" style="display: flex; justify-content: space-between;">
-                                            <span>Kupon bez PDV-a (25% Disc.)</span> <span>-114<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
+                                        <div class="row">
+                                            <span>Kupon bez PDV-a (25% Disc.)</span> <span style="float: right;">-114<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
                                         </div>
-                                        <div class="row" style="display: flex; justify-content: space-between;">
-                                            <span>PDV (20%)</span> <span>{{ ceil($cart->sum * 0.2) }}<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
+                                        <div class="row">
+                                            <span>PDV (20%)</span> <span style="float: right;">{{ ceil($cart->sum * 0.2) }}<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
                                         </div>
                                         <div class="row total" style="display: flex; justify-content: space-between; color: #F8333F; font-size: 28px; font-weight: bold; margin-bottom: 30px;">
-                                            <span>Ukupno</span> <span>{{ $cart->sum + ceil($cart->sum * 0.2) }}<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
+                                            <span>Ukupno</span> <span style="float: right;">{{ $cart->sum + ceil($cart->sum * 0.2) }}<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
                                         </div>
                                     </div>
                                 </td>

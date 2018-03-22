@@ -4,7 +4,7 @@
     <ol class="breadcrumb">
         <li><a href="{{ url('home') }}">Home</a></li>
         <li><a href="{{ url('admin/sets') }}">Setovi</a></li>
-        <li><a href="{{ url('admin/sets/'.$set->id.'/edit') }}">{{ $set->{'title:sr'} }}</a></li>
+        <li><a href="{{ url('admin/sets/'.$set->id.'/edit') }}">{{ $set->{'title:hr'} }}</a></li>
         <li class="active">Atributi</li>
     </ol>
 @endsection
