@@ -1804,6 +1804,11 @@ fieldset[disabled] .btn-danger:hover {
     color: #afafaf
 }
 
+.panel-white .panel-heading .panel-control a i{
+    font-size: 22px;
+    color: black;
+}
+
 .panel-white .panel-heading .panel-control a:hover {
     color: #5f5f5f
 }
