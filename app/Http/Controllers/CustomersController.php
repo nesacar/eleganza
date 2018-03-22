@@ -35,7 +35,7 @@ class CustomersController extends Controller
 
     public function coupon(Request $request){
         if($coupon = Coupon::getDiscount(request('code'))){
-            \Session::put('coupon', $coupon->discount);
+            \Session::put('coupon', $coupon);
             return 'done';
         }
         return 'error';

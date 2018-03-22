@@ -14,10 +14,10 @@ class Coupon extends Model
     protected $fillable = ['code', 'discount', 'number', 'publish_at', 'valid_at', 'publish', 'forever'];
 
     public static function getDiscount($code){
-        $coupon = self::where('code', $code)->where('publish_at', '>=', Carbon::now())->where('valid_at', '<=', Carbon::now())->where('number', '>', 0)->first();
+        $coupon = self::where('code', $code)->where('publish_at', '<=', Carbon::now())->where('valid_at', '>=', Carbon::now())->where('number', '>', 0)->first();
         if(!empty($coupon)){
             $coupon->decrement('number');
-            return $coupon->disount;
+            return $coupon->discount;
         }else{
             return false;
         }

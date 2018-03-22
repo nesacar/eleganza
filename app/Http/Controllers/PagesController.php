@@ -9,6 +9,7 @@ use App\Brand;
 use App\Cart;
 use App\Category;
 use App\Click;
+use App\Coupon;
 use App\Customer;
 use App\Group;
 use App\Helper;
@@ -879,14 +880,15 @@ class PagesController extends Controller
             $product->update();
         }*/
 
-        $user = User::with('Customer')->where('email', 'nebojsa.markovic@ministudio.rs')->first();
-        $theme = Theme::where('active', 1)->first();
-        $cart = Cart::with('Product')->first();
+//        $user = User::with('Customer')->where('email', 'nebojsa.markovic@ministudio.rs')->first();
+//        $theme = Theme::where('active', 1)->first();
+//        $cart = Cart::with('Product')->first();
+//
+//        \Mail::to('nebojsart1409@yahoo.com')->send(new OrderIsReadyMail($user, $theme, $cart));
 
-        \Mail::to('nebojsart1409@yahoo.com')->send(new OrderIsReadyMail($user, $theme, $cart));
 
-
-
+        $coupon = Coupon::getDiscount('xzRBfyby');
+        dd($coupon);
 
 
         return 'done';
