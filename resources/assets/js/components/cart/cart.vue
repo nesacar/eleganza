@@ -9,7 +9,10 @@
                 <div class="cart-header__label cart-header__label--total">sveukupnu</div>
             </div>
             <ul class="cart-list" v-if="products">
-                <product :products="products" @editProduct="edit($event)"></product>
+                <div v-for="product in products">
+                    <product :product="product" @editProduct="editProduct($event)"></product>
+                </div>
+                <!--<product :products="products" @editProduct="editProduct($event)"></product>-->
             </ul>
         </div>
 
@@ -73,7 +76,7 @@
                         </div>
                         <div class="cart__receipt__line">
                             <div>sveukupno</div>
-                            <div class="big">hrk <span id="sveukupno">100.00</span></div>
+                            <div class="big">hrk <span id="sveukupno">{{ sum}}</span></div>
                         </div>
                     </div>
                 </div>
@@ -106,6 +109,7 @@
                     .then(res => {
                         console.log(res.data.products);
                         this.products = res.data.products;
+                        this.sumProducts();
                     })
                     .catch(e => {
                         console.log(e);
@@ -114,21 +118,16 @@
             sumProducts(){
                 if(this.products.length > 0){
                     this.sum = 0;
-                    for(pro in this.products){
-                        this.sum = this.sum + pro.price_outlet * pro.count;
-                        if(pro.checked){
-                            this.sum = this.sum + this.omot * pro.count;
+                    for(let i=0;i<this.products.length;i++){
+                        this.sum = this.sum + this.products[i].price_outlet * this.products[i].count;
+                        if(this.products[i].checked){
+                            this.sum = this.sum + this.omot * this.products[i].count;
                         }
                     }
                 }
                 this.showSum();
             },
-            edit(product){
-                console.log(product.id);
-                console.log('---');
-                console.log(product.checked);
-                console.log('---');
-                console.log(product.count);
+            editProduct(product){
                 this.sumProducts();
             },
             showSum(){
