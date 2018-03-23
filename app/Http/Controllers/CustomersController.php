@@ -27,15 +27,23 @@ class CustomersController extends Controller
 
     public function cartUpdate(Request $request){
         $sum = Product::whereIn('id', request('ids'))->sum('price_outlet');
-        $omot = Cart::omot(16);
-        Cart::storeCart(auth()->user()->customer->id, $sum + $omot);
+        $omot = Cart::omot(16.41);
+        if(\Session::has('discount')){
+            $discount = \Session::get('discount');
+            $discount = ($discount / 100) * $sum;
+            $sum = $sum - $discount;
+        }else{
+            $discount = 0;
+        }
+        Cart::storeCart(auth()->user()->customer->id, $sum + $omot, 0, $discount);
         Product::removeFromCart();
         return redirect('profile')->with('done', 'Vaša košarica je naručena');
     }
 
     public function coupon(Request $request){
-        if($coupon = Coupon::getDiscount(request('code'))){
-            \Session::put('coupon', $coupon);
+        if($discount = Coupon::getDiscount(request('code'))){
+            \Session::put('discount', $discount);
+            \Session::put('coupon', request('code'));
             return 'done';
         }
         return 'error';

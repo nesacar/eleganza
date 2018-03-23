@@ -19,7 +19,7 @@ class Cart extends Model {
      *
      * @var array
      */
-    protected $fillable = ['customer_id', 'payment_id', 'sum', 'status', 'delivery'];
+    protected $fillable = ['customer_id', 'payment_id', 'sum', 'status', 'delivery', 'discount', 'coupon'];
 
     public static function cartSum($id){
         $cart = Cart::find($id);
@@ -141,8 +141,12 @@ class Cart extends Model {
         $cart->sum = $suma;
         $cart->status = $pay;
         $cart->payment_id = 1;
-        request('delivery')? $cart->delivery = 1 : $cart->delivery = 0;
+        $cart->coupon = \Session::has('coupon')? \Session::get('coupon') : null;
+        $cart->delivery = request('delivery')? 1 : 0;
         $cart->save();
+
+        \Session::forget('discount');
+        \Session::forget('coupon');
 
         for($i=0;$i<count(request('ids'));$i++){
             for($j=0;$j<request('counts')[$i];$j++){

@@ -17,7 +17,9 @@ class CreateCartsTable extends Migration
             $table->increments('id');
             $table->integer('customer_id')->nullable()->unsigned();
             $table->integer('payment_id')->nullable();
-            $table->integer('sum')->nullable();
+            $table->float('sum')->nullable();
+            $table->float('discount')->nullable();
+            $table->string('coupon')->nullable();
             $table->boolean('status')->nullable();
             $table->timestamps();
         });

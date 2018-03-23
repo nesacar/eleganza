@@ -22,6 +22,9 @@ Vue.component('imagePreview', require('./components/imagePreview.vue'));
 Vue.component('imageNoPreview', require('./components/imageNoPreview.vue'));
 Vue.component('date-picker', require('vue-bootstrap-datetimepicker'));
 
+Vue.component('cart', require('./components/cart/cart.vue'));
+Vue.component('product', require('./components/cart/product.vue'));
+
 const app = new Vue({
     el: '#app'
 });

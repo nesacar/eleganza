@@ -31,7 +31,10 @@ Route::post('coupon', 'CustomersController@coupon');
 
 Route::get('lista-zelja', 'PagesController@wishList');
 Route::get('kosarica', 'PagesController@cart');
+Route::get('kosarica2', 'PagesController@cart2');
 Route::get('pretraga', 'PagesController@search');
+
+Route::get('products', 'PagesController@getProductsFromCart');
 
 Route::post('add-to-wishlist/{id}', 'PagesController@addToWishList');
 Route::post('remove-from-wishlist/{id}', 'PagesController@removeFromWishList');

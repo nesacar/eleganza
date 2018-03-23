@@ -963,8 +963,17 @@ class PagesController extends Controller
         $theme = Theme::where('active', 1)->first();
         $cart = session('cart');
         count($cart)>0? $products = Product::with('Brand')->whereIn('id', Product::getCartIds())->where('publish', 1)->get() : $products = [];
-        $discount = \Session::has('coupon')? \Session::get('coupon') : 0;
+        $discount = \Session::has('discount')? \Session::get('discount') : 0;
         return view('themes.'.$theme->slug.'.pages.cart', compact('settings', 'theme', 'products', 'discount'));
+    }
+
+    public function cart2(){
+        $settings = Setting::first();
+        $theme = Theme::where('active', 1)->first();
+        $cart = session('cart');
+        count($cart)>0? $products = Product::with('Brand')->whereIn('id', Product::getCartIds())->where('publish', 1)->get() : $products = [];
+        $discount = \Session::has('discount')? \Session::get('discount') : 0;
+        return view('themes.'.$theme->slug.'.pages.cart2', compact('settings', 'theme', 'products', 'discount'));
     }
 
     public function addToWishList($id){
@@ -989,6 +998,23 @@ class PagesController extends Controller
     public function removeFromCart($id){
         Product::removeFromCart($id);
         return 'done';
+    }
+
+    public function getProductsFromCart(){
+        $cart = session('cart');
+        if(count($cart)>0){
+            $products = Product::with('Brand')->whereIn('id', Product::getCartIds())->where('publish', 1)->get();
+            $products->map(function($product){
+                $product['checked'] = 0;
+                $product['count'] = 1;
+
+                return $product;
+            });
+        }else{
+            $products = [];
+        }
+
+        return response()->json(['products' => $products], 200);
     }
 
 }

@@ -16,7 +16,7 @@ class Coupon extends Model
     public static function getDiscount($code){
         $coupon = self::where('code', $code)->where('publish_at', '<=', Carbon::now())->where('valid_at', '>=', Carbon::now())->where('number', '>', 0)->first();
         if(!empty($coupon)){
-            $coupon->decrement('number');
+            //$coupon->decrement('number');
             return $coupon->discount;
         }else{
             return false;
