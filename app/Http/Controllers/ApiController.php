@@ -63,13 +63,13 @@ class ApiController extends Controller
                 ->join('property_translations', 'properties.id', '=', 'property_translations.property_id')->join('property_set', 'properties.id', '=', 'property_set.property_id')
                 ->join('sets', 'property_set.set_id', '=', 'sets.id')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')
                 ->where('properties.publish', 1)->where('property_translations.locale', $primary->locale)->where('set_translations.locale', $primary->locale)
-                ->groupBy('properties.id')->orderBy('property_translations.title', 'ASC')->get();
+                ->groupBy('properties.id')->orderBy('properties.order', 'ASC')->get();
         }else{
             $properties = Property::select('properties.id', 'property_translations.title', 'set_translations.title as set_title')
                 ->join('property_translations', 'properties.id', '=', 'property_translations.property_id')->join('property_set', 'properties.id', '=', 'property_set.property_id')
                 ->join('sets', 'property_set.set_id', '=', 'sets.id')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')
                 ->where('properties.publish', 1)->where('property_translations.locale', $primary->locale)->where('set_translations.locale', $primary->locale)->where('sets.id', request('set_id'))
-                ->groupBy('properties.id')->orderBy('set_translations.title', 'ASC')->get();
+                ->groupBy('properties.id')->orderBy('properties.order', 'ASC')->get();
         }
         return response()->json([
             'properties' => $properties

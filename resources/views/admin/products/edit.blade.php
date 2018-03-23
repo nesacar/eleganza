@@ -255,6 +255,10 @@
                                     <h3>Promjer kućišta (mm)</h3>
                                     {!! Form::text('diameter', $product->diameter, array('class' => 'form-control')) !!}
                                 </div>
+                                <div class="col-sm-3">
+                                    <h3>Vodootpornost (m)</h3>
+                                    {!! Form::text('water', $product->water, array('class' => 'form-control')) !!}
+                                </div>
                             @endif
 
                             @foreach($set->property as $property)

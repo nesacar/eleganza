@@ -125,12 +125,6 @@
                             {!! $product->body !!}
                         @else
                             <ul class="product__attrs-list">
-                                @if(!empty($product->brand))
-                                <li class="product-attr">
-                                    <span class="product-attr__key">Brend:</span>
-                                    <span class="product-attr__value">{{ $product->brand->title }}</span>
-                                </li>
-                                @endif
                                 <li class="product-attr">
                                     <span class="product-attr__key">Kolekcija:</span>
                                     <span class="product-attr__value">{{ \App\Product::getLastCategory($product->id) }}</span>

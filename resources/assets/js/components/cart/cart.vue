@@ -90,7 +90,8 @@
         data(){
             return {
                 products: {},
-                sum: 0
+                sum: 0,
+                omot: 16.41
             }
         },
         components: {
@@ -111,7 +112,16 @@
                     });
             },
             sumProducts(){
-                console.log('sum');
+                if(this.products.length > 0){
+                    this.sum = 0;
+                    for(pro in this.products){
+                        this.sum = this.sum + pro.price_outlet * pro.count;
+                        if(pro.checked){
+                            this.sum = this.sum + this.omot * pro.count;
+                        }
+                    }
+                }
+                this.showSum();
             },
             edit(product){
                 console.log(product.id);
@@ -119,6 +129,10 @@
                 console.log(product.checked);
                 console.log('---');
                 console.log(product.count);
+                this.sumProducts();
+            },
+            showSum(){
+                console.log(this.sum);
             }
         }
     }

@@ -31,7 +31,7 @@ class Product extends Model {
 
     public $translatedAttributes = ['title', 'slug', 'short', 'body', 'body2'];
 
-    protected $fillable = ['brand_id', 'user_id', 'set_id', 'code', 'image', 'tmb', 'price_small', 'price_outlet', 'diameter', 'views', 'amount', 'color', 'featured', 'discount', 'sold', 'publish_at', 'publish'];
+    protected $fillable = ['brand_id', 'user_id', 'set_id', 'code', 'image', 'tmb', 'price_small', 'price_outlet', 'diameter', 'water', 'views', 'amount', 'color', 'featured', 'discount', 'sold', 'publish_at', 'publish'];
 
     public static function getAtt($product_id, $category_id){
         $category = PCategory::find($category_id);
@@ -649,7 +649,7 @@ class Product extends Model {
         }
     }
 
-    public static function filteredProducts($cat=0, $fil, $sort=2, $min=0, $max=0, $minPromer=0, $maxPromer=0){
+    public static function filteredProducts($cat=0, $fil, $sort=2, $min=0, $max=0, $minPromer=0, $maxPromer=0, $minWater=0, $maxWater=0){
         if($sort == 2){ $field = 'products.price_outlet'; $param = 'ASC'; }elseif($sort == 3){ $field = 'products.price_outlet'; $param = 'DESC'; }else{ $field = 'products.publish_at'; $param = 'DESC'; }
         if($cat == 0){
             if(count($fil) > 0){
@@ -675,6 +675,12 @@ class Product extends Model {
                             $query->whereBetween('products.diameter', [$minPromer, $maxPromer]);
                         }
                     })
+                    ->where(function($query) use ($minWater, $maxWater)
+                    {
+                        if($maxWater > 0){
+                            $query->whereBetween('products.water', [$minWater, $maxWater]);
+                        }
+                    })
                     ->where('products.publish', 1)
                     ->groupby('products.id')
                     ->orderby($field, $param)
@@ -691,6 +697,12 @@ class Product extends Model {
                     {
                         if($maxPromer > 0){
                             $query->whereBetween('products.diameter', [$minPromer, $maxPromer]);
+                        }
+                    })
+                    ->where(function($query) use ($minWater, $maxWater)
+                    {
+                        if($maxWater > 0){
+                            $query->whereBetween('products.water', [$minWater, $maxWater]);
                         }
                     })
                     ->where('products.publish', 1)
@@ -725,6 +737,12 @@ class Product extends Model {
                             $query->whereBetween('products.diameter', [$minPromer, $maxPromer]);
                         }
                     })
+                    ->where(function($query) use ($minWater, $maxWater)
+                    {
+                        if($maxWater > 0){
+                            $query->whereBetween('products.water', [$minWater, $maxWater]);
+                        }
+                    })
                     ->where('products.publish', 1)
                     ->groupby('products.id')
                     ->orderby($field, $param)
@@ -744,6 +762,12 @@ class Product extends Model {
                     {
                         if($maxPromer > 0){
                             $query->whereBetween('products.diameter', [$minPromer, $maxPromer]);
+                        }
+                    })
+                    ->where(function($query) use ($minWater, $maxWater)
+                    {
+                        if($maxWater > 0){
+                            $query->whereBetween('products.water', [$minWater, $maxWater]);
                         }
                     })
                     ->where('products.publish', 1)

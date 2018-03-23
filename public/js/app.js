@@ -66259,7 +66259,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             products: {},
-            sum: 0
+            sum: 0,
+            omot: 16.41
         };
     },
 
@@ -66282,7 +66283,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         sumProducts: function sumProducts() {
-            console.log('sum');
+            if (this.products.length > 0) {
+                this.sum = 0;
+                for (pro in this.products) {
+                    this.sum = this.sum + pro.price_outlet * pro.count;
+                    if (pro.checked) {
+                        this.sum = this.sum + this.omot * pro.count;
+                    }
+                }
+            }
+            this.showSum();
         },
         edit: function edit(product) {
             console.log(product.id);
@@ -66290,6 +66300,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             console.log(product.checked);
             console.log('---');
             console.log(product.count);
+            this.sumProducts();
+        },
+        showSum: function showSum() {
+            console.log(this.sum);
         }
     }
 });

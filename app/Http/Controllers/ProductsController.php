@@ -569,6 +569,10 @@ class ProductsController extends Controller {
             $product->diameter = request('diameter');
             $product->update();
         }
+        if(!empty(request('water'))){
+            $product->water = request('water');
+            $product->update();
+        }
         return redirect()->back()->with('done', 'Atributi su izmenjeni');
     }
 

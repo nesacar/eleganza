@@ -57,7 +57,25 @@
 
         @if(!empty($set) && $set->id == 4)
             <div class="filter promjer">
-                <h4 class=filter__name>promjer kucista</h4>
+                <h4 class=filter__name>Vodootpornost</h4>
+                <div class=e-slider>
+                    @if(request('max-water') > 0)
+                        <div data-is-slider=true data-min-value={{ request('min-water') }} data-max-value={{ request('max-water') }} data-value-range=500 id=jsHousingSlider2></div>
+                    @else
+                        <div data-is-slider=true data-min-value=0 data-max-value=500 data-value-range=500 id=jsHousingSlider2></div>
+                    @endif
+                    <div class=e-slider__labels>
+                        <input type=text name=min-water class=hidden data-label-for=min data-for-slider=jsHousingSlider2 readonly=readonly />
+                        <span class="e-slider__label e-slider__label--mm" data-label-for=min data-for-slider=jsHousingSlider2></span>
+                        -
+                        <input type=text name=max-water class=hidden data-label-for=max data-for-slider=jsHousingSlider2 readonly=readonly />
+                        <span class="e-slider__label e-slider__label--mm" data-label-for=max data-for-slider=jsHousingSlider2></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter promjer">
+                <h4 class=filter__name>promjer kućišta</h4>
                 <div class=e-slider>
                     @if(request('max-promer') > 0)
                         <div data-is-slider=true data-min-value={{ request('min-promer') }} data-max-value={{ request('max-promer') }} data-value-range=50 id=jsHousingSlider></div>

@@ -72,7 +72,7 @@ class PagesController extends Controller
         $s1 = $category;
         if(isset($category)){
             $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug)->first();
-            !empty($set)? $props = $set->property : $props = null;
+            !empty($set)? $props = $set->property()->orderBy('properties.order', 'ASC')->get() : $props = null;
             //$topParent = PCategory::getTopParentBySlug($slug);
             $bred = Category::getBredcrumb($category->id);
             $bred = array_reverse($bred);
@@ -84,12 +84,14 @@ class PagesController extends Controller
             request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
             request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
             request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
+            request('min-water') ? $water[0] = request('min-water') : $water[0] = 0;
+            request('max-water') ? $water[1] = request('max-water') : $water[1] = 0;
             request('sort') ? $sort = request('sort') : $sort = 2;
             request('page') ? $page = request('page') : $page = 1;
             request('limit') ? $limit = request('limit') : $limit = 9;
 
             $count = Property::countPropertyFilter($filters);
-            $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1]);
+            $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1], $water[0], $water[1]);
             //$properties = Property::getPropertiesAndAttributesByCategory($category->id);
 
             $filteri = Product::getFiltersByCategory($category->id);
@@ -152,7 +154,7 @@ class PagesController extends Controller
             $category = $s2;
             if(isset($category)){
                 $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
-                !empty($set)? $props = $set->property : $props = null;
+                !empty($set)? $set->property()->orderBy('properties.order', 'ASC')->get() : $props = null;
                 $topParent = PCategory::getTopParentBySlug($slug2);
                 $bred = Category::getBredcrumb($category->id);
                 $bred = array_reverse($bred);
@@ -164,12 +166,14 @@ class PagesController extends Controller
                 request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
                 request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
                 request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
+                request('min-water') ? $water[0] = request('min-water') : $water[0] = 0;
+                request('max-water') ? $water[1] = request('max-water') : $water[1] = 0;
                 request('sort') ? $sort = request('sort') : $sort = 2;
                 request('page') ? $page = request('page') : $page = 1;
                 request('limit') ? $limit = request('limit') : $limit = 9;
 
                 $count = Property::countPropertyFilter($filters);
-                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1]);
+                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1], $water[0], $water[1]);
                 //$properties = Property::getPropertiesAndAttributesByCategory($category->id);
 
                 //$filteri = Product::getFiltersByCheckboxes($products);
@@ -224,7 +228,7 @@ class PagesController extends Controller
                 ->where('category_translations.slug', $slug3)->where('categories.publish', 1)->where('categories.parent', $s2->id)->first();
             if(isset($category)){
                 $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
-                $props = $set->property;
+                $set->property()->orderBy('properties.order', 'ASC')->get();
                 $topParent = PCategory::getTopParentBySlug($slug2);
                 //$bred = Category::getBredcrumb($category->id);
                 //$bred = array_reverse($bred);
@@ -236,12 +240,14 @@ class PagesController extends Controller
                 request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
                 request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
                 request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
+                request('min-water') ? $water[0] = request('min-water') : $water[0] = 0;
+                request('max-water') ? $water[1] = request('max-water') : $water[1] = 0;
                 request('sort') ? $sort = request('sort') : $sort = 2;
                 request('page') ? $page = request('page') : $page = 1;
                 request('limit') ? $limit = request('limit') : $limit = 9;
 
                 $count = Property::countPropertyFilter($filters);
-                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1]);
+                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1], $water[0], $water[1]);
                 //$properties = Property::getPropertiesAndAttributesByCategory($category->id);
 
                 //$filteri = Product::getFiltersByCheckboxes($products);
@@ -298,7 +304,7 @@ class PagesController extends Controller
                 ->where('category_translations.slug', $slug4)->where('categories.publish', 1)->where('categories.parent', $s3->id)->first();
             if(isset($category)){
                 $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
-                $props = $set->property;
+                $set->property()->orderBy('properties.order', 'ASC')->get();
                 $topParent = PCategory::getTopParentBySlug($slug2);
                 //$bred = Category::getBredcrumb($category->id);
                 //$bred = array_reverse($bred);
@@ -310,12 +316,14 @@ class PagesController extends Controller
                 request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
                 request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
                 request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
+                request('min-water') ? $water[0] = request('min-water') : $water[0] = 0;
+                request('max-water') ? $water[1] = request('max-water') : $water[1] = 0;
                 request('sort') ? $sort = request('sort') : $sort = 2;
                 request('page') ? $page = request('page') : $page = 1;
                 request('limit') ? $limit = request('limit') : $limit = 9;
 
                 $count = Property::countPropertyFilter($filters);
-                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1]);
+                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1], $water[0], $water[1]);
                 //$properties = Property::getPropertiesAndAttributesByCategory($category->id);
 
                 //$filteri = Product::getFiltersByCheckboxes($products);
@@ -372,7 +380,7 @@ class PagesController extends Controller
                 ->where('category_translations.slug', $slug5)->where('categories.publish', 1)->where('categories.parent', $s4->id)->first();
             if($category){
                 $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
-                $props = $set->property;
+                $set->property()->orderBy('properties.order', 'ASC')->get();
                 $topParent = PCategory::getTopParentBySlug($slug2);
                 //$bred = Category::getBredcrumb($category->id);
                 //$bred = array_reverse($bred);
@@ -384,12 +392,14 @@ class PagesController extends Controller
                 request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
                 request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
                 request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
+                request('min-water') ? $water[0] = request('min-water') : $water[0] = 0;
+                request('max-water') ? $water[1] = request('max-water') : $water[1] = 0;
                 request('sort') ? $sort = request('sort') : $sort = 2;
                 request('page') ? $page = request('page') : $page = 1;
                 request('limit') ? $limit = request('limit') : $limit = 9;
 
                 $count = Property::countPropertyFilter($filters);
-                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1]);
+                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1], $water[0], $water[1]);
                 //$properties = Property::getPropertiesAndAttributesByCategory($category->id);
 
                 //$filteri = Product::getFiltersByCheckboxes($products);
@@ -447,7 +457,7 @@ class PagesController extends Controller
                 ->where('category_translations.slug', $slug6)->where('categories.publish', 1)->where('categories.parent', $s5->id)->first();
             if(isset($category)){
                 $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
-                $props = $set->property;
+                $set->property()->orderBy('properties.order', 'ASC')->get();
                 $topParent = PCategory::getTopParentBySlug($slug2);
                 //$bred = Category::getBredcrumb($category->id);
                 //$bred = array_reverse($bred);
@@ -459,12 +469,14 @@ class PagesController extends Controller
                 request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
                 request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
                 request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
+                request('min-water') ? $water[0] = request('min-water') : $water[0] = 0;
+                request('max-water') ? $water[1] = request('max-water') : $water[1] = 0;
                 request('sort') ? $sort = request('sort') : $sort = 2;
                 request('page') ? $page = request('page') : $page = 1;
                 request('limit') ? $limit = request('limit') : $limit = 9;
 
                 $count = Property::countPropertyFilter($filters);
-                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1]);
+                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1], $water[0], $water[1]);
                 //$properties = Property::getPropertiesAndAttributesByCategory($category->id);
 
                 //$filteri = Product::getFiltersByCheckboxes($products);
@@ -887,8 +899,10 @@ class PagesController extends Controller
 //        \Mail::to('nebojsart1409@yahoo.com')->send(new OrderIsReadyMail($user, $theme, $cart));
 
 
-        $coupon = Coupon::getDiscount('xzRBfyby');
-        dd($coupon);
+//        $coupon = Coupon::getDiscount('xzRBfyby');
+//        dd($coupon);
+
+        return $products = Property::join('property_translations', 'properties.id', '=', 'property_translations.property_id')->orderBy('properties.order', 'ASC')->pluck('property_translations.title', 'properties.id');
 
 
         return 'done';
