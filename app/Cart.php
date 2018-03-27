@@ -267,7 +267,7 @@ class Cart extends Model {
     }
 
     public function product(){
-        return $this->belongsToMany('App\Product')->withPivot('color', 'size', 'price');
+        return $this->belongsToMany('App\Product')->withPivot('material', 'color', 'size', 'price');
     }
 
     public function customer(){

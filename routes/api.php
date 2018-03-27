@@ -26,3 +26,4 @@ Route::post('attributes', 'ApiController@attributes');
 Route::post('save-products', 'ApiController@saveProducts');
 
 Route::post('set-coupon', 'ApiController@setCoupon');
+Route::post('add-to-cart', 'ApiController@addToCart');

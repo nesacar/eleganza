@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Attribute;
 use App\Brand;
+use App\Cart;
 use App\Category;
 use App\Coupon;
+use App\Http\Requests\AddToCartRequest;
 use App\Http\Requests\SetCouponRequest;
 use App\Language;
 use App\Product;
@@ -177,5 +179,31 @@ class ApiController extends Controller
             }
             return response()->json(['error' => 'Kupon nije aktiviran'], 401);
         }
+    }
+
+    public function addToCart(AddToCartRequest $request){
+        $products = request('products');
+        $discount = request('discount');
+        $sum = request('sum');
+
+        $cart = new Cart();
+        $cart->customer_id = request('user_id');
+        $cart->payment_id = 1;
+        $cart->country_id = 1;
+        $cart->sum = $sum;
+        $cart->discount = $discount;
+        $cart->coupon  = session('coupon')? session('coupon') : null;
+        $cart->status = 0;
+        $cart->delivery = 0;
+        $cart->save();
+
+        if(count($products)>0){
+            foreach ($products as $product){
+                $cart->product()->attach(
+                    $product["id"], ['material' => $product["checked"], 'size' => $product["count"]]);
+            }
+        }
+
+        return response()->json(['success' => true], 200);
     }
 }

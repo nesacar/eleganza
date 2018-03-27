@@ -117,7 +117,7 @@
                 omots: [],
             }
         },
-        props: ['auth'],
+        props: ['auth', 'user_id'],
         components: {
             'product': product
         },
@@ -197,15 +197,23 @@
             },
             submit(){
                 const newProducts = this.products.map(product => {
-                    const { id, checked, ...rest } = product;
+                    const { id, checked, count, ...rest } = product;
                     return {
                         id,
-                        checked
+                        checked,
+                        count
                     };
                 });
 
-                console.log(newProducts);
-                console.log(this.discount);
+                axios.post('api/add-to-cart', {products: newProducts, discount: this.discount, sum: this.sum, user_id: this.user_id})
+                    .then(res => {
+                        if(res.data.success){
+                            window.location.href = this.domain + 'moje-narudzbine';
+                        }
+                    })
+                    .catch(e => {
+                        console.log(e);
+                    });
             }
         }
     }

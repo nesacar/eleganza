@@ -903,8 +903,8 @@ class PagesController extends Controller
 //        dd($coupon);
 
         //return $products = Property::join('property_translations', 'properties.id', '=', 'property_translations.property_id')->orderBy('properties.order', 'ASC')->pluck('property_translations.title', 'properties.id');
-        $cookie = \App::make('CodeZero\Cookie\Cookie');
-        dd($cookie->get('eleganza'));
+        //session()->forget('cart');
+        dd(session('cart'));
 
         return 'done';
     }
@@ -1030,6 +1030,12 @@ class PagesController extends Controller
         }
 
         return response()->json(['products' => $products], 200);
+    }
+
+    public function myOrders(){
+        Product::removeFromCart();
+        session()->forget('coupon');
+        return 'moje narudzbine';
     }
 
 }

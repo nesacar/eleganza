@@ -31,7 +31,11 @@
         {!! Form::open(['action' => ['CustomersController@cartUpdate'], 'method' => 'POST', 'class' => 'form-horizontal', 'id' => 'forma']) !!}
             <section class="container content" id="app">
 
-                <cart :auth="{{ auth()->check() }}"></cart>
+                @if(auth()->check())
+                    <cart :auth="true" :user_id="{{ auth()->user()->customer->id }}"></cart>
+                @else
+                    <cart :auth="false" :user_id="0"></cart>
+                @endif
 
             </section>
         {!! Form::close() !!}

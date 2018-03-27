@@ -870,7 +870,6 @@ class Product extends Model {
                 session()->put('cart', $array);
                 return 'done';
             }
-            return 'hm1';
         }else{
             session()->put('cart', []);
             return 'done';

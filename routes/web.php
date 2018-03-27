@@ -73,6 +73,7 @@ Route::get('korpa', 'PagesController@korpa');
 Route::post('kupovina', 'PagesController@kupovina');
 
 Route::get('proba', 'PagesController@proba');
+Route::get('moje-narudzbine', 'PagesController@myOrders');
 
 Route::get('shop/{slug1}/{slug2}/{slug3}/{slug4}/{slug5}/{slug6}', 'PagesController@shopCategory6');
 Route::get('shop/{slug1}/{slug2}/{slug3}/{slug4}/{slug5}', 'PagesController@shopCategory5');
