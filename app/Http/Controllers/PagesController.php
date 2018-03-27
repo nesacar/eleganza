@@ -902,8 +902,9 @@ class PagesController extends Controller
 //        $coupon = Coupon::getDiscount('xzRBfyby');
 //        dd($coupon);
 
-        return $products = Property::join('property_translations', 'properties.id', '=', 'property_translations.property_id')->orderBy('properties.order', 'ASC')->pluck('property_translations.title', 'properties.id');
-
+        //return $products = Property::join('property_translations', 'properties.id', '=', 'property_translations.property_id')->orderBy('properties.order', 'ASC')->pluck('property_translations.title', 'properties.id');
+        $cookie = \App::make('CodeZero\Cookie\Cookie');
+        dd($cookie->get('eleganza'));
 
         return 'done';
     }

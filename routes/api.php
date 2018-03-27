@@ -24,3 +24,5 @@ Route::post('categories', 'ApiController@categories');
 Route::post('properties', 'ApiController@properties');
 Route::post('attributes', 'ApiController@attributes');
 Route::post('save-products', 'ApiController@saveProducts');
+
+Route::post('set-coupon', 'ApiController@setCoupon');

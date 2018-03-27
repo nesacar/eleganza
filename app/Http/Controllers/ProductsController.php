@@ -261,7 +261,7 @@ class ProductsController extends Controller {
 		$request->input('publish')? $product->publish = 1 : $product->publish = 0;
 		$product->brand_id = $request->brand_id;
 		$product->set_id = $request->set_id;
-		$product->price_outlet = Product::calculateDiscount(request('discount'), $product);
+		$product->price_outlet = Product::calculateDiscount(request('discount'), request('price_small'));
 
 		$product->update($request->except('publish', 'image', 'tmb', 'price_outlet'));
 		//Product::setSlug($product->id);
@@ -708,7 +708,7 @@ class ProductsController extends Controller {
         if(count($products)>0){
             foreach ($products as $product){
                 $product->discount = request('discount');
-                $product->price_outlet = Product::calculateDiscount(request('discount'), $product);
+                $product->price_outlet = Product::calculateDiscount(request('discount'), $product->price_small);
                 $product->update();
             }
         }

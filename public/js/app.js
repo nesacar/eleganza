@@ -66163,17 +66163,21 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(198)
+}
 var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(194)
 /* template */
-var __vue_template__ = __webpack_require__(197)
+var __vue_template__ = __webpack_require__(200)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = null
+var __vue_scopeId__ = "data-v-3c4b39d6"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -66215,6 +66219,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__domain_config__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__product_vue__ = __webpack_require__(142);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__product_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__product_vue__);
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -66311,10 +66330,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             products: {},
             sum: 0,
-            omot: 16.41
+            total: 0,
+            omot: 16.41,
+            coupon: null,
+            error: null,
+            success: null,
+            discount: 0,
+            domain: __WEBPACK_IMPORTED_MODULE_0__domain_config__["a" /* domain */],
+            omots: []
         };
     },
 
+    props: ['auth'],
     components: {
         'product': __WEBPACK_IMPORTED_MODULE_1__product_vue___default.a
     },
@@ -66327,7 +66354,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             axios.get('products').then(function (res) {
-                console.log(res.data.products);
                 _this.products = res.data.products;
                 _this.sumProducts();
             }).catch(function (e) {
@@ -66337,13 +66363,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         sumProducts: function sumProducts() {
             if (this.products.length > 0) {
                 this.sum = 0;
+                this.total = 0;
                 for (var i = 0; i < this.products.length; i++) {
-                    this.sum = this.sum + this.products[i].price_outlet * this.products[i].count;
+                    var price = this.sum + this.products[i].price_outlet * this.products[i].count;
+                    this.sum = this.total = this.round(price, 2);
                     if (this.products[i].checked) {
-                        this.sum = this.sum + this.omot * this.products[i].count;
+                        var _price = this.sum + this.omot * this.products[i].count;
+                        this.sum = this.total = this.round(_price, 2);
                     }
                 }
             }
+            this.setDiscount();
             this.showSum();
         },
         editProduct: function editProduct(product) {
@@ -66351,6 +66381,59 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         showSum: function showSum() {
             console.log(this.sum);
+        },
+        round: function round(value, decimals) {
+            return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+        },
+        setCoupon: function setCoupon() {
+            var _this2 = this;
+
+            if (this.coupon != null && this.coupon != '') {
+                axios.post('api/set-coupon', { 'coupon': this.coupon }).then(function (res) {
+                    _this2.discount = res.data.discount;
+                    _this2.success = res.data.success;
+                    _this2.error = null;
+                    _this2.sumProducts();
+                }).catch(function (e) {
+                    _this2.error = e.response.data.error;
+                    _this2.success = null;
+                    _this2.sumProducts();
+                });
+            }
+        },
+        setDiscount: function setDiscount() {
+            if (this.discount > 0) {
+                var price = this.sum - this.discount / 100 * this.sum;
+                this.sum = this.round(price, 2);
+            }
+        },
+        remove: function remove(row) {
+            var _this3 = this;
+
+            axios.post('remove-from-cart/' + row.id, {}).then(function (res) {
+                console.log(res.data.success);
+                _this3.products = _this3.products.filter(function (item) {
+                    return row.id != item.id;
+                });
+                _this3.sumProducts();
+            }).catch(function (e) {
+                console.log(e);
+            });
+        },
+        submit: function submit() {
+            var newProducts = this.products.map(function (product) {
+                var id = product.id,
+                    checked = product.checked,
+                    rest = _objectWithoutProperties(product, ['id', 'checked']);
+
+                return {
+                    id: id,
+                    checked: checked
+                };
+            });
+
+            console.log(newProducts);
+            console.log(this.discount);
         }
     }
 });
@@ -66402,27 +66485,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             omot: 16.41,
-            domain: __WEBPACK_IMPORTED_MODULE_0__domain_config__["a" /* domain */]
-
+            domain: __WEBPACK_IMPORTED_MODULE_0__domain_config__["a" /* domain */],
+            price: 0,
+            total: 0
         };
     },
 
     props: ['product'],
-    computed: {
-        price: function price() {
-            return this.product.price_outlet;
-        },
-        total: function total() {
-            return this.product.price_outlet;
-        }
+    created: function created() {
+        this.price = this.product.price_outlet;
+        this.total = this.product.price_outlet;
     },
+
     methods: {
         clickOmot: function clickOmot(product) {
             product.checked = !product.checked;
+            //this.setPrice(product);
+            this.setTotal(product);
             this.$emit('editProduct', product);
         },
         editCount: function editCount(product) {
+            //this.setPrice(product);
+            this.setTotal(product);
             this.$emit('editProduct', product);
+        },
+        remove: function remove() {
+            this.$emit('remove', this.product);
+        },
+        setPrice: function setPrice(product) {
+            this.price = product.count * product.price_outlet;
+        },
+        setTotal: function setTotal(product) {
+            this.total = product.checked ? product.count * (product.price_outlet + this.omot) : product.count * product.price_outlet;
         }
     }
 });
@@ -66514,10 +66608,10 @@ var render = function() {
             }
           ],
           staticClass: "nl-input count",
-          attrs: { type: "text", name: "counts[]" },
+          attrs: { type: "number", name: "counts[]", min: "1", max: "10" },
           domProps: { value: _vm.product.count },
           on: {
-            keyup: function($event) {
+            change: function($event) {
               _vm.editCount(_vm.product)
             },
             input: function($event) {
@@ -66534,7 +66628,11 @@ var render = function() {
           {
             staticClass: "remove",
             staticStyle: { cursor: "pointer" },
-            attrs: { "data-href": "remove-from-cart" }
+            on: {
+              click: function($event) {
+                _vm.remove()
+              }
+            }
           },
           [_vm._v("X")]
         )
@@ -66545,9 +66643,7 @@ var render = function() {
         { staticClass: "cart-list__item__digit cart-list__item__price" },
         [
           _vm._v(" hrk "),
-          _c("span", { staticClass: "js-price" }, [
-            _vm._v(_vm._s(_vm.price) + ".00")
-          ])
+          _c("span", { staticClass: "js-price" }, [_vm._v(_vm._s(_vm.price))])
         ]
       ),
       _vm._v(" "),
@@ -66556,9 +66652,7 @@ var render = function() {
         { staticClass: "cart-list__item__digit cart-list__item__total" },
         [
           _vm._v(" hrk "),
-          _c("span", { staticClass: "js-total" }, [
-            _vm._v(_vm._s(_vm.total) + ".00")
-          ])
+          _c("span", { staticClass: "js-total" }, [_vm._v(_vm._s(_vm.total))])
         ]
       )
     ])
@@ -66575,7 +66669,48 @@ if (false) {
 }
 
 /***/ }),
-/* 197 */
+/* 197 */,
+/* 198 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(199);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("e8bbadd0", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3c4b39d6\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./cart.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3c4b39d6\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./cart.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 199 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.text-error[data-v-3c4b39d6]{\n    color: red;\n}\n.text-success[data-v-3c4b39d6]{\n    color: green;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -66583,6 +66718,43 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _c("div", { staticClass: "cart-section" }, [
+      _c("div", { staticClass: "cart-nav" }, [
+        _c(
+          "a",
+          {
+            staticClass: "e-btn e-btn--fat e-btn--invert",
+            attrs: { href: _vm.domain }
+          },
+          [_vm._v("< nastavi kupovinu")]
+        ),
+        _vm._v(" "),
+        _vm.auth && _vm.products.length > 0
+          ? _c(
+              "a",
+              {
+                staticClass: "e-btn e-btn--fat e-btn--primary submit",
+                attrs: { href: "#" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    _vm.submit()
+                  }
+                }
+              },
+              [_vm._v("sigurna uplata")]
+            )
+          : _c(
+              "a",
+              {
+                staticClass: "e-btn e-btn--fat e-btn--primary",
+                attrs: { href: _vm.domain + "logovanje" }
+              },
+              [_vm._v("prijavi se")]
+            )
+      ])
+    ]),
+    _vm._v(" "),
     _c("div", { staticClass: "cart-section" }, [
       _vm._m(0),
       _vm._v(" "),
@@ -66599,6 +66771,9 @@ var render = function() {
                     on: {
                       editProduct: function($event) {
                         _vm.editProduct($event)
+                      },
+                      remove: function($event) {
+                        _vm.remove($event)
                       }
                     }
                   })
@@ -66610,7 +66785,76 @@ var render = function() {
         : _vm._e()
     ]),
     _vm._v(" "),
-    _vm._m(1),
+    _c("div", { staticClass: "cart__promo cart-section" }, [
+      _c("h3", [_vm._v("promo kod")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _vm._m(1),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-lg-6" }, [
+          _c("div", { staticClass: "e-form__group" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.coupon,
+                  expression: "coupon"
+                }
+              ],
+              staticClass: "nl-input nl-input--fat",
+              attrs: {
+                type: "text",
+                name: "code",
+                placeholder: "Unesite kod ovdje..."
+              },
+              domProps: { value: _vm.coupon },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.coupon = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "e-btn e-btn--fat e-btn--primary",
+                attrs: { id: "kupon" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    _vm.setCoupon()
+                  }
+                }
+              },
+              [_vm._v("potvrdi")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "e-form__group" }, [
+            _vm.error != null
+              ? _c(
+                  "small",
+                  { staticClass: "form-text text-muted text-error" },
+                  [_vm._v(_vm._s(_vm.error))]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.success != null
+              ? _c(
+                  "small",
+                  { staticClass: "form-text text-muted text-success" },
+                  [_vm._v(_vm._s(_vm.success))]
+                )
+              : _vm._e()
+          ])
+        ])
+      ])
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "cart__details cart-section" }, [
       _c("h3", [_vm._v("dostava")]),
@@ -66620,11 +66864,29 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "col-lg-6" }, [
           _c("div", { staticClass: "cart__receipt" }, [
+            _c("div", { staticClass: "cart__receipt__line" }, [
+              _c("div", [_vm._v("ukupno")]),
+              _vm._v(" "),
+              _c("div", [
+                _vm._v("hrk "),
+                _c("span", { attrs: { id: "ukupno" } }, [
+                  _vm._v(_vm._s(_vm.total))
+                ])
+              ])
+            ]),
+            _vm._v(" "),
             _vm._m(3),
             _vm._v(" "),
-            _vm._m(4),
-            _vm._v(" "),
-            _vm._m(5),
+            _c("div", { staticClass: "cart__receipt__line" }, [
+              _c("div", [_vm._v("popust")]),
+              _vm._v(" "),
+              _c("div", [
+                _vm._v("hrk "),
+                _c("span", { attrs: { id: "popust" } }, [
+                  _vm._v(_vm._s(_vm.discount) + "%")
+                ])
+              ])
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "cart__receipt__line" }, [
               _c("div", [_vm._v("sveukupno")]),
@@ -66683,39 +66945,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "cart__promo cart-section" }, [
-      _c("h3", [_vm._v("promo kod")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-lg-6" }, [
-          _c("p", [
-            _vm._v(
-              "Ukoliko imate promotivan kod za popust, molimo da ga ovdje unesete:"
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-lg-6" }, [
-          _c("div", { staticClass: "e-form__group" }, [
-            _c("input", {
-              staticClass: "nl-input nl-input--fat",
-              attrs: {
-                type: "text",
-                name: "code",
-                placeholder: "Unesite kod ovdje..."
-              }
-            }),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "e-btn e-btn--fat e-btn--primary",
-                attrs: { id: "kupon", type: "submit" }
-              },
-              [_vm._v("potvrdi")]
-            )
-          ])
-        ])
+    return _c("div", { staticClass: "col-lg-6" }, [
+      _c("p", [
+        _vm._v(
+          "Ukoliko imate promotivan kod za popust, molimo da ga ovdje unesete:"
+        )
       ])
     ])
   },
@@ -66763,37 +66997,11 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "cart__receipt__line" }, [
-      _c("div", [_vm._v("ukupno")]),
-      _vm._v(" "),
-      _c("div", [
-        _vm._v("hrk "),
-        _c("span", { attrs: { id: "ukupno" } }, [_vm._v("100.00")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "cart__receipt__line" }, [
       _c("div", [_vm._v("dostava")]),
       _vm._v(" "),
       _c("div", [
         _vm._v("hrk "),
         _c("span", { attrs: { id: "dostava" } }, [_vm._v("0.00")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "cart__receipt__line" }, [
-      _c("div", [_vm._v("popust")]),
-      _vm._v(" "),
-      _c("div", [
-        _vm._v("hrk "),
-        _c("span", { attrs: { id: "popust" } }, [_vm._v("0.00")])
       ])
     ])
   }

@@ -23,10 +23,10 @@
         </div>
         <div class="col-lg-4 col-md-6 cart-list__item__cell">
             <div class=cart-list__item__count>
-                <input class="nl-input count" type=text name=counts[] v-model="product.count" @keyup="editCount(product)"> <span class="remove" style="cursor:pointer;" data-href="remove-from-cart">X</span>
+                <input class="nl-input count" type=number name=counts[] min="1" max="10" v-model="product.count" @change="editCount(product)"> <span class="remove" style="cursor:pointer;" @click="remove()">X</span>
             </div>
-            <div class="cart-list__item__digit cart-list__item__price"> hrk <span class="js-price">{{ price }}.00</span> </div>
-            <div class="cart-list__item__digit cart-list__item__total"> hrk <span class="js-total">{{ total }}.00</span> </div>
+            <div class="cart-list__item__digit cart-list__item__price"> hrk <span class="js-price">{{ price }}</span> </div>
+            <div class="cart-list__item__digit cart-list__item__total"> hrk <span class="js-total">{{ total }}</span> </div>
         </div>
     </li>
 </template>
@@ -39,25 +39,35 @@
           return {
               omot: 16.41,
               domain: domain,
-
+              price: 0,
+              total: 0
           }
         },
         props: ['product'],
-        computed: {
-            price(){
-                return this.product.price_outlet;
-            },
-            total(){
-                return this.product.price_outlet;
-            }
+        created(){
+            this.price = this.product.price_outlet;
+            this.total = this.product.price_outlet;
         },
         methods: {
             clickOmot(product){
                 product.checked = !product.checked;
+                //this.setPrice(product);
+                this.setTotal(product);
                 this.$emit('editProduct', product);
             },
             editCount(product){
+                //this.setPrice(product);
+                this.setTotal(product);
                 this.$emit('editProduct', product);
+            },
+            remove(){
+                this.$emit('remove', this.product);
+            },
+            setPrice(product){
+                this.price = product.count * product.price_outlet;
+            },
+            setTotal(product){
+                this.total = product.checked ? product.count * (product.price_outlet + this.omot) : product.count * product.price_outlet;
             }
         }
     }

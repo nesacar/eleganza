@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Attribute;
 use App\Brand;
 use App\Category;
+use App\Coupon;
+use App\Http\Requests\SetCouponRequest;
 use App\Language;
 use App\Product;
 use App\Property;
@@ -164,5 +166,16 @@ class ApiController extends Controller
         return response()->json(['msg' => $br], 200);
     }
 
-    
+    public function setCoupon(SetCouponRequest $request){
+        if(\Session::has('coupon')){
+            return response()->json(['discount' => \Session::get('discount')], 200);
+        }else{
+            if($discount = Coupon::getDiscount(request('coupon'))){
+                \Session::put('discount', $discount);
+                \Session::put('coupon', request('coupon'));
+                return response()->json(['discount' => $discount, 'success' => 'Kupon je aktiviran'], 200);
+            }
+            return response()->json(['error' => 'Kupon nije aktiviran'], 401);
+        }
+    }
 }

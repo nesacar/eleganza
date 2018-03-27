@@ -30,18 +30,8 @@
     @if(count($products)>0)
         {!! Form::open(['action' => ['CustomersController@cartUpdate'], 'method' => 'POST', 'class' => 'form-horizontal', 'id' => 'forma']) !!}
             <section class="container content" id="app">
-                <div class="cart-section">
-                    <div class=cart-nav>
-                        <a href="{{ url('/') }}" class="e-btn e-btn--fat e-btn--invert">&lt; nastavi kupovinu</a>
-                        @if(auth()->check())
-                            @if(count($products)>0) <a href=# class="e-btn e-btn--fat e-btn--primary submit">sigurna uplata</a> @endif
-                        @else
-                            <a href="{{ url('logovanje') }}" class="e-btn e-btn--fat e-btn--primary">prijavi se</a>
-                        @endif
-                    </div>
-                </div>
 
-                <cart></cart>
+                <cart :auth="{{ auth()->check() }}"></cart>
 
             </section>
         {!! Form::close() !!}
@@ -65,96 +55,96 @@
     {!! HTML::script('themes/'.$theme->slug.'/js/jquery.toastmessage.js') !!}
     <script>
         $(function () {
-            $('.remove').click(function(e){
-                e.preventDefault();
-                var el = $(this);
-                var link = el.attr('data-href');
-                $.post(link, {_token: '{{ csrf_token() }}' }, function(data){
-                    if(data == 'done'){
-                        $().toastmessage('showSuccessToast', "proizvod je obrisan iz košarice");
-                        el.parent().parent().parent().remove();
-                    }else{
-                        console.log('error');
-                    }
-                });
-            });
+            {{--$('.remove').click(function(e){--}}
+                {{--e.preventDefault();--}}
+                {{--var el = $(this);--}}
+                {{--var link = el.attr('data-href');--}}
+                {{--$.post(link, {_token: '{{ csrf_token() }}' }, function(data){--}}
+                    {{--if(data == 'done'){--}}
+                        {{--$().toastmessage('showSuccessToast', "proizvod je obrisan iz košarice");--}}
+                        {{--el.parent().parent().parent().remove();--}}
+                    {{--}else{--}}
+                        {{--console.log('error');--}}
+                    {{--}--}}
+                {{--});--}}
+            {{--});--}}
 
-            $('#kupon').click(function(e){
-                e.preventDefault();
-                var code = $(this).parent().find('input[type="text"]').val();
-                console.log(code);
-                $.post('{{ url('coupon') }}', {_token: '{{ csrf_token() }}', code: code }, function(data){
-                    if(data == 'done'){
-                        location.reload();
-                    }else{
-                        $().toastmessage('showWarningToast', "Kupon nije ispravan");
-                    }
-                });
-            });
+            {{--$('#kupon').click(function(e){--}}
+                {{--e.preventDefault();--}}
+                {{--var code = $(this).parent().find('input[type="text"]').val();--}}
+                {{--console.log(code);--}}
+                {{--$.post('{{ url('coupon') }}', {_token: '{{ csrf_token() }}', code: code }, function(data){--}}
+                    {{--if(data == 'done'){--}}
+                        {{--location.reload();--}}
+                    {{--}else{--}}
+                        {{--$().toastmessage('showWarningToast', "Kupon nije ispravan");--}}
+                    {{--}--}}
+                {{--});--}}
+            {{--});--}}
 
-            $('.submit').click(function (e) {
-                e.preventDefault();
-                $('#forma').submit();
-            });
+//            $('.submit').click(function (e) {
+//                e.preventDefault();
+//                $('#forma').submit();
+//            });
 
-            if($('.cart-list__item').length > 0){
-                cart();
-                countChange();
-                omotCheckbox();
-            }
+            {{--if($('.cart-list__item').length > 0){--}}
+                {{--cart();--}}
+                {{--countChange();--}}
+                {{--omotCheckbox();--}}
+            {{--}--}}
 
-            function cart() {
-                var sum=0;
-                $('.cart-list__item').each(function(){
-                    var el = $(this);
-                    var price = parseFloat(el.find('.js-total').text());
-                    sum += parseFloat(price.toFixed(2));
-                });
-                @if(!empty($discount))
-                    $('#ukupno').text(sum);
-                    var discount = parseInt('{{ $discount }}');
-                    discount = (discount / 100) * sum;
-                    sum = sum - discount;
-                    $('#popust').text(parseFloat(discount.toFixed(2)));
-                    $('#sveukupno').text(parseFloat(sum).toFixed(2));
-                @else
-                    $('#ukupno').text(sum);
-                    $('#sveukupno').text(sum);
-                @endif
-            }
+            {{--function cart() {--}}
+                {{--var sum=0;--}}
+                {{--$('.cart-list__item').each(function(){--}}
+                    {{--var el = $(this);--}}
+                    {{--var price = parseFloat(el.find('.js-total').text());--}}
+                    {{--sum += parseFloat(price.toFixed(2));--}}
+                {{--});--}}
+                {{--@if(!empty($discount))--}}
+                    {{--$('#ukupno').text(sum);--}}
+                    {{--var discount = parseInt('{{ $discount }}');--}}
+                    {{--discount = (discount / 100) * sum;--}}
+                    {{--sum = sum - discount;--}}
+                    {{--$('#popust').text(parseFloat(discount.toFixed(2)));--}}
+                    {{--$('#sveukupno').text(parseFloat(sum).toFixed(2));--}}
+                {{--@else--}}
+                    {{--$('#ukupno').text(sum);--}}
+                    {{--$('#sveukupno').text(sum);--}}
+                {{--@endif--}}
+            {{--}--}}
 
-            function countChange() {
-                $('.count').change(function(){
-                    var li = $(this).parent().parent().parent();
-                    var count = parseInt($(this).val());
-                    var price = parseFloat(li.find('.js-price').text());
-                    var omot = 0;
-                    if(li.find('.gift').prop('checked')){
-                        omot = parseFloat(li.find('.js-omot').text());
-                    }
-                    var sum = parseFloat(count * (price + omot)).toFixed(2);
-                    li.find('.js-total').text(sum);
+            {{--function countChange() {--}}
+                {{--$('.count').change(function(){--}}
+                    {{--var li = $(this).parent().parent().parent();--}}
+                    {{--var count = parseInt($(this).val());--}}
+                    {{--var price = parseFloat(li.find('.js-price').text());--}}
+                    {{--var omot = 0;--}}
+                    {{--if(li.find('.gift').prop('checked')){--}}
+                        {{--omot = parseFloat(li.find('.js-omot').text());--}}
+                    {{--}--}}
+                    {{--var sum = parseFloat(count * (price + omot)).toFixed(2);--}}
+                    {{--li.find('.js-total').text(sum);--}}
 
-                    cart();
-                });
-            }
+                    {{--cart();--}}
+                {{--});--}}
+            {{--}--}}
 
-            function omotCheckbox() {
-                $('.gift').click(function(){
-                    var el = $(this);
-                    var li = el.parent().parent().parent().parent().parent();
-                    var count = parseInt(li.find('.count').val());
-                    var price = parseFloat(li.find('.js-price').text());
-                    var omot = 0;
-                    if(el.prop('checked')){
-                        omot = parseFloat(li.find('.js-omot').text());
-                    }
-                    var sum = parseFloat(count * (price + omot)).toFixed(2);
-                    li.find('.js-total').text(sum);
+            {{--function omotCheckbox() {--}}
+                {{--$('.gift').click(function(){--}}
+                    {{--var el = $(this);--}}
+                    {{--var li = el.parent().parent().parent().parent().parent();--}}
+                    {{--var count = parseInt(li.find('.count').val());--}}
+                    {{--var price = parseFloat(li.find('.js-price').text());--}}
+                    {{--var omot = 0;--}}
+                    {{--if(el.prop('checked')){--}}
+                        {{--omot = parseFloat(li.find('.js-omot').text());--}}
+                    {{--}--}}
+                    {{--var sum = parseFloat(count * (price + omot)).toFixed(2);--}}
+                    {{--li.find('.js-total').text(sum);--}}
 
-                    cart();
-                });
-            }
+                    {{--cart();--}}
+                {{--});--}}
+            {{--}--}}
 
         });
     </script>

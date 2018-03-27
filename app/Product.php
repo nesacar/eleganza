@@ -858,7 +858,7 @@ class Product extends Model {
     }
 
     public static function removeFromCart($id=false){
-        $cart = session('cart');
+        $cart = \Session::get('cart');
         if($id){
             if(count($cart)>0){
                 $array = array();
@@ -868,11 +868,13 @@ class Product extends Model {
                     }
                 }
                 session()->put('cart', $array);
+                return 'done';
             }
+            return 'hm1';
         }else{
             session()->put('cart', []);
+            return 'done';
         }
-        return 'done';
     }
 
     public static function getCartIds(){
@@ -941,11 +943,11 @@ class Product extends Model {
         $product->update();
     }
 
-    public static function calculateDiscount($percent, $product){
+    public static function calculateDiscount($percent, $price_small){
         if($percent == 0){
-            return $product->price_small;
+            return $price_small;
         }else{
-            return $product->price_small - round(($percent/100) * $product->price_small);
+            return $price_small - round(($percent/100) * $price_small, 2);
         }
     }
 
