@@ -48,4 +48,19 @@ class CustomersController extends Controller
         }
         return 'error';
     }
+
+    public function myOrders(){
+        $settings = Setting::first();
+        $theme = Theme::where('active', 1)->first();
+        $carts = auth()->user()->customer->cart()->with('Product')->get();
+        return view('themes.'.$theme->slug.'.pages.orders', compact('settings', 'theme', 'carts'));
+    }
+
+    public function myOrder($id){
+        $settings = Setting::first();
+        $theme = Theme::where('active', 1)->first();
+        $cart = Cart::with('Product')->with('Customer')->where('customer_id', auth()->user()->customer->id)->where('id', $id)->first();
+        if(empty($cart)) return redirect('/profile');
+        return view('themes.'.$theme->slug.'.pages.order', compact('settings', 'theme', 'cart'));
+    }
 }

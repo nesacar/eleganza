@@ -63,7 +63,7 @@ class MessagesController extends Controller
         $message = Message::create($request->all());
         $request->input('seen')? $message->seen = 1 : $message->seen = 0;
         $message->update();
-        return 'done';
+        return redirect()->back()->with('done', 'Poruka je poslata. Hvala na interesovanju.');
     }
 
     /**

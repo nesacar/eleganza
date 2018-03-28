@@ -28,7 +28,6 @@ class CreateMessageRequest extends FormRequest
             'name' => 'required',
             'email' => 'required|email',
             'phone' => 'required',
-            'message' => 'required',
         ];
     }
 
@@ -40,7 +39,6 @@ class CreateMessageRequest extends FormRequest
             'name.required' => 'Ime je obavezno',
             'email.required' => 'Email je obavezan',
             'phone.required' => 'Telefon je obavezan',
-            'message.required' => 'Poruka je obavezna',
         ];
     }
 }

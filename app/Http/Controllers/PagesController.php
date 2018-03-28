@@ -904,7 +904,8 @@ class PagesController extends Controller
 
         //return $products = Property::join('property_translations', 'properties.id', '=', 'property_translations.property_id')->orderBy('properties.order', 'ASC')->pluck('property_translations.title', 'properties.id');
         //session()->forget('cart');
-        dd(session('cart'));
+//        $product = Product::find(29);
+//        return Product::getRelatedByColor($product);
 
         return 'done';
     }

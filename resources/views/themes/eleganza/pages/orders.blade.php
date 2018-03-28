@@ -66,6 +66,40 @@
                     Odjava
                 </a>
             </div>
+            <div class="col-md-7">
+                @if(count($carts))
+                <ul class="orders-list">
+                    @foreach($carts as $cart)
+                    <li class="orders-list__item container">
+                        <div class="orders-list__header">
+                            <div class="header-col">
+                                <h6 class="header-col__name with-overline">datum narudžbe:</h6>
+                                <p class="header-col__">{{ \Carbon\Carbon::parse($cart->created_at)->format('d M Y') }}</p>
+                            </div>
+                            <div class="header-col">
+                                <h6 class="header-col__name with-overline">broj narudžbe:</h6>
+                                <p class="header-col__">{{ $cart->id }}</p>
+                            </div>
+                            <div class="header-col">
+                                <h6 class="header-col__name with-overline">vrijednost:</h6>
+                                <p class="header-col__">{{ $cart->sum }} kn</p>
+                            </div>
+                        </div>
+                        @if(count($cart->product)>0)
+                        <ul class="orders-list__body">
+                            <li class="orders-list__order">
+                                <div class="e-thumbnail e-image e-image--11">
+                                    {!! HTML::Image($cart->product->first()->image, $cart->product->first()->title) !!}
+                                </div>
+                                <a href="{{ url('moja-narudzbina/'.$cart->id) }}" class="e-btn e-btn--invert e-btn--fat">pogldedaj narudžbu</a>
+                            </li>
+                        </ul>
+                        @endif
+                    </li>
+                    @endforeach
+                </ul>
+                @endif
+            </div>
         </div>
     </section>
 

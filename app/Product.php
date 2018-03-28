@@ -194,6 +194,27 @@ class Product extends Model {
         return Category::find($cat_id)->product()->where('products.id', '<>', $product_id)->orderByRaw("RAND()")->take($num)->get();
     }
 
+//    public static function getRelatedByColor($product){
+//        $ids = Attribute::join('attribute_product', 'attributes.id', '=', 'attribute_product.attribute_id')->where('attribute_product.product_id', $product->id)
+//            ->where('attributes.extra', null)->pluck('attributes.id');
+////        $products = self::join('attribute_product', 'products.id', '=', 'attribute_product.product_id')
+////            ->where(function($query) use ($ids){
+////                if(count($ids)>0){
+////                    foreach($ids as $id){
+////                        $query->where('attribute_product.attribute_id', $id);
+////                    }
+////                }
+////            })->orderBy('products.publish_at', 'DESC')->toSql();
+//
+//        $products = self::whereIn('products.id', function ($query) use ($ids){
+//            foreach ($ids as $id){
+//                $query->select('attribute_product.product_id')->from('attribute_product.attribute_product')->where('attribute_product.attribute_id', $id);
+//            }
+//        })->orderBy('products.publish_at', 'DESC')->get();
+//
+//        dd($products);
+//    }
+
     public static function productInSession($id){
         $status = false;
         if(\Session::has('korpa') && is_array(\Session::get('korpa'))){

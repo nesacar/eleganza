@@ -28,6 +28,8 @@ Route::post('password/new', 'RegistersController@newPasswordUpdate');
 Route::get('profile', 'CustomersController@profile');
 Route::post('kosarica', 'CustomersController@cartUpdate');
 Route::post('coupon', 'CustomersController@coupon');
+Route::get('moje-narudzbine', 'CustomersController@myOrders');
+Route::get('moja-narudzbina/{id}', 'CustomersController@myOrder');
 
 Route::get('lista-zelja', 'PagesController@wishList');
 Route::get('kosarica', 'PagesController@cart');
@@ -73,7 +75,6 @@ Route::get('korpa', 'PagesController@korpa');
 Route::post('kupovina', 'PagesController@kupovina');
 
 Route::get('proba', 'PagesController@proba');
-Route::get('moje-narudzbine', 'PagesController@myOrders');
 
 Route::get('shop/{slug1}/{slug2}/{slug3}/{slug4}/{slug5}/{slug6}', 'PagesController@shopCategory6');
 Route::get('shop/{slug1}/{slug2}/{slug3}/{slug4}/{slug5}', 'PagesController@shopCategory5');

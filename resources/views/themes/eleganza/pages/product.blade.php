@@ -96,9 +96,15 @@
                         <p class="product__hint-text">dodatnih 5% popusta na online placanje</p>
                     </div>
                     <div class="product-info__section">
-                        <button class="e-btn e-btn--primary e-btn--fat e-btn--block addCart" data-href="{{ url('add-to-cart/'.$product->id) }}">
-                            dodaj u košaricu
-                        </button>
+                        @if($product->amount > 0)
+                            <button class="e-btn e-btn--primary e-btn--fat e-btn--block addCart" data-href="{{ url('add-to-cart/'.$product->id) }}">
+                                dodaj u košaricu
+                            </button>
+                        @else
+                            <button class="e-btn e-btn--primary e-btn--fat e-btn--block" data-e-controls="#jsModalOrder">
+                                rezerviši
+                            </button>
+                        @endif
                         <button class="e-btn e-btn--primary e-btn--fat e-btn--block addWish" data-href="{{ url('add-to-wishlist/'.$product->id) }}">
                             dodaj u listu zelja
                         </button>
@@ -172,6 +178,12 @@
 
 @endsection
 
+@section('modal')
+    @if($product->amount == 0)
+        @include('themes.'.$theme->slug.'.partials.modal')
+    @endif
+@endsection
+
 @section('footer_scripts')
     {!! HTML::script('themes/'.$theme->slug.'/js/jquery-2.2.4.min.js') !!}
     {!! HTML::script('themes/'.$theme->slug.'/js/jquery.toastmessage.js') !!}
@@ -193,6 +205,10 @@
                     $().toastmessage('showSuccessToast', "proizvod je dodat u košaricu");
                 });
             });
+
+            @if(\Session::has('done'))
+                $().toastmessage('showSuccessToast', "{{ \Session::get('done') }}");
+            @endif
         });
     </script>
 @endsection

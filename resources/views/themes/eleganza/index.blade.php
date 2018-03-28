@@ -90,6 +90,9 @@
         <div class=copy> <span>2018</span> P-grupacija. Sva prava zadržana. </div>
     </div>
 </div>
+
+@yield('modal')
+
 {!! HTML::script('themes/'.$theme->slug.'/js/app.bundle.js') !!}
 
 @yield('footer_scripts')
