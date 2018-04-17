@@ -46,7 +46,7 @@
             <div class="col-md-3 col-sm-6 footer__col">
                 <ul class=footer__list>
                     <li class=footer__list__item><a href=#>O Nama</a></li>
-                    <li class=footer__list__item><a href=#>Blog</a></li>
+                    <li class=footer__list__item><a href="{{ url('blog') }}">Blog</a></li>
                     <li class=footer__list__item><a href=#>Kontakt</a></li>
                     <li class=footer__list__item><a href=#>Pitanja i odgovori</a></li>
                 </ul>
