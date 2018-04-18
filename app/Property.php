@@ -22,7 +22,7 @@ class Property extends Model {
 
     public $translatedAttributes = ['title'];
 
-    protected $fillable = ['id', 'order', 'spacial', 'price', 'publish'];
+    protected $fillable = ['id', 'order', 'spacial', 'price', 'expanded', 'publish'];
 
     public static function save_oso_order($niz){
         $i=-1;

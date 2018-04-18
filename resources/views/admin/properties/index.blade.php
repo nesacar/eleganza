@@ -24,10 +24,13 @@
                                 <div class="col-md-1">
                                     <b>ID</b>
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-md-4">
                                     <b>Naziv</b>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
+                                    <b>Prošireno</b>
+                                </div>
+                                <div class="col-md-2">
                                     <b>Publikovano</b>
                                 </div>
                                 <div class="col-md-3">
@@ -40,10 +43,13 @@
                                     <div class="col-md-1 vcenter">
                                         {{ $p->id }}
                                     </div>
-                                    <div class="col-md-5 vcenter">
+                                    <div class="col-md-4 vcenter">
                                         {{ $p->{'title:hr'} }}
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
+                                        @if($p->expanded) Da @else Ne @endif
+                                    </div>
+                                    <div class="col-md-2">
                                         {!! Form::checkbox('publish', 1, $p->publish, ['id' => $p->id, 'name' => 'primary[]', 'class' => 'switch-state', 'data-on-color' => 'success', 'data-off-color' => 'danger', 'data-on-text' => 'DA', 'data-off-text' => 'NE']) !!}
                                     </div>
                                     <div class="col-md-3">

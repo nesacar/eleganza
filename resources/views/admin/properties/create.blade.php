@@ -31,6 +31,12 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="expanded" class="col-sm-2 control-label">Prošireni</label>
+                            <div class="col-sm-10">
+                                {!! Form::checkbox('expanded', 1, null, ['class' => 'switch-state', 'data-on-color' => 'success', 'data-off-color' => 'danger', 'data-on-text' => 'DA', 'data-off-text' => 'NE', 'id' => 'expanded']) !!}
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="top" class="col-sm-2 control-label">Publikovano</label>
                             <div class="col-sm-10">
                                 {!! Form::checkbox('publish', 1, null, ['class' => 'switch-state', 'data-on-color' => 'success', 'data-off-color' => 'danger', 'data-on-text' => 'DA', 'data-off-text' => 'NE', 'id' => 'top']) !!}

@@ -72,7 +72,13 @@ class PagesController extends Controller
         $s1 = $category;
         if(isset($category)){
             $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug)->first();
-            !empty($set)? $props = $set->property()->orderBy('properties.order', 'ASC')->get() : $props = null;
+            if(!empty($set)){
+                $props1 = $set->property()->where('properties.expanded', 0)->orderBy('properties.order', 'ASC')->get();
+                $props2 = $set->property()->where('properties.expanded', 1)->orderBy('properties.order', 'ASC')->get();
+            }else{
+                $props1 = null;
+                $props2 = null;
+            }
             //$topParent = PCategory::getTopParentBySlug($slug);
             $bred = Category::getBredcrumb($category->id);
             $bred = array_reverse($bred);
@@ -109,7 +115,7 @@ class PagesController extends Controller
             $topCat = [];
             $active = $slug;
             $s2 = null; $s3 = null; $s4 = null;
-            return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max', 'price', 'set'));
+            return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props1', 'props2', 'max', 'price', 'set'));
         }else{
             return 'error 404';
         }
@@ -154,7 +160,13 @@ class PagesController extends Controller
             $category = $s2;
             if(isset($category)){
                 $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
-                !empty($set)? $set->property()->orderBy('properties.order', 'ASC')->get() : $props = null;
+                if(!empty($set)){
+                    $props1 = $set->property()->where('properties.expanded', 0)->orderBy('properties.order', 'ASC')->get();
+                    $props2 = $set->property()->where('properties.expanded', 1)->orderBy('properties.order', 'ASC')->get();
+                }else{
+                    $props1 = null;
+                    $props2 = null;
+                }
                 $topParent = PCategory::getTopParentBySlug($slug2);
                 $bred = Category::getBredcrumb($category->id);
                 $bred = array_reverse($bred);
@@ -187,7 +199,7 @@ class PagesController extends Controller
                 $topCat = [];
                 $max = Product::newMaxPrice($category->id, $filters);
                 $s3 = null; $s4 = null;
-                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max', 'set'));
+                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props1', 'props2', 'max', 'set'));
             }else{
                 return 'error 404';
             }
@@ -228,7 +240,13 @@ class PagesController extends Controller
                 ->where('category_translations.slug', $slug3)->where('categories.publish', 1)->where('categories.parent', $s2->id)->first();
             if(isset($category)){
                 $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
-                $set->property()->orderBy('properties.order', 'ASC')->get();
+                if(!empty($set)){
+                    $props1 = $set->property()->where('properties.expanded', 0)->orderBy('properties.order', 'ASC')->get();
+                    $props2 = $set->property()->where('properties.expanded', 1)->orderBy('properties.order', 'ASC')->get();
+                }else{
+                    $props1 = null;
+                    $props2 = null;
+                }
                 $topParent = PCategory::getTopParentBySlug($slug2);
                 //$bred = Category::getBredcrumb($category->id);
                 //$bred = array_reverse($bred);
@@ -263,7 +281,7 @@ class PagesController extends Controller
                 $topCat = [];
                 $max = Product::newMaxPrice($category->id, $filters);
                 $s4 = null;
-                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max', 'set'));
+                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props1', 'props2', 'max', 'set'));
             }else{
                 return 'error 404';
             }
@@ -304,7 +322,13 @@ class PagesController extends Controller
                 ->where('category_translations.slug', $slug4)->where('categories.publish', 1)->where('categories.parent', $s3->id)->first();
             if(isset($category)){
                 $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
-                $set->property()->orderBy('properties.order', 'ASC')->get();
+                if(!empty($set)){
+                    $props1 = $set->property()->where('properties.expanded', 0)->orderBy('properties.order', 'ASC')->get();
+                    $props2 = $set->property()->where('properties.expanded', 1)->orderBy('properties.order', 'ASC')->get();
+                }else{
+                    $props1 = null;
+                    $props2 = null;
+                }
                 $topParent = PCategory::getTopParentBySlug($slug2);
                 //$bred = Category::getBredcrumb($category->id);
                 //$bred = array_reverse($bred);
@@ -336,7 +360,7 @@ class PagesController extends Controller
                 }
                 $topCat = [];
                 $max = Product::newMaxPrice($category->id, $filters);
-                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max', 'set'));
+                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props1', 'props2', 'max', 'set'));
             }else{
                 return 'error 404';
             }
@@ -380,7 +404,13 @@ class PagesController extends Controller
                 ->where('category_translations.slug', $slug5)->where('categories.publish', 1)->where('categories.parent', $s4->id)->first();
             if($category){
                 $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
-                $set->property()->orderBy('properties.order', 'ASC')->get();
+                if(!empty($set)){
+                    $props1 = $set->property()->where('properties.expanded', 0)->orderBy('properties.order', 'ASC')->get();
+                    $props2 = $set->property()->where('properties.expanded', 1)->orderBy('properties.order', 'ASC')->get();
+                }else{
+                    $props1 = null;
+                    $props2 = null;
+                }
                 $topParent = PCategory::getTopParentBySlug($slug2);
                 //$bred = Category::getBredcrumb($category->id);
                 //$bred = array_reverse($bred);
@@ -412,7 +442,7 @@ class PagesController extends Controller
                 }
                 $topCat = [];
                 $max = Product::newMaxPrice($category->id, $filters);
-                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 's5', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max', 'set'));
+                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 's5', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props1', 'props2', 'max', 'set'));
             }else{
                 return 'error 404';
             }
@@ -457,7 +487,13 @@ class PagesController extends Controller
                 ->where('category_translations.slug', $slug6)->where('categories.publish', 1)->where('categories.parent', $s5->id)->first();
             if(isset($category)){
                 $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
-                $set->property()->orderBy('properties.order', 'ASC')->get();
+                if(!empty($set)){
+                    $props1 = $set->property()->where('properties.expanded', 0)->orderBy('properties.order', 'ASC')->get();
+                    $props2 = $set->property()->where('properties.expanded', 1)->orderBy('properties.order', 'ASC')->get();
+                }else{
+                    $props1 = null;
+                    $props2 = null;
+                }
                 $topParent = PCategory::getTopParentBySlug($slug2);
                 //$bred = Category::getBredcrumb($category->id);
                 //$bred = array_reverse($bred);
@@ -489,7 +525,7 @@ class PagesController extends Controller
                 }
                 $topCat = [];
                 $max = Product::newMaxPrice($category->id, $filters);
-                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 's5', 's6', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props', 'max', 'set'));
+                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 's5', 's6', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props1', 'props2', 'max', 'set'));
             }else{
                 return 'error 404';
             }

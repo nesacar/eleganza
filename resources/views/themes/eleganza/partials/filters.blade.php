@@ -1,6 +1,6 @@
 <div class=filters>
-    <div class=filters__header>osnovni filter</div>
-    <div class=filters__body>
+    <div class=filters__header data-toggle=collapse href=#jsBasicFilters role=button aria-expanded=true aria-controls=#jsBasicFilters>osnovni filter<span style=margin-left:auto>&plus;</span></div>
+    <div class="filters__body collapse show" id=jsBasicFilters>
         @if(!empty($max))
             <div class="filter cijena">
                 <h4 class=filter__name>cijena</h4>
@@ -21,8 +21,47 @@
             </div>
         @endif
 
-        @if(count($props)>0)
-            @foreach($props as $prop)
+            @if(count($props1)>0)
+                @foreach($props1 as $prop)
+                    @php $atts = \App\Attribute::getFilteredAttributes($prop->id, $category->id); @endphp
+                    <div class=filter>
+                        <h4 class=filter__name>{{ $prop->title }}</h4>
+                        <ul class=filter-list>
+                            @foreach($atts as $a)
+                                @if($a->publish == 1)
+                                    <li class=filter-list__item>
+                                        <div class=e-list__item>
+                                            <div class=e-checkbox>
+                                                @if(in_array($a->id, $filters))
+                                                    {!! Form::checkbox('filters[]', $a->id, true, array('id' => 'cb-' . $a->id, 'class' => 'e-checkbox__control')) !!}
+                                                @else
+                                                    @if(in_array($a->id, $filteri))
+                                                        {!! Form::checkbox('filters[]', $a->id, false, array('id' => 'cb-' . $a->id, 'class' => 'e-checkbox__control')) !!}
+                                                    @else
+                                                        {!! Form::checkbox('filters[]', $a->id, false, array('id' => 'cb-' . $a->id, 'class' => 'e-checkbox__control clean')) !!}
+                                                    @endif
+                                                @endif
+                                                <div class=e-checkbox__background>
+                                                    <svg class=e-checkbox__checkmark viewBox="0 0 24 24"> <path class=e-checkbox__path fill=none stroke=white d="M1.73,12.91 8.1,19.28 22.79,4.59"></path> </svg>
+                                                </div>
+                                            </div>
+                                            <label for="cb-{{$a->id }}">{{ $a->title }}</label>
+                                        </div>
+                                    </li>
+                                @endif
+                            @endforeach
+                        </ul>
+                    </div>
+                @endforeach
+            @endif
+    </div>
+</div>
+
+<div class=filters>
+    <div class=filters__header data-toggle=collapse href=#jsAdvancedFilters role=button aria-expanded=true aria-controls=#jsAdvancedFilters>prošireni filter<span style=margin-left:auto>&plus;</span></div>
+    <div class="filters__body collapse show" id=jsAdvancedFilters>
+        @if(count($props2)>0)
+            @foreach($props2 as $prop)
                 @php $atts = \App\Attribute::getFilteredAttributes($prop->id, $category->id); @endphp
                 <div class=filter>
                     <h4 class=filter__name>{{ $prop->title }}</h4>

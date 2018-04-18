@@ -55,7 +55,8 @@ class PropertiesController extends Controller {
         app()->setLocale($primary->locale);
 		$property = Property::create($request->all());
         $property->title = $request->input('title');
-		$request->input('publish')? $property->publish = 1 : $property->publish = 0;
+        $property->expanded = $request->input('expanded')?: 0;
+        $property->publish = $request->input('publish')?: 0;
         $property->update();
 		return redirect('admin/properties')->with('done', 'Osobina je kreirana.');
 	}
@@ -99,7 +100,8 @@ class PropertiesController extends Controller {
         $primary = Language::getPrimary();
         app()->setLocale($primary->locale);
         $property = Property::find($id);
-		$request->input('publish')? $property->publish = 1 : $property->publish = 0;
+        $property->expanded = $request->input('expanded')?: 0;
+        $property->publish = $request->input('publish')?: 0;
         $property->update($request->except('publish'));
         return redirect('admin/properties/'.$id.'/edit')->with('done', 'Osobina je izmenjena.');
 	}

@@ -41,56 +41,6 @@
                     </div>
                 </div>
             @endforeach
-            @if(false)
-            <div class="e-col">
-                <div class="e-blog">
-                    <a href="#">
-                        <div class="e-blog__thumb e-image e-image--169 with-zoom">
-                            {!! HTML::Image('themes/'.$theme->slug.'/img/blog-bg-1.jpg', '') !!}
-                            <div class="e-blog__title">
-                                <h2>gaga milano osvojio je nagradu watchpro satovi 2017. godine</h2>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="e-col">
-                <div class="e-blog">
-                    <a href="#">
-                        <div class="e-blog__thumb e-image e-image--169 with-zoom">
-                            {!! HTML::Image('themes/'.$theme->slug.'/img/blog-bg-2.jpg', '') !!}
-                            <div class="e-blog__title">
-                                <h2>gaga milano osvojio je nagradu watchpro satovi 2017. godine</h2>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="e-col">
-                <div class="e-blog">
-                    <a href="#">
-                        <div class="e-blog__thumb e-image e-image--169 with-zoom">
-                            {!! HTML::Image('themes/'.$theme->slug.'/img/blog-bg-3.jpg', '') !!}
-                            <div class="e-blog__title">
-                                <h2>gaga milano osvojio je nagradu watchpro satovi 2017. godine</h2>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="e-col">
-                <div class="e-blog">
-                    <a href="#">
-                        <div class="e-blog__thumb e-image e-image--169 with-zoom">
-                            {!! HTML::Image('themes/'.$theme->slug.'/img/blog-bg-4.jpg', '') !!}
-                            <div class="e-blog__title">
-                                <h2>gaga milano osvojio je nagradu watchpro satovi 2017. godine</h2>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            @endif
         </div>
     </section>
     @endif
