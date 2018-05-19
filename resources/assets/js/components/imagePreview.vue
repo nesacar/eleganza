@@ -30,6 +30,7 @@
                 }
                 reader.readAsDataURL(files[0]);
                 reader.onload = (e) => {
+
                     this.image = e.target.result;
                     this.showImage = true;
                     this.$emit('imageAdded', this.image);

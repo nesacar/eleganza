@@ -178,6 +178,8 @@ return [
         nesacar\blogshop\BlogShopServiceProvider::class,
         nesacar\newsletter\NewsletterServiceProvider::class,
         App\Providers\ViewComposerServiseProvider::class,
+        Devfactory\Imagecache\ImagecacheServiceProvider::class,
+        Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -241,6 +243,8 @@ return [
         'HTML' => Illuminate\Html\HtmlFacade::class,
         'Date' => Jenssegers\Date\Date::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Imagecache' => Devfactory\Imagecache\Facades\ImagecacheFacade::class,
+        'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
     ],
 
 ];
