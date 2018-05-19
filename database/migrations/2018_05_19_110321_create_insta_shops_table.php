@@ -19,6 +19,7 @@ class CreateInstaShopsTable extends Migration
             $table->string('image');
             $table->text('desc');
             $table->integer('order')->default(1);
+            $table->boolean('featured')->default(1);
             $table->boolean('publish')->default(1);
             $table->timestamps();
         });

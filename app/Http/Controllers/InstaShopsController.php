@@ -81,6 +81,7 @@ class InstaShopsController extends Controller
     public function update(UpdateInstaShopRequest $request, InstaShop $instaShop)
     {
         $instaShop->update(request()->all());
+        $instaShop->featured = request('featured')?: false;
         $instaShop->publish = request('publish')?: false;
         $instaShop->update();
 

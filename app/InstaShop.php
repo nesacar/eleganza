@@ -8,7 +8,7 @@ use File;
 
 class InstaShop extends Model
 {
-    protected $fillable = ['title', 'image', 'desc', 'order', 'publish'];
+    protected $fillable = ['title', 'image', 'desc', 'order', 'featured', 'publish'];
 
     /**
      * The "booting" method of the model.

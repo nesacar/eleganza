@@ -57,6 +57,12 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="featured" class="col-sm-2 control-label">Istaknuto</label>
+                            <div class="col-sm-10">
+                                {!! Form::checkbox('featured', 1, $instaShop->featured, ['class' => 'switch-state', 'data-on-color' => 'success', 'data-off-color' => 'danger', 'data-on-text' => 'DA', 'data-off-text' => 'NE', 'id' => 'active']) !!}
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="publish" class="col-sm-2 control-label">Vidljivo</label>
                             <div class="col-sm-10">
                                 {!! Form::checkbox('publish', 1, $instaShop->publish, ['class' => 'switch-state', 'data-on-color' => 'success', 'data-off-color' => 'danger', 'data-on-text' => 'DA', 'data-off-text' => 'NE', 'id' => 'active']) !!}
