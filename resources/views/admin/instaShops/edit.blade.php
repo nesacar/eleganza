@@ -79,8 +79,8 @@
                 </div>
                 <div class="panel-body" id="place">
                     @if(count($instaShop->coordinate)>0)
-                        @foreach($instaShop->coordinate as $coordinate)
-                            @include('admin.instaShops._coordinate', ['coordinate' => $coordinate])
+                        @foreach($instaShop->coordinate as $key => $coordinate)
+                            @include('admin.instaShops._coordinate', ['coordinate' => $coordinate, 'key' => ++$key])
                         @endforeach
                     @endif
                 </div>
@@ -154,7 +154,8 @@
     $('#klik').click(function(e){
         e.preventDefault();
         var place = $('#place');
-        $.post('{{ url('admin/insta-shops/coordinate') }}', {'_token': '{{ csrf_token() }}'}, function(data){
+        var pin = $('.products').length + 1;
+        $.post('{{ url('admin/insta-shops/coordinate') }}', {'_token': '{{ csrf_token() }}', 'x': 30, 'y': 30, 'pin': pin}, function(data){
             place.append(data);
             $('.products').last().select2();
         });

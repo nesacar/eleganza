@@ -107,8 +107,9 @@ class InstaShopsController extends Controller
      * @param  \App\InstaShop  $instaShop
      * @return \Illuminate\Http\Response
      */
-    public function delete(InstaShop $instaShop)
+    public function delete($id)
     {
+        $instaShop = InstaShop::find($id);
         if($instaShop->image) File::delete($instaShop->image);
         $instaShop->delete();
 
@@ -117,6 +118,9 @@ class InstaShopsController extends Controller
 
     public function coordinate(){
         $productIds = Product::where('publish', 1)->pluck('code', 'id');
-        return view('admin.instaShops._coordinate', compact('productIds'));
+        $x = request('x');
+        $y = request('y');
+        $pin = request('pin');
+        return view('admin.instaShops._coordinate', compact('productIds', 'x', 'y', 'pin'));
     }
 }
