@@ -942,8 +942,8 @@ class PagesController extends Controller
         //session()->forget('cart');
 //        $product = Product::find(29);
 //        return Product::getRelatedByColor($product);
-
-        return 'done';
+        \Artisan::call('storage:link');
+        return 'done2';
     }
 
     public function eleganza(){

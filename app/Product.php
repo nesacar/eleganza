@@ -1068,5 +1068,9 @@ class Product extends Model {
     public function group(){
         return $this->belongsToMany(Group::class);
     }
+
+    public function coordinate(){
+        return $this->hasMany(Coordinate::class);
+    }
 }
 

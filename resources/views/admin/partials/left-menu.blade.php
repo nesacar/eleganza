@@ -19,6 +19,7 @@
         <ul class="sub-menu">
             <li><a href="{{ url('admin/blocks') }}"><i class="fa fa-th-large rokni-desno"></i>Šabloni</a></li>
             <li><a href="{{ url('admin/boxes') }}"><i class="fa fa-th rokni-desno"></i>Slajdovi</a></li>
+            <li><a href="{{ url('admin/insta-shops') }}"><i class="fa fa-instagram rokni-desno"></i>Insta Shop</a></li>
         </ul>
     </li>
     @if($setting->blog == 1)

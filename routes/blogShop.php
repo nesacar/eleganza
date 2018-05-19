@@ -167,3 +167,9 @@ Route::get('admin/groups/publish/{id}', 'GroupsController@publish');
 Route::resource('admin/coupons', 'CouponsController');
 Route::get('admin/coupons/{id}/delete', 'CouponsController@delete');
 Route::get('admin/coupons/publish/{id}', 'CouponsController@publish');
+
+Route::post('admin/insta-shops/coordinate', 'InstaShopsController@coordinate');
+Route::resource('admin/insta-shops', 'InstaShopsController');
+Route::get('admin/insta-shops/{id}/delete', 'InstaShopsController@delete');
+
+Route::resource('admin/coordinates', 'CoordinatesController');
