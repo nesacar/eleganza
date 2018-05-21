@@ -32,6 +32,7 @@ use App\Product;
 use App\Property;
 use App\Set;
 use App\Setting;
+use App\ShoppingCart;
 use App\Subscriber;
 use App\Tag;
 use App\Theme;
@@ -1011,11 +1012,12 @@ class PagesController extends Controller
     }
 
     public function cart(){
+        //return \Cart::content();
         $settings = Setting::first();
         $theme = Theme::where('active', 1)->first();
-        $cart = session('cart');
-        count($cart)>0? $products = Product::with('Brand')->whereIn('id', Product::getCartIds())->where('publish', 1)->get() : $products = [];
-        $discount = \Session::has('discount')? \Session::get('discount') : 0;
+        //$cart = session('cart');
+        //count($cart)>0? $products = Product::with('Brand')->whereIn('id', Product::getCartIds())->where('publish', 1)->get() : $products = [];
+        //$discount = \Session::has('discount')? \Session::get('discount') : 0;
         return view('themes.'.$theme->slug.'.pages.cart', compact('settings', 'theme', 'products', 'discount'));
     }
 
@@ -1043,12 +1045,31 @@ class PagesController extends Controller
     }
 
     public function addToCart($id){
-        Product::addToCart($id);
-        return 'done';
+        //Product::addToCart($id);
+        $product = Product::find($id);
+        if(self::isExists($product) == false){
+            $price = (float) $product->totalPrice;
+            \Cart::add(['id' => $product->id, 'name' => $product->title, 'qty' => 1, 'price' => $price]);
+
+            return response([
+                'message' => 'added'
+            ], 200);
+        }
+        return response([
+            'message' => 'already exist'
+        ], 422);
     }
 
     public function removeFromCart($id){
-        Product::removeFromCart($id);
+        //Product::removeFromCart($id);
+        $product = Product::withoutGlobalScope('attribute')->find($id);
+        if(!empty(\Cart::content())){
+            foreach(\Cart::content() as $item){
+                if($product->id == $item->id){
+                    \Cart::remove($item->rowId);
+                }
+            }
+        }
         return 'done';
     }
 
@@ -1073,6 +1094,16 @@ class PagesController extends Controller
         Product::removeFromCart();
         session()->forget('coupon');
         return 'moje narudzbine';
+    }
+
+    /**
+     * @param $product
+     * @return mixed
+     */
+    protected static function isExists($product){
+        return \Cart::content()->search(function ($cartItem, $rowId) use ($product) {
+            return $cartItem->id === $product->id;
+        });
     }
 
 }

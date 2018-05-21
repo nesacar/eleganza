@@ -27,14 +27,14 @@
         </div>
     </div>
 
-    @if(count($products)>0)
+    @if(!empty(\Cart::content()))
         {!! Form::open(['action' => ['CustomersController@cartUpdate'], 'method' => 'POST', 'class' => 'form-horizontal', 'id' => 'forma']) !!}
             <section class="container content">
                 <div class="cart-section">
                     <div class=cart-nav>
                         <a href="{{ url('/') }}" class="e-btn e-btn--fat e-btn--invert">&lt; nastavi kupovinu</a>
                         @if(auth()->check())
-                            @if(count($products)>0) <a href=# class="e-btn e-btn--fat e-btn--primary submit">sigurna uplata</a> @endif
+                            @if(!empty(\Cart::content())) <a href=# class="e-btn e-btn--fat e-btn--primary submit">sigurna uplata</a> @endif
                         @else
                             <a href="{{ url('logovanje') }}" class="e-btn e-btn--fat e-btn--primary">prijavi se</a>
                         @endif
@@ -50,9 +50,8 @@
                         <div class="cart-header__label cart-header__label--total">sveukupnu</div>
                     </div>
                     <ul class="cart-list">
-                        @php $sum=0; @endphp
-                        @foreach($products as $product)
-                            @php $sum += $product->price_outlet; @endphp
+                        @foreach(\Cart::content() as $product)
+                            @php $product = \App\Product::with('brand')->find($product->id); @endphp
                             <li class="cart-list__item row">
                                 <div class="col-lg-8 col-md-6 cart-list__item__cell">
                                     <div class=cart-list__item__img>
@@ -136,7 +135,7 @@
                             <div class="cart__receipt">
                                 <div class="cart__receipt__line">
                                     <div>ukupno</div>
-                                    <div>hrk <span id="ukupno">{{ $sum }}</span></div>
+                                    <div>hrk <span id="ukupno">{{ \Cart::total() }}</span></div>
                                 </div>
                                 <div class="cart__receipt__line">
                                     <div>dostava</div>
@@ -148,7 +147,7 @@
                                 </div>
                                 <div class="cart__receipt__line">
                                     <div>sveukupno</div>
-                                    <div class="big">hrk <span id="sveukupno">{{ $sum }}</span></div>
+                                    <div class="big">hrk <span id="sveukupno">{{ \Cart::total() }}</span></div>
                                 </div>
                             </div>
                         </div>
@@ -157,7 +156,7 @@
                 <div class=cart-nav>
                     <a href=# class="e-btn e-btn--fat e-btn--invert">&lt; nastavi kupovinu</a>
                     @if(auth()->check())
-                        @if(count($products)>0) <a href=# class="e-btn e-btn--fat e-btn--primary submit">sigurna uplata</a> @endif
+                        @if(!empty(\Cart::content())) <a href=# class="e-btn e-btn--fat e-btn--primary submit">sigurna uplata</a> @endif
                     @else
                         <a href="{{ url('logovanje') }}" class="e-btn e-btn--fat e-btn--primary">prijavi se</a>
                     @endif
