@@ -1040,8 +1040,18 @@ class PagesController extends Controller
 
     public function addToCartFromWishList($id){
         Product::removeFromWishList($id);
-        Product::addToCart($id);
-        return 'done';
+        $product = Product::find($id);
+        if(self::isExists($product) == false){
+            $price = (float) $product->totalPrice;
+            \Cart::add(['id' => $product->id, 'name' => $product->title, 'qty' => 1, 'price' => $price]);
+
+            return response([
+                'message' => 'done'
+            ], 200);
+        }
+        return response([
+            'message' => 'already exist'
+        ], 422);
     }
 
     public function addToCart($id){
@@ -1052,7 +1062,7 @@ class PagesController extends Controller
             \Cart::add(['id' => $product->id, 'name' => $product->title, 'qty' => 1, 'price' => $price]);
 
             return response([
-                'message' => 'added'
+                'message' => 'done'
             ], 200);
         }
         return response([

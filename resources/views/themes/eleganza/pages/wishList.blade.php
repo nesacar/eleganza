@@ -77,7 +77,7 @@
                 var el = $(this);
                 var link = el.attr('data-href');
                 $.post(link, {_token: '{{ csrf_token() }}' }, function(data){
-                    if(data == 'done'){
+                    if(data.message == 'done'){
                         $().toastmessage('showSuccessToast', "proizvod je prebačen u košaricu");
                         el.parent().parent().parent().parent().remove();
                     }else{
