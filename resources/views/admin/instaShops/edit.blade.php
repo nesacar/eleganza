@@ -34,7 +34,9 @@
                             @if($instaShop->image != null && $instaShop->image != '')
                                 <div class="col-sm-10">
                                     <div class="place">
-                                        <img src="{{ url($instaShop->image) }}" alt="{{ $instaShop->title }}" style="width: 100%; height: auto; margin-bottom: 10px">
+                                        <div class="pinner js-pinner" style="background-image: url({{ url($instaShop->image) }})">
+                                            {{--<img src="{{ url($instaShop->image) }}" alt="{{ $instaShop->title }}" style="width: 100%; height: auto; margin-bottom: 10px">--}}
+                                        </div>
                                         {!! Form::file('image') !!}
                                     </div>
                                 </div>
@@ -81,7 +83,7 @@
         <div class="col-md-5">
             <div class="panel panel-white">
                 <div class="panel-heading clearfix">
-                    <h4 class="panel-title"><i class="fa fa-instagram" style="margin-right: 5px"></i>Koordinate <button id="klik" class="btn btn-primary btn-sm">dodaj</button></h4>
+                    <h4 class="panel-title"><i class="fa fa-instagram" style="margin-right: 5px"></i>Koordinate</h4>
                 </div>
                 <div class="panel-body" id="place">
                     @if(count($instaShop->coordinate)>0)
@@ -95,7 +97,7 @@
                                         {!! Form::hidden('y[]', $coordinate->y) !!}
                                     </div>
                                     <div class="col-md-2">
-                                        <span class="fa fa-remove" style="padding: 11px 0; cursor: pointer;"></span>
+                                        <span class="fa fa-remove" data-index="{{ $key }}" style="padding: 11px 0; cursor: pointer;"></span>
                                     </div>
                                 </div>
                                 <hr>
@@ -112,6 +114,7 @@
 
 @section('footer')
     {!! HTML::script('admin/plugins/select2/js/select2.min.js') !!}
+    {!! HTML::script('themes/eleganza/js/pinner.js') !!}
 @endsection
 
 @section('footer_scripts')
@@ -170,17 +173,21 @@
         }
     @endif
 
-    $('#klik').click(function(e){
-        e.preventDefault();
+    pinner.init({!! $instaShop->coordinate !!}, onAdd);
+
+    function onAdd(coords) {
         var place = $('#place');
         var pin = $('.products').length + 1;
-        $.post('{{ url('admin/insta-shops/coordinate') }}', {'_token': '{{ csrf_token() }}', 'x': 30, 'y': 30, 'pin': pin}, function(data){
+        $.post('{{ url('admin/insta-shops/coordinate') }}', {'_token': '{{ csrf_token() }}', 'x': coords.x, 'y': coords.y, 'pin': pin}, function(data){
             place.append(data);
             $('.products').last().select2();
         });
-    });
+    }
 
     $('.fa-remove').click(function(){
+        var index = $(this).attr('data-index');
+        console.log(index);
         $(this).parent().parent().parent().remove();
+        pinner.removePin(parseInt(index));
     });
 @endsection
