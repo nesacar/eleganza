@@ -1,20 +1,20 @@
 <div class=filters>
     <div class=filters__header data-toggle=collapse href=#jsBasicFilters role=button aria-expanded=true aria-controls=#jsBasicFilters>osnovni filter<span style=margin-left:auto>&plus;</span></div>
     <div class="filters__body collapse show" id=jsBasicFilters>
-        @if(!empty($max))
+        @if($data['max'])
             <div class="filter cijena">
                 <h4 class=filter__name>cijena</h4>
                 <div class=e-slider>
-                    @if(request('max-price') > 0)
-                        <div data-is-slider=true data-min-value={{ request('min-price') }} data-max-value={{ request('max-price') }} data-value-range={{ $max->price_small }} id=jsPriceSlider></div>
+                    @if(request('maxPrice') > 0)
+                        <div data-is-slider=true data-min-value={{ request('minPrice') }} data-max-value={{ request('maxPrice') }} data-value-range={{ $data['range'] }} id=jsPriceSlider></div>
                     @else
-                        <div data-is-slider=true data-min-value=0 data-max-value={{ $max->price_small }} data-value-range={{ $max->price_small }} id=jsPriceSlider></div>
+                        <div data-is-slider=true data-min-value=0 data-max-value={{ $data['max'] }} data-value-range={{ $data['max'] }} id=jsPriceSlider></div>
                     @endif
                     <div class=e-slider__labels>
-                        <input type=text name=min-price class=hidden data-label-for=min data-for-slider=jsPriceSlider readonly=readonly />
+                        <input type=text name=minPrice class=hidden data-label-for=min data-for-slider=jsPriceSlider readonly=readonly />
                         <span class="e-slider__label e-slider__label--kn" data-label-for=min data-for-slider=jsPriceSlider></span>
                         -
-                        <input type=text name=max-price class=hidden data-label-for=max data-for-slider=jsPriceSlider readonly=readonly />
+                        <input type=text name=maxPrice class=hidden data-label-for=max data-for-slider=jsPriceSlider readonly=readonly />
                         <span class="e-slider__label e-slider__label--kn" data-label-for=max data-for-slider=jsPriceSlider></span>
                     </div>
                 </div>
@@ -23,30 +23,25 @@
 
             @if(count($props1)>0)
                 @foreach($props1 as $prop)
-                    @php $atts = \App\Attribute::getFilteredAttributes($prop->id, $category->id); @endphp
                     <div class=filter>
-                        <h4 class=filter__name>{{ $prop->title }}</h4>
+                        <h4 class=filter__name>{{ $prop->getTitle() }}</h4>
                         <ul class=filter-list>
-                            @foreach($atts as $a)
+                            @foreach($prop->attribute as $a)
                                 @if($a->publish == 1)
                                     <li class=filter-list__item>
+                                        @if(in_array($a->id, $data['attIds']))
                                         <div class=e-list__item>
                                             <div class=e-checkbox>
-                                                @if(in_array($a->id, $filters))
-                                                    {!! Form::checkbox('filters[]', $a->id, true, array('id' => 'cb-' . $a->id, 'class' => 'e-checkbox__control')) !!}
-                                                @else
-                                                    @if(in_array($a->id, $filteri))
-                                                        {!! Form::checkbox('filters[]', $a->id, false, array('id' => 'cb-' . $a->id, 'class' => 'e-checkbox__control')) !!}
-                                                    @else
-                                                        {!! Form::checkbox('filters[]', $a->id, false, array('id' => 'cb-' . $a->id, 'class' => 'e-checkbox__control clean')) !!}
-                                                    @endif
-                                                @endif
+
+                                                    <input class="e-checkbox__control" id="{{ 'cb-' . $a->id }}" value="{{ $a->id }}" name="filters[]" type="checkbox" {{ request('filters') && in_array($a->id, request('filters')) ? 'checked' : '' }} />
+
                                                 <div class=e-checkbox__background>
                                                     <svg class=e-checkbox__checkmark viewBox="0 0 24 24"> <path class=e-checkbox__path fill=none stroke=white d="M1.73,12.91 8.1,19.28 22.79,4.59"></path> </svg>
                                                 </div>
                                             </div>
-                                            <label for="cb-{{$a->id }}">{{ $a->title }}</label>
+                                            <label for="cb-{{$a->id }}">{{ $a->getTitle() }}</label>
                                         </div>
+                                        @endif
                                     </li>
                                 @endif
                             @endforeach
@@ -62,30 +57,23 @@
     <div class="filters__body collapse show" id=jsAdvancedFilters>
         @if(count($props2)>0)
             @foreach($props2 as $prop)
-                @php $atts = \App\Attribute::getFilteredAttributes($prop->id, $category->id); @endphp
                 <div class=filter>
-                    <h4 class=filter__name>{{ $prop->title }}</h4>
+                    <h4 class=filter__name>{{ $prop->getTitle() }}</h4>
                     <ul class=filter-list>
-                        @foreach($atts as $a)
+                        @foreach($prop->attribute as $a)
                             @if($a->publish == 1)
                                 <li class=filter-list__item>
+                                    @if(in_array($a->id, $data['attIds']))
                                     <div class=e-list__item>
                                         <div class=e-checkbox>
-                                            @if(in_array($a->id, $filters))
-                                                {!! Form::checkbox('filters[]', $a->id, true, array('id' => 'cb-' . $a->id, 'class' => 'e-checkbox__control')) !!}
-                                            @else
-                                                @if(in_array($a->id, $filteri))
-                                                    {!! Form::checkbox('filters[]', $a->id, false, array('id' => 'cb-' . $a->id, 'class' => 'e-checkbox__control')) !!}
-                                                @else
-                                                    {!! Form::checkbox('filters[]', $a->id, false, array('id' => 'cb-' . $a->id, 'class' => 'e-checkbox__control clean')) !!}
-                                                @endif
-                                            @endif
+                                                <input class="e-checkbox__control" id="{{ 'cb-' . $a->id }}" value="{{ $a->id }}" name="filters[]" type="checkbox" {{ request('filters') && in_array($a->id, request('filters')) ? 'checked' : '' }} />
                                             <div class=e-checkbox__background>
                                                 <svg class=e-checkbox__checkmark viewBox="0 0 24 24"> <path class=e-checkbox__path fill=none stroke=white d="M1.73,12.91 8.1,19.28 22.79,4.59"></path> </svg>
                                             </div>
                                         </div>
-                                        <label for="cb-{{$a->id }}">{{ $a->title }}</label>
+                                        <label for="cb-{{$a->id }}">{{ $a->getTitle() }}</label>
                                     </div>
+                                    @endif
                                 </li>
                             @endif
                         @endforeach
@@ -99,7 +87,7 @@
                 <h4 class=filter__name>Vodootpornost</h4>
                 <div class=e-slider>
                     @if(request('max-water') > 0)
-                        <div data-is-slider=true data-min-value={{ request('min-water') }} data-max-value={{ request('max-water') }} data-value-range=500 id=jsHousingSlider2></div>
+                        <div data-is-slider=true data-min-value={{ request('minWater') }} data-max-value={{ request('maxWater') }} data-value-range=500 id=jsHousingSlider2></div>
                     @else
                         <div data-is-slider=true data-min-value=0 data-max-value=500 data-value-range=500 id=jsHousingSlider2></div>
                     @endif
@@ -117,7 +105,7 @@
                 <h4 class=filter__name>promjer kućišta</h4>
                 <div class=e-slider>
                     @if(request('max-promer') > 0)
-                        <div data-is-slider=true data-min-value={{ request('min-promer') }} data-max-value={{ request('max-promer') }} data-value-range=50 id=jsHousingSlider></div>
+                        <div data-is-slider=true data-min-value={{ request('minPromer') }} data-max-value={{ request('maxPromer') }} data-value-range=50 id=jsHousingSlider></div>
                     @else
                         <div data-is-slider=true data-min-value=0 data-max-value=50 data-value-range=50 id=jsHousingSlider></div>
                     @endif

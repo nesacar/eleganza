@@ -3,8 +3,8 @@
         @if(count($menus)>0)
         <ul class=mobile-nav-list>
             @foreach($menus as $menu)
-                @php $submenu = \App\Menu::find(3)->menuLinks()->where('publish', 1)->where('parent', $menu->cat_id)->orderBy('order', 'ASC')->get(); @endphp
-                @if(count($submenu)>0)
+
+                @if(count($menu->children)>0)
                     <li class=mobile-nav-list__item>
                         <div class="e-list__item e-list__item--big">
                             <a href="{{ $menu->link }}">{{ $menu->title }}</a>
@@ -12,9 +12,9 @@
                         </div>
                         <div class=collapse id=collapseExample{{ $menu->id }}>
                             <ul class=mobile-nav>
-                                @foreach($submenu as $sub)
-                                    @php $submenu2 = \App\Menu::find(3)->menuLinks()->where('publish', 1)->where('parent', $sub->cat_id)->orderBy('order', 'ASC')->get(); @endphp
-                                    @if(count($submenu2)>0)
+                                @foreach($menu->children as $sub)
+
+                                    @if(count($sub->children)>0)
                                         <li class=mobile-nav-list__item>
                                             <div class="e-list__item e-list__item--big">
                                                 <a href="#">{{ $sub->title }}</a>
@@ -22,7 +22,7 @@
                                             </div>
                                             <div class=collapse id=collapseExample{{ $sub->id }}>
                                                 <ul class=mobile-nav>
-                                                    @foreach($submenu2 as $sub2)
+                                                    @foreach($sub->children as $sub2)
                                                         <li class=mobile-nav-list__item>
                                                             <div class="e-list__item e-list__item--big">
                                                                 <a href="{{ url($sub2->link . $sub2->sufix) }}">{{ $sub2->title }}</a>

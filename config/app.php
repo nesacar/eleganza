@@ -163,7 +163,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
+        Barryvdh\Debugbar\ServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -245,6 +245,7 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Imagecache' => Devfactory\Imagecache\Facades\ImagecacheFacade::class,
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
 
 ];

@@ -39,7 +39,7 @@
 
         </div>
 
-        @if(count($products)>0)
+        @if(count($data['products'])>0)
         <div class="products-container">
             <div class=results-header>
                 <div class="e-select e-select--with-carrot">
@@ -71,25 +71,24 @@
                     </select>
                 </div>
                 {!! Form::close() !!}
-                {{ $products->appends(\Illuminate\Support\Facades\Input::all())->links( "pagination::bootstrap-4") }}
+                {{ $data['products']->appends(\Illuminate\Support\Facades\Input::all())->links( "pagination::bootstrap-4") }}
 
             </div>
             <ul class="product-list">
-                @foreach($products as $product)
-                    @php $link = url(\App\Product::getProductLink($product->id)); @endphp
+                @foreach($data['products'] as $product)
                     <li class="product-item product-list__item with-shadow">
-                        <a href="{{ $link }}">
+                        <a href="{{ $product->getLink() }}">
                             <div class=product-item__img-box>
-                                {!! HTML::Image($product->image, $product->title) !!}
+                                {!! HTML::Image($product->image, $product->getTitle()) !!}
                                 <ul class=product-item__actions>
                                     <li class="icon-btn icon-btn--inverse"><a href="{{ url('add-to-cart/'.$product->id) }}" class="addCart" style="z-index: 1;"><i class="fas fa-shopping-cart"></i></a> </li>
                                     <li class="icon-btn icon-btn--inverse"> <a href="{{ url('add-to-wishlist/'.$product->id) }}" class="addWish" style="z-index: 1;"><i class="fas fa-heart"></i></a> </li>
-                                    <li class="icon-btn icon-btn--inverse"> <a href="{{ $link }}" style="z-index: 1;"><i class="fas fa-search"></i></a> </li>
+                                    <li class="icon-btn icon-btn--inverse"> <a href="{{ $product->getLink() }}" style="z-index: 1;"><i class="fas fa-search"></i></a> </li>
                                 </ul>
                             </div>
                             <div class=product-item__info-box>
-                                <span class=product-item__brand>@if(isset($product->brand)) {{ $product->brand->title }} @endif</span>
-                                <h2 class=product-item__name>{{ $product->title }}</h2>
+                                <span class=product-item__brand>@if(isset($product->brand)) {{ $product->brand->getTitle() }} @endif</span>
+                                <h2 class=product-item__name>{{ $product->getTitle() }}</h2>
                                 @if($product->discount != null && $product->discount > 0)
                                     <span class=product-item__price>{{ $product->price_outlet }}</span>
                                 @else

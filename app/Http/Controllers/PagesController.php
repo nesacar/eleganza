@@ -72,51 +72,56 @@ class PagesController extends Controller
             ->where('category_translations.slug', $slug)->where('categories.publish', 1)->first();
         $s1 = $category;
         if(isset($category)){
-            $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug)->first();
+            $set = Set::whereTranslation('slug', $slug)->first();
             if(!empty($set)){
-                $props1 = $set->property()->where('properties.expanded', 0)->orderBy('properties.order', 'ASC')->get();
-                $props2 = $set->property()->where('properties.expanded', 1)->orderBy('properties.order', 'ASC')->get();
+                $props1 = Property::with(['set' => function($query) use ($set){
+                    $query->where('set_id', $set->id);
+                }])->where('expanded', 0)->orderBy('order', 'ASC')->get();
+                $props2 = Property::with(['set' => function($query) use ($set){
+                    $query->where('set_id', $set->id);
+                }])->where('expanded', 1)->orderBy('order', 'ASC')->get();
             }else{
                 $props1 = null;
                 $props2 = null;
             }
+            //return MenuLink::tree(3);
+            $data = Product::search($category);
             //$topParent = PCategory::getTopParentBySlug($slug);
-            $bred = Category::getBredcrumb($category->id);
-            $bred = array_reverse($bred);
-            $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
+//            $bred = Category::getBredcrumb($category->id);
+//            $bred = array_reverse($bred);
+//            $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
+//
+//            request('filters') ? $filters = request('filters') : $filters = [];
+//            //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
+//            request('min-price') ? $price[0] = request('max-price') : $price[0] = 0;
+//            request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
+//            request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
+//            request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
+//            request('min-water') ? $water[0] = request('min-water') : $water[0] = 0;
+//            request('max-water') ? $water[1] = request('max-water') : $water[1] = 0;
+//            request('sort') ? $sort = request('sort') : $sort = 2;
+//            request('page') ? $page = request('page') : $page = 1;
+//            request('limit') ? $limit = request('limit') : $limit = 9;
+//
+//            $count = Property::countPropertyFilter($filters);
+//            $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1], $water[0], $water[1]);
+//
+//            $filteri = Product::getFiltersByCategory($category->id);
+//
+//            if($count > 0){
+//                $oo = Property::sredi($filters);
+//                $products = Product::filtered($products, $count, $limit, $sort, $oo);
+//            }else{
+//                $products = Product::paginateRender($products, $limit, $sort);
+//            }
 
-            request('filters') ? $filters = request('filters') : $filters = [];
-            //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
-            request('min-price') ? $price[0] = request('max-price') : $price[0] = 0;
-            request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
-            request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
-            request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
-            request('min-water') ? $water[0] = request('min-water') : $water[0] = 0;
-            request('max-water') ? $water[1] = request('max-water') : $water[1] = 0;
-            request('sort') ? $sort = request('sort') : $sort = 2;
-            request('page') ? $page = request('page') : $page = 1;
-            request('limit') ? $limit = request('limit') : $limit = 9;
-
-            $count = Property::countPropertyFilter($filters);
-            $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1], $water[0], $water[1]);
-            //$properties = Property::getPropertiesAndAttributesByCategory($category->id);
-
-            $filteri = Product::getFiltersByCategory($category->id);
-
-            if($count > 0){
-                $oo = Property::sredi($filters);
-                $products = Product::filtered($products, $count, $limit, $sort, $oo);
-            }else{
-                $products = Product::paginateRender($products, $limit, $sort);
-            }
-
-            $max = Product::newMaxPrice($category->id, $filters);
+            //$max = Product::newMaxPrice($category->id, $filters);
             $theme = Theme::where('active', 1)->first();
             $settings = Setting::find(1);
-            $topCat = [];
-            $active = $slug;
+            //$topCat = [];
+            //$active = $slug;
             $s2 = null; $s3 = null; $s4 = null;
-            return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props1', 'props2', 'max', 'price', 'set'));
+            return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props1', 'props2', 'max', 'price', 'set', 'data'));
         }else{
             return 'error 404';
         }
@@ -160,47 +165,53 @@ class PagesController extends Controller
         }else{
             $category = $s2;
             if(isset($category)){
-                $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
+                $set = Set::whereTranslation('slug', $slug1)->first();
                 if(!empty($set)){
-                    $props1 = $set->property()->where('properties.expanded', 0)->orderBy('properties.order', 'ASC')->get();
-                    $props2 = $set->property()->where('properties.expanded', 1)->orderBy('properties.order', 'ASC')->get();
+                    $props1 = Property::with(['set' => function($query) use ($set){
+                        $query->where('set_id', $set->id);
+                    }])->where('expanded', 0)->orderBy('order', 'ASC')->get();
+                    $props2 = Property::with(['set' => function($query) use ($set){
+                        $query->where('set_id', $set->id);
+                    }])->where('expanded', 1)->orderBy('order', 'ASC')->get();
                 }else{
                     $props1 = null;
                     $props2 = null;
                 }
-                $topParent = PCategory::getTopParentBySlug($slug2);
-                $bred = Category::getBredcrumb($category->id);
-                $bred = array_reverse($bred);
-                $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
-
-                request('filters') ? $filters = request('filters') : $filters = [];
-                //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
-                request('min-price') ? $price[0] = request('max-price') : $price[0] = 0;
-                request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
-                request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
-                request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
-                request('min-water') ? $water[0] = request('min-water') : $water[0] = 0;
-                request('max-water') ? $water[1] = request('max-water') : $water[1] = 0;
-                request('sort') ? $sort = request('sort') : $sort = 2;
-                request('page') ? $page = request('page') : $page = 1;
-                request('limit') ? $limit = request('limit') : $limit = 9;
-
-                $count = Property::countPropertyFilter($filters);
-                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1], $water[0], $water[1]);
-                //$properties = Property::getPropertiesAndAttributesByCategory($category->id);
-
-                //$filteri = Product::getFiltersByCheckboxes($products);
-                $filteri = Product::getFiltersByCategory($category->id);
-                if($count > 0){
-                    $oo = Property::sredi($filters);
-                    $products = Product::filtered($products, $count, $limit, $sort, $oo);
-                }else{
-                    $products = Product::paginateRender($products, $limit, $sort);
-                }
-                $topCat = [];
-                $max = Product::newMaxPrice($category->id, $filters);
+                //return MenuLink::tree(3);
+                $data = Product::search($category);
+//                $topParent = PCategory::getTopParentBySlug($slug2);
+//                $bred = Category::getBredcrumb($category->id);
+//                $bred = array_reverse($bred);
+//                $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
+//
+//                request('filters') ? $filters = request('filters') : $filters = [];
+//                //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
+//                request('min-price') ? $price[0] = request('max-price') : $price[0] = 0;
+//                request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
+//                request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
+//                request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
+//                request('min-water') ? $water[0] = request('min-water') : $water[0] = 0;
+//                request('max-water') ? $water[1] = request('max-water') : $water[1] = 0;
+//                request('sort') ? $sort = request('sort') : $sort = 2;
+//                request('page') ? $page = request('page') : $page = 1;
+//                request('limit') ? $limit = request('limit') : $limit = 9;
+//
+//                $count = Property::countPropertyFilter($filters);
+//                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1], $water[0], $water[1]);
+//                //$properties = Property::getPropertiesAndAttributesByCategory($category->id);
+//
+//                //$filteri = Product::getFiltersByCheckboxes($products);
+//                $filteri = Product::getFiltersByCategory($category->id);
+//                if($count > 0){
+//                    $oo = Property::sredi($filters);
+//                    $products = Product::filtered($products, $count, $limit, $sort, $oo);
+//                }else{
+//                    $products = Product::paginateRender($products, $limit, $sort);
+//                }
+//                $topCat = [];
+//                $max = Product::newMaxPrice($category->id, $filters);
                 $s3 = null; $s4 = null;
-                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props1', 'props2', 'max', 'set'));
+                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props1', 'props2', 'max', 'set', 'data'));
             }else{
                 return 'error 404';
             }

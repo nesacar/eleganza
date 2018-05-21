@@ -2,10 +2,14 @@
 
 namespace App;
 
+use App\Traits\UploudableImageTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class MenuLink extends Model
 {
+    use UploudableImageTrait;
+
     public static $list_limit = 50;
 
     protected $table = 'menu_links';
@@ -349,4 +353,18 @@ class MenuLink extends Model
     public function attribute(){
         return $this->belongsToMany(Attribute::class);
     }
+
+    public function parent_menu() {
+        return $this->hasOne(MenuLink::class, 'cat_id', 'parent');
+    }
+
+    public function children() {
+        return $this->hasMany(MenuLink::class, 'parent', 'cat_id')->orderBy('order', 'ASC');
+    }
+
+    public static function tree($menu_id) {
+        return static::where('menu_id', $menu_id)->with(implode('.', array_fill(0, 2, 'children')))
+            ->where('parent', 0)->orderBy('order', 'ASC')->get();
+    }
+
 }

@@ -157,7 +157,7 @@
             <ul class="similar-list">
                 @foreach($related as $p)
                     <li class="product-item similar-list__item with-shadow">
-                        <a href="{{ \App\Product::getProductLink($p->id) }}">
+                        <a href="{{ $p->getLink() }}">
                             <div class="product-item__img-box">
                                 {!! HTML::Image($p->image, $p->title) !!}
                             </div>

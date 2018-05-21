@@ -1,5 +1,7 @@
 <?php namespace App;
 
+use App\Traits\SearchableProductTraits;
+use App\Traits\UploudableImageTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use DB;
@@ -7,11 +9,12 @@ use Illuminate\Support\Str;
 use Dimsav\Translatable\Translatable;
 use File;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 
 class Product extends Model {
 
-    use Translatable;
+    use Translatable, UploudableImageTrait, SearchableProductTraits;
 
     public static $list_limit = 50;
     public static $paginate = 12;
@@ -32,6 +35,63 @@ class Product extends Model {
     public $translatedAttributes = ['title', 'slug', 'short', 'body', 'body2'];
 
     protected $fillable = ['brand_id', 'user_id', 'set_id', 'code', 'image', 'tmb', 'price_small', 'price_outlet', 'diameter', 'water', 'views', 'amount', 'color', 'featured', 'discount', 'sold', 'publish_at', 'publish'];
+
+    protected static $searchable = ['filters', 'minPrice', 'maxPrice', 'minWater', 'maxWater', 'minPromer', 'MaxPromer'];
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot(){
+        parent::boot();
+
+        static::addGlobalScope('category', function (Builder $builder) {
+            $builder->with(['category' => function($query){
+                $query->where('publish', 1)->orderBy('parent', 'ASC');
+            }]);
+        });
+
+        static::addGlobalScope('brand', function (Builder $builder) {
+            $builder->with(['brand' => function($query){
+                $query->where('publish', 1)->orderBy('order', 'ASC');
+            }]);
+        });
+
+        static::addGlobalScope('attribute', function (Builder $builder) {
+            $builder->with(['attribute' => function($query){
+                $query->where('publish', 1)->orderBy('order', 'ASC');
+            }]);
+        });
+
+        static::addGlobalScope('translate', function (Builder $builder) {
+            $builder->with('translate');
+        });
+    }
+
+    public function getTitle(){
+        if(count($this->translate)>0){
+            foreach ($this->translate as $translation){
+                return $translation->title;
+            }
+        }
+        return 'title';
+    }
+
+    public function getLink($category = false){
+        if($category){
+            return url($category->getLink() . '/' .  $this->slug . '/' . $this->id);
+        }else{
+            $str = 'shop/';
+            if(count($this->category)>0){
+                foreach ($this->category as $category){
+                    $str .= $category->slug . '/';
+                }
+            }
+            $str .= $this->slug . '/' . $this->id;
+            return url($str);
+        }
+    }
 
     public static function getAtt($product_id, $category_id){
         $category = PCategory::find($category_id);
@@ -1071,6 +1131,10 @@ class Product extends Model {
 
     public function coordinate(){
         return $this->hasMany(Coordinate::class);
+    }
+
+    public function translate(){
+        return $this->hasMany(ProductTranslation::class);
     }
 }
 

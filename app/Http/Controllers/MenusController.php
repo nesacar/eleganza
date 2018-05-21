@@ -259,12 +259,13 @@ class MenusController extends Controller
         $link->sufix = $request->input('sufix');
         $link->desc = $request->input('desc');
 
-        if($request->hasFile('image')){
-            $imageName = $link->id . '.' . $request->file('image')->getClientOriginalExtension();
-            $imagePath = 'images/menus/'.$imageName;
-            $request->file('image')->move(base_path() . '/public/images/menus/', $imageName);
-            $link->image = $imagePath;
-        }
+//        if($request->hasFile('image')){
+//            $imageName = $link->id . '.' . $request->file('image')->getClientOriginalExtension();
+//            $imagePath = 'images/menus/'.$imageName;
+//            $request->file('image')->move(base_path() . '/public/images/menus/', $imageName);
+//            $link->image = $imagePath;
+//        }
+        $link->update(['image' => $link->storeImage()]);
 
         $link->update();
         return redirect('admin/menus/'.$link->id.'/editLink');

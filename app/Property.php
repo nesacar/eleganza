@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Dimsav\Translatable\Translatable;
+use Illuminate\Database\Eloquent\Builder;
 
 class Property extends Model {
 
@@ -23,6 +24,37 @@ class Property extends Model {
     public $translatedAttributes = ['title'];
 
     protected $fillable = ['id', 'order', 'spacial', 'price', 'expanded', 'publish'];
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('attribute', function (Builder $builder) {
+            $builder->with(['attribute' => function($query){
+                $query->where('publish', 1)->orderBy('order', 'ASC');
+            }]);
+        });
+
+        static::addGlobalScope('translations', function (Builder $builder) {
+            $builder->with('translations');
+        });
+    }
+
+    public function getTitle(){
+        if(count($this->translations)>0){
+            foreach ($this->translations as $translation){
+                if($translation->locale == app()->getLocale()){
+                    return $translation->title;
+                }
+            }
+        }
+        return 'title';
+    }
 
     public static function save_oso_order($niz){
         $i=-1;
@@ -147,4 +179,7 @@ class Property extends Model {
         return $this->belongsToMany('App\Set');
     }
 
+    public function translations(){
+        return $this->hasMany(PropertyTranslation::class);
+    }
 }

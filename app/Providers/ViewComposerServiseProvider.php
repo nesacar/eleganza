@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Language;
 use App\Menu;
+use App\MenuLink;
 use App\Theme;
 use Illuminate\Support\ServiceProvider;
 
@@ -86,7 +87,7 @@ class ViewComposerServiseProvider extends ServiceProvider
 
     private function composerEleganzaMenu(){
         $theme = Theme::where('active', 1)->first();
-        $menus = Menu::find(3)->menuLinks()->where('publish', 1)->where('parent', 0)->orderBy('order', 'ASC')->get();
+        $menus = MenuLink::tree(3);
         view()->composer('themes.'.$theme->slug.'.partials.header', function($view) use ($menus){
             $view->with('menus', $menus);
         });

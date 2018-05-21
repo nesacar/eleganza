@@ -18,6 +18,28 @@ class Category extends Model
 
     protected $fillable = ['id', 'brand_id', 'order', 'parent', 'level', 'image', 'feature_image', 'collection', 'publish'];
 
+    public function getLink(){
+        $str = 'shop/' . $this->slug . '/';
+        if(count($this->children)>0){
+            foreach ($this->children as $category){
+                $str .= $category->slug . '/';
+            }
+        }
+        return url($str);
+    }
+
+    public static function tree() {
+        return static::with(implode('.', array_fill(0, 1, 'children')))->where('parent', 0)->get();
+    }
+
+    public function parentCategory() {
+        return $this->hasOne(Category::class, 'id', 'parent');
+    }
+
+    public function children() {
+        return $this->hasMany(Category::class, 'parent', 'id');
+    }
+
     public static function save_cat_order($niz){
         $i=-1;
         foreach($niz as $n){

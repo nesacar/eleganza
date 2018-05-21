@@ -41,6 +41,11 @@ class Set extends Model {
         return $this->brand->lists('id');
     }
 
+    public static function getProperties($sets){
+        return Property::select('properties.*')->join('property_set', 'properties.id', '=', 'property_set.property_id')
+            ->whereIn('property_set.set_id', $sets->pluck('id'))->where('properties.publish', 1)->orderBy('properties.order', 'ASC')->get();
+    }
+
     public static function getAtt($id){
         $set = Set::find($id);
         $niz = $set->attribute()->pluck('attributes.id')->toArray();
