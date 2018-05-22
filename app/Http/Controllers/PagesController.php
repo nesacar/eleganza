@@ -18,6 +18,7 @@ use App\Http\Requests\CustomerRegisterRequest;
 use App\Http\Requests\ListKupovineRequest;
 use App\Http\Requests\SendKontaktFormRequest;
 use App\Http\Requests\SubscribeRequest;
+use App\InstaShop;
 use App\Language;
 use App\Mail\CartOrder;
 use App\Mail\LuxLifeNewsletter;
@@ -62,7 +63,8 @@ class PagesController extends Controller
         $posts = Post::where('publish', 1)->where('home', 1)->where('publish_at', '<=', (new \Carbon\Carbon()))->orderBy('publish_at', 'DESC')->take(3)->get();
         $bestSellers = Group::find(1);
         $products = $bestSellers? $bestSellers->product()->where('publish', 1)->get() : [];
-        return view('themes.'.$theme->slug.'.pages.home', compact('settings', 'theme', 'hero', 'hero2', 'home4', 'home1', 'home12', 'posts', 'products'));
+        $instaShops = InstaShop::where('featured', 1)->take(6)->orderBy('order', 'ASC')->get();
+        return view('themes.'.$theme->slug.'.pages.home', compact('settings', 'theme', 'hero', 'hero2', 'home4', 'home1', 'home12', 'posts', 'products', 'instaShops'));
     }
 
     public function shopCategory($slug){
