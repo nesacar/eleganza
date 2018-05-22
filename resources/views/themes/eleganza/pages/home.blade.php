@@ -98,3 +98,9 @@
     @endif
 
 @endsection
+
+@section('footer_scripts')
+  <script>
+    const products = {!! $instaShops !!};
+  </script>
+@endsection
