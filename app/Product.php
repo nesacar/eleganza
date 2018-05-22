@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Support\Str;
-use Dimsav\Translatable\Translatable;
 use File;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
@@ -14,7 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Product extends Model {
 
-    use Translatable, UploudableImageTrait, SearchableProductTraits;
+    use UploudableImageTrait, SearchableProductTraits;
 
     public static $list_limit = 50;
     public static $paginate = 12;
@@ -32,9 +31,7 @@ class Product extends Model {
      * @var array
      */
 
-    public $translatedAttributes = ['title', 'slug', 'short', 'body', 'body2'];
-
-    protected $fillable = ['brand_id', 'user_id', 'set_id', 'code', 'image', 'tmb', 'price_small', 'price_outlet', 'diameter', 'water', 'views', 'amount', 'color', 'featured', 'discount', 'sold', 'publish_at', 'publish'];
+    protected $fillable = ['brand_id', 'user_id', 'set_id', 'title', 'slug', 'short', 'body', 'body2', 'code', 'image', 'tmb', 'price_small', 'price_outlet', 'diameter', 'water', 'views', 'amount', 'color', 'featured', 'discount', 'sold', 'publish_at', 'publish'];
 
     protected static $searchable = ['filters', 'minPrice', 'maxPrice', 'minWater', 'maxWater', 'minPromer', 'MaxPromer'];
 
@@ -63,24 +60,11 @@ class Product extends Model {
                 $query->where('publish', 1)->orderBy('order', 'ASC');
             }]);
         });
-
-        static::addGlobalScope('translate', function (Builder $builder) {
-            $builder->with('translate');
-        });
-    }
-
-    public function getTitle(){
-        if(count($this->translate)>0){
-            foreach ($this->translate as $translation){
-                return $translation->title;
-            }
-        }
-        return 'title';
     }
 
     public function getLink($category = false){
         if($category){
-            return url($category->getLink() . '/' .  $this->slug . '/' . $this->id);
+            return url($category->getLink() .  $this->slug . '/' . $this->id);
         }else{
             $str = 'shop/';
             if(count($this->category)>0){
@@ -616,12 +600,11 @@ class Product extends Model {
         if($sort == 2){ $field = 'products.price_small'; $param = 'ASC'; }elseif($sort == 3){ $field = 'products.price_small'; $param = 'DESC'; }else{ $field = 'products.id'; $param = 'DESC'; }
         if($cat == 0){
             return Product::select('products.*')
-                ->join('product_translations', 'products.id', '=', 'product_translations.product_id')
                 ->where(function($query) use ($title)
                 {
                     if($title){
-                        $query->where('product_translations.title', 'LIKE', "%$title%")->orWhere('products.id', 'LIKE', "%$title%")->orWhere('product_translations.slug', 'LIKE', "%$title%")
-                            ->orWhere('products.code', 'LIKE', "%$title%")->orWhere('product_translations.short', 'LIKE', "%$title%");
+                        $query->where('products.title', 'LIKE', "%$title%")->orWhere('products.id', 'LIKE', "%$title%")->orWhere('products.slug', 'LIKE', "%$title%")
+                            ->orWhere('products.code', 'LIKE', "%$title%")->orWhere('products.short', 'LIKE', "%$title%");
                     }
                 })
                 ->where(function($query) use ($min, $max)
@@ -639,15 +622,14 @@ class Product extends Model {
                 ->paginate($limit);
         }else{
             return Product::select('products.*')
-                ->join('product_translations', 'products.id', '=', 'product_translations.product_id')
                 ->join('category_product', 'products.id', '=', 'category_product.product_id')
                 ->join('categories', 'category_product.category_id', '=', 'categories.id')
                 ->where('categories.id', $cat)
                 ->where(function($query) use ($title)
                 {
                     if($title){
-                        $query->where('product_translations.title', 'LIKE', "%$title%")->orWhere('products.id', 'LIKE', "%$title%")->orWhere('product_translations.slug', 'LIKE', "%$title%")
-                            ->orWhere('products.code', 'LIKE', "%$title%")->orWhere('product_translations.short', 'LIKE', "%$title%");
+                        $query->where('products.title', 'LIKE', "%$title%")->orWhere('products.id', 'LIKE', "%$title%")->orWhere('products.slug', 'LIKE', "%$title%")
+                            ->orWhere('products.code', 'LIKE', "%$title%")->orWhere('products.short', 'LIKE', "%$title%");
                     }
                 })
                 ->where(function($query) use ($min, $max)
@@ -669,12 +651,11 @@ class Product extends Model {
     public static function newFilteredDiscountAdminProducts($title=false, $cat=0, $brand=0, $limit=50){
         if($cat == 0 && $brand == 0){
             return Product::select('products.*')
-                ->join('product_translations', 'products.id', '=', 'product_translations.product_id')
                 ->where(function($query) use ($title)
                 {
                     if($title){
-                        $query->where('product_translations.title', 'LIKE', "%$title%")->orWhere('products.id', 'LIKE', "%$title%")->orWhere('product_translations.slug', 'LIKE', "%$title%")
-                            ->orWhere('products.code', 'LIKE', "%$title%")->orWhere('product_translations.short', 'LIKE', "%$title%");
+                        $query->where('products.title', 'LIKE', "%$title%")->orWhere('products.id', 'LIKE', "%$title%")->orWhere('products.slug', 'LIKE', "%$title%")
+                            ->orWhere('products.code', 'LIKE', "%$title%")->orWhere('products.short', 'LIKE', "%$title%");
                     }
                 })
                 ->groupby('products.id')
@@ -682,15 +663,14 @@ class Product extends Model {
                 ->paginate($limit);
         }elseif($brand == 0){
             return Product::select('products.*')
-                ->join('product_translations', 'products.id', '=', 'product_translations.product_id')
                 ->join('category_product', 'products.id', '=', 'category_product.product_id')
                 ->join('categories', 'category_product.category_id', '=', 'categories.id')
                 ->where('categories.id', $cat)
                 ->where(function($query) use ($title)
                 {
                     if($title){
-                        $query->where('product_translations.title', 'LIKE', "%$title%")->orWhere('products.id', 'LIKE', "%$title%")->orWhere('product_translations.slug', 'LIKE', "%$title%")
-                            ->orWhere('products.code', 'LIKE', "%$title%")->orWhere('product_translations.short', 'LIKE', "%$title%");
+                        $query->where('products.title', 'LIKE', "%$title%")->orWhere('products.id', 'LIKE', "%$title%")->orWhere('products.slug', 'LIKE', "%$title%")
+                            ->orWhere('products.code', 'LIKE', "%$title%")->orWhere('products.short', 'LIKE', "%$title%");
                     }
                 })
                 ->groupby('products.id')
@@ -698,13 +678,12 @@ class Product extends Model {
                 ->paginate($limit);
         }elseif($cat == 0){
             return Product::select('products.*')
-                ->join('product_translations', 'products.id', '=', 'product_translations.product_id')
                 ->where('products.brand_id', $brand)
                 ->where(function($query) use ($title)
                 {
                     if($title){
-                        $query->where('product_translations.title', 'LIKE', "%$title%")->orWhere('products.id', 'LIKE', "%$title%")->orWhere('product_translations.slug', 'LIKE', "%$title%")
-                            ->orWhere('products.code', 'LIKE', "%$title%")->orWhere('product_translations.short', 'LIKE', "%$title%");
+                        $query->where('products.title', 'LIKE', "%$title%")->orWhere('products.id', 'LIKE', "%$title%")->orWhere('products.slug', 'LIKE', "%$title%")
+                            ->orWhere('products.code', 'LIKE', "%$title%")->orWhere('products.short', 'LIKE', "%$title%");
                     }
                 })
                 ->groupby('products.id')
@@ -712,7 +691,6 @@ class Product extends Model {
                 ->paginate($limit);
         }else{
             return Product::select('products.*')
-                ->join('product_translations', 'products.id', '=', 'product_translations.product_id')
                 ->join('category_product', 'products.id', '=', 'category_product.product_id')
                 ->join('categories', 'category_product.category_id', '=', 'categories.id')
                 ->where('categories.id', $cat)
@@ -720,8 +698,8 @@ class Product extends Model {
                 ->where(function($query) use ($title)
                 {
                     if($title){
-                        $query->where('product_translations.title', 'LIKE', "%$title%")->orWhere('products.id', 'LIKE', "%$title%")->orWhere('product_translations.slug', 'LIKE', "%$title%")
-                            ->orWhere('products.code', 'LIKE', "%$title%")->orWhere('product_translations.short', 'LIKE', "%$title%");
+                        $query->where('products.title', 'LIKE', "%$title%")->orWhere('products.id', 'LIKE', "%$title%")->orWhere('products.slug', 'LIKE', "%$title%")
+                            ->orWhere('products.code', 'LIKE', "%$title%")->orWhere('products.short', 'LIKE', "%$title%");
                     }
                 })
                 ->groupby('products.id')
@@ -1023,7 +1001,7 @@ class Product extends Model {
         $product->update();
     }
 
-    public static function calculateDiscount($percent, $price_small){
+    public static function calculateDiscount($price_small, $percent=0){
         if($percent == 0){
             return $price_small;
         }else{
@@ -1131,10 +1109,6 @@ class Product extends Model {
 
     public function coordinate(){
         return $this->hasMany(Coordinate::class);
-    }
-
-    public function translate(){
-        return $this->hasMany(ProductTranslation::class);
     }
 }
 

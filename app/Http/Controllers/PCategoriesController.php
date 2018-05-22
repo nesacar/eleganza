@@ -29,9 +29,7 @@ class PCategoriesController extends Controller {
 	public function index()
 	{
 		$slug = 'posts';
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
-		$pcategories = PCategory::orderby('order', 'ASC')->paginate(50);
+		$pcategories = PCategory::orderby('id', 'DESC')->paginate(50);
 		return view('admin.pcategories.index', compact('cats', 'slug', 'pcategories'));
 	}
 
@@ -54,13 +52,8 @@ class PCategoriesController extends Controller {
 	 */
 	public function store(Requests\CreateCategoriesRequest $request)
 	{
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
-		$cat = PCategory::create($request->all());
-		$cat->title = $request->input('title');
+		$cat = PCategory::create($request->except('image'));
 		$cat->slug = str_slug($request->input('title'));
-		$cat->desc = $request->input('desc');
-		$cat->body = $request->input('body');
 
 		if($request->input('parent') > 0){
 			$parent = PCategory::find($request->input('parent'));
@@ -69,16 +62,11 @@ class PCategoriesController extends Controller {
 			$cat->level = 1;
 		}
 
-        if($request->hasFile('image')){
-            $imageName = $cat->slug . '-' . $cat->id . '.' . $request->file('image')->getClientOriginalExtension();
-            $imagePath = 'images/pcategories/featured/'.$imageName;
-            $request->file('image')->move(base_path() . '/public/images/pcategories/featured/', $imageName);
-            $cat->image = $imagePath;
-        }
-
-		$request->input('publish')? $cat->publish = 1 : $cat->publish = 0;
-
+        $cat->publish = $request->input('publish')?: 0;
 		$cat->update();
+
+		$cat->update(['image' => $cat->storeImage()]);
+
 		return redirect('admin/pcategories')->with('done', 'Kategorija je kreirana. ');
 	}
 
@@ -114,13 +102,10 @@ class PCategoriesController extends Controller {
 	 */
 	public function edit($id)
 	{
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
 		$slug = 'posts';
 		$pcategory = PCategory::findOrFail($id);
 		$catids = array($pcategory->parent);
-        $languages = Language::where('publish', 1)->orderBy('order', 'ASC')->get();
-		return view('admin.pcategories.edit', compact('pcategory', 'slug', 'catids', 'languages'));
+		return view('admin.pcategories.edit', compact('pcategory', 'slug', 'catids'));
 	}
 
 	/**
@@ -129,11 +114,10 @@ class PCategoriesController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update(Request $request, $id)
+	public function update(Requests\UpdateCategoryLangRequest $request, $id)
 	{
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
 		$cat = PCategory::findOrFail($id);
+		$cat->update(request()->all());
 
 		if($request->input('parent') > 0){
 			$parent = PCategory::find($request->input('parent'));
@@ -143,34 +127,12 @@ class PCategoriesController extends Controller {
 			$cat->level = 1;
 		}
 
-        if($request->hasFile('image')){
-            $imageName = $cat->slug . '-' . $cat->id . '.' . $request->file('image')->getClientOriginalExtension();
-            $imagePath = 'images/pcategories/featured/'.$imageName;
-            $request->file('image')->move(base_path() . '/public/images/pcategories/featured/', $imageName);
-            $cat->image = $imagePath;
-        }
-
-		$request->input('publish')? $cat->publish = 1 : $cat->publish = 0;
-
+        $cat->publish = request('publish')?: 0;
 		$cat->update();
+
+        $cat->update(['image' => $cat->storeImage()]);
+
 		return redirect('admin/pcategories/'.$cat->id.'/edit')->with('done', 'Kategorija je izmenjena.');
-	}
-
-	public function updateLang(Requests\UpdateCategoryLangRequest $request, $id)
-	{
-        $primary = Language::getPrimary();
-        $request->input('locale')? $locale = $request->input('locale') : $locale = $primary->locale;
-        app()->setLocale($locale);
-		$cat = PCategory::find($id);
-
-		$cat->title = $request->input('title');
-		$cat->slug = str_slug($request->input('title'));
-		$cat->desc = $request->input('desc');
-		$cat->body = $request->input('body');
-
-		$cat->update();
-
-		return redirect('admin/pcategories/'.$id.'/edit')->with('done', 'Kategorija je izmenjena.');
 	}
 
 	/**

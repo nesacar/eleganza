@@ -37,12 +37,9 @@ class ProductsController extends Controller {
 	 */
 	public function index()
 	{
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
 		$slug = 'products';
 		$products = Product::newFilteredAdminProducts(Session::get('title'), Session::get('cat'), Product::$list_limit, 1, Session::get('od'), Session::get('do'));
-		$catids = Category::join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->pluck('category_translations.title', 'categories.id');
+		$catids = Category::pluck('title', 'id');
 
 		return view('admin.products.index', compact('products', 'slug', 'catids'));
 	}
@@ -54,21 +51,14 @@ class ProductsController extends Controller {
 	 */
 	public function create()
 	{
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
 		$slug = 'products';
 		$catids = array();
-		$brands = Brand::join('brand_translations', 'brands.id', '=', 'brand_translations.brand_id')
-            ->where('brands.publish', 1)->where('brand_translations.locale', 'sr')
-            ->pluck('brand_translations.title', 'brands.id')->prepend('Bez brenda', 0);
-        $sets = Set::join('set_translations', 'sets.id', '=', 'set_translations.set_id')
-            ->where('sets.publish', 1)->where('set_translations.locale', 'sr')
-            ->pluck('set_translations.title', 'sets.id');
+		$brands = Brand::where('publish', 1)->pluck('title', 'id')->prepend('Bez brenda', 0);
+        $sets = Set::where('publish', 1)->pluck('title', 'id');
 
         $setting = Setting::first();
         if($setting->colorDependence){
-            $boja = Property::join('property_translations', 'properties.id', '=', 'property_translations.property_id')
-                ->where('property_translations.title', 'Boja')->first();
+            $boja = Property::where('title', 'Boja')->first();
             if(isset($boja)){
                 $colors = $boja->attribute()->pluck('title', 'id')->prepend('Nema boja', 0);
             }else{
@@ -92,39 +82,17 @@ class ProductsController extends Controller {
 	 */
 	public function store(Requests\CreateProductRequest $request)
 	{
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
-		$product = \Auth::user()->product()->save(new Product($request->all()));
+		$product = \Auth::user()->product()->save(new Product(request()->except('image')));
 
-        $product->brand_id = $request->input('brand_id');
-		$product->title = $request->input('title');
-		$product->slug = str_slug($request->input('title'));
-		$product->short = $request->input('short');
-		$product->body = $request->input('body');
-		$product->body2 = $request->input('body2');
-        $request->input('publish')? $product->publish = 1 : $product->publish = 0;
-        $product->price_outlet = Product::calculateDiscount(request('discount'), $product);
+		$product->slug = str_slug(request('title'));
+        $product->publish = request('publish')?: 0;
+        $product->price_outlet = Product::calculateDiscount($product->price_small, request('discount'));
+        $product->update(request()->except('image', 'tmb', 'price_outlet'));
 
-		if($request->input('kat') == null){
-			$product->category()->sync([]);
-		}else{
-			$product->category()->sync($request->input('kat'));
-		}
+        $product->category()->sync(request('kat'));
 
-        if($request->file('image')){
-            $imageName = $product->slug.'-'.$product->id . '.' . $request->file('image')->getClientOriginalExtension();
-            $imagePath = 'images/products/'.$imageName;
+        $product->update(['image' => $product->storeImage()]);
 
-            $filename  = $product->slug.'-'.$product->id . '.' . $request->file('image')->getClientOriginalExtension();
-            $path = public_path('images/products/tmb/' . $filename);
-            \Image::make($request->file('image')->getRealPath())->fit(270, 400)->save($path);
-
-            $request->file('image')->move(base_path() . '/public/images/products/', $imageName);
-            $product->image = $imagePath;
-            $product->tmb = 'images/products/tmb/' . $filename;
-        }
-
-		$product->update($request->except('slug', 'image', 'tmb', 'price_outlet'));
 		return redirect('admin/products/'.$product->id.'/edit')->with('done', 'Proizvod je kreiran.');
 	}
 
@@ -146,28 +114,22 @@ class ProductsController extends Controller {
 	 * @return Response
 	 */
 	public function edit($id){
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
+
 		$product = Product::find($id);
 		$set = Category::getSetByTopCategory($product);
 		$slug = 'products';
 		$catids = $product->category->pluck('id')->toArray();
-        $brands = Brand::join('brand_translations', 'brands.id', '=', 'brand_translations.brand_id')
-            ->where('brands.publish', 1)->where('brand_translations.locale', 'sr')
-            ->pluck('brand_translations.title', 'brands.id')->prepend('Bez brenda', 0);
-        $sets = Set::join('set_translations', 'sets.id', '=', 'set_translations.set_id')
-            ->where('sets.publish', 1)->where('set_translations.locale', 'sr')
-            ->pluck('set_translations.title', 'sets.id');
-		$cats = Category::where('publish', 1)->listsTranslations('title', 'id')->get()->toArray();
+        $brands = Brand::where('publish', 1)->pluck('title', 'id')->prepend('Bez brenda', 0);
+        $sets = Set::where('publish', 1)->pluck('title', 'id');
+		$cats = Category::where('publish', 1)->pluck('title', 'id')->toArray();
 		$products = Product::where('publish', 1)->pluck('code', 'id')->toArray();
-		$property = Property::whereTranslation('title', 'Boja')->first();
+		$property = Property::where('title', 'Boja')->first();
         $category = Category::getLastCategoryObject($product);
 		if(isset($property) && false){ $colors = $property->attribute()->pluck('title', 'id'); }else{ $colors = []; }
 
         $setting = Setting::first();
         if($setting->colorDependence){
-            $boja = Property::join('property_translations', 'properties.id', '=', 'property_translations.property_id')
-                ->where('property_translations.title', 'Boja')->first();
+            $boja = Property::where('title', 'Boja')->first();
             if(isset($boja)){
                 $colors = $boja->attribute()->pluck('title', 'id')->prepend('Nema boja', 0);
             }else{
@@ -177,7 +139,6 @@ class ProductsController extends Controller {
         if($setting->materialDependence){
             $materials = [0 => 'Nema materijala'];
         }
-        $languages = Language::where('publish', 1)->orderBy('order', 'ASC')->get();
         $attributeIds = $product->attribute()->pluck('attributes.id')->toArray();
         if($product->brand_id > 0){
             $brand = Brand::find($product->brand_id);
@@ -190,8 +151,6 @@ class ProductsController extends Controller {
 
 	public function cloneProduct($id)
 	{
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
 		$product = Product::find($id);
 
 		$new = new Product();
@@ -231,58 +190,36 @@ class ProductsController extends Controller {
 	 */
 	public function update(Requests\UpdateProductRequest $request, $id)
 	{
-        $primary = Language::getPrimary();
-		$request->input('locale')? $locale = $request->input('locale') : $locale = $primary->locale;
-		app()->setLocale($locale);
 		$product = Product::find($id);
+		$product->update(request()->except('image'));
 
-		if($request->input('kat') == null){
-			$product->category()->sync([]);
-		}else{
-			$product->category()->sync($request->input('kat'));
-		}
 
-        if($request->file('image')){
-            $imageName = $product->slug.'-'.$product->id . '.' . $request->file('image')->getClientOriginalExtension();
-            $imagePath = 'images/products/'.$imageName;
+//        if($request->file('image')){
+//            $imageName = $product->slug.'-'.$product->id . '.' . $request->file('image')->getClientOriginalExtension();
+//            $imagePath = 'images/products/'.$imageName;
+//
+//            $filename  = $product->slug.'-'.$product->id . '.' . $request->file('image')->getClientOriginalExtension();
+//            $path = public_path('images/products/tmb/' . $filename);
+//            \Image::make($request->file('image')->getRealPath())->fit(270, 400)->save($path);
+//
+//            $request->file('image')->move(base_path() . '/public/images/products/', $imageName);
+//            $product->image = $imagePath;
+//            $product->tmb = 'images/products/tmb/' . $filename;
+//
+//            $product->update();
+//        }
 
-            $filename  = $product->slug.'-'.$product->id . '.' . $request->file('image')->getClientOriginalExtension();
-            $path = public_path('images/products/tmb/' . $filename);
-            \Image::make($request->file('image')->getRealPath())->fit(270, 400)->save($path);
-
-            $request->file('image')->move(base_path() . '/public/images/products/', $imageName);
-            $product->image = $imagePath;
-            $product->tmb = 'images/products/tmb/' . $filename;
-
-            $product->update();
-        }
-
-		$request->input('featured')? $product->featured = 1 : $product->featured = 0;
-		$request->input('publish')? $product->publish = 1 : $product->publish = 0;
-		$product->brand_id = $request->brand_id;
-		$product->set_id = $request->set_id;
-		$product->price_outlet = Product::calculateDiscount(request('discount'), request('price_small'));
+        $product->featured = request('featured')?: 0;
+        $product->publish = request('publish')?: 0;
+		$product->price_outlet = Product::calculateDiscount($product->price_small, request('discount'));
 
 		$product->update($request->except('publish', 'image', 'tmb', 'price_outlet'));
+
+        $product->category()->sync($request->input('kat'));
+
+        $product->update(['image' => $product->storeImage()]);
+
 		//Product::setSlug($product->id);
-		return redirect('admin/products/'.$id.'/edit')->with('done', 'Proizvod je izmenjen.');
-	}
-
-	public function updateLang(Requests\UpdateProductLangRequest $request, $id)
-	{
-        $primary = Language::getPrimary();
-		$request->input('locale')? $locale = $request->input('locale') : $locale = $primary->locale;
-		app()->setLocale($locale);
-		$product = Product::find($id);
-
-		$product->title = $request->input('title');
-		$product->slug = str_slug($request->input('title'));
-		$product->short = $request->input('short');
-		$product->body = $request->input('body');
-		$product->body2 = $request->input('body2');
-
-		$product->update();
-
 		return redirect('admin/products/'.$id.'/edit')->with('done', 'Proizvod je izmenjen.');
 	}
 

@@ -27,9 +27,7 @@ class BrandsController extends Controller {
 	public function index()
 	{
 		$slug = 'products';
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
-		$brands = Brand::orderby('order', 'ASC')->paginate(50);
+		$brands = Brand::orderby('id', 'DESC')->paginate(50);
 		return view('admin.brands.index', compact('brands','slug'));
 	}
 
@@ -51,31 +49,14 @@ class BrandsController extends Controller {
 	 */
 	public function store(Requests\CreateBrandRequest $request)
 	{
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
-		$brand = Brand::create($request->all());
-		$brand->title = $request->input('title');
-		$brand->slug = str_slug($request->input('title'));
-		$brand->short = $request->input('short');
-		$brand->body = $request->input('body');
-		$brand->body2 = $request->input('body2');
+		$brand = Brand::create(request()->except('image', 'logo'));
+		$brand->slug = str_slug(request('title'));
 
-		if($request->file('logo')){
-			$imageName = $brand->slug.'-'.$brand->id . '.' . $request->file('logo')->getClientOriginalExtension();
-			$imagePath = 'images/brands/'.$imageName;
-			$request->file('logo')->move(base_path() . '/public/images/brands/', $imageName);
-			$brand->logo = $imagePath;
-		}
-
-        if($request->file('image')){
-            $imageName = 'large-' . $brand->slug.'-'.$brand->id . '.' . $request->file('image')->getClientOriginalExtension();
-            $imagePath = 'images/brands/'.$imageName;
-            $request->file('image')->move(base_path() . '/public/images/brands/', $imageName);
-            $brand->image = $imagePath;
-        }
-
-		$request->input('publish')? $brand->publish = 1 : $brand->publish = 0;
+        $brand->publish = request('publish')? : 0;
 		$brand->update();
+
+		$brand->update(['image' => $brand->storeImage(), 'logo' => $brand->storeImage('logo', 'logo')]);
+
 		return redirect('admin/brands')->with('done', 'Brend je kreiran.');
 	}
 
@@ -100,8 +81,7 @@ class BrandsController extends Controller {
 	{
 		$brand = Brand::find($id);
 		$slug = 'products';
-		$languages = Language::where('publish', 1)->orderBy('order', 'ASC')->get();
-		return view('admin.brands.edit', compact('slug', 'brand', 'asortiman', 'languages'));
+		return view('admin.brands.edit', compact('slug', 'brand', 'asortiman'));
 	}
 
 	/**
@@ -110,46 +90,16 @@ class BrandsController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update(Request $request, $id)
+	public function update(Requests\CreateBrandRequest $request, $id)
 	{
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
 		$brand = Brand::find($id);
-		if($request->file('logo')){
-			$imageName = $brand->slug.'-'.$brand->id . '.' . $request->file('logo')->getClientOriginalExtension();
-			$imagePath = 'images/brands/'.$imageName;
-			$request->file('logo')->move(base_path() . '/public/images/brands/', $imageName);
-			$brand->logo = $imagePath;
-		}
+        $brand->publish = request('publish')?: 0;
+		$brand->update(request()->except('publish', 'image', 'logo'));
 
-        if($request->file('image')){
-            $imageName = 'large-' . $brand->slug.'-'.$brand->id . '.' . $request->file('image')->getClientOriginalExtension();
-            $imagePath = 'images/brands/'.$imageName;
-            $request->file('image')->move(base_path() . '/public/images/brands/', $imageName);
-            $brand->image = $imagePath;
-        }
+        $brand->update(['image' => $brand->storeImage(), 'logo' => $brand->storeImage('logo', 'logo')]);
 
-		$request->input('publish')? $brand->publish = 1 : $brand->publish = 0;
-		$brand->update();
 		return redirect('admin/brands/'.$brand->id.'/edit')->with('done', 'Brend je izmenjen.');
 	}
-
-    public function updateLang(Requests\CreateBrandRequest $request, $id)
-    {
-        $primary = Language::getPrimary();
-        $request->input('locale')? $locale = $request->input('locale') : $locale = $primary->locale;
-        app()->setLocale($locale);
-        $brand = Brand::find($id);
-        $brand->title = $request->input('title');
-        $brand->slug = str_slug($request->input('title'));
-        $brand->short = $request->input('short');
-        $brand->body = $request->input('body');
-        $brand->body2 = $request->input('body2');
-
-        $brand->update();
-
-        return redirect('admin/brands/'.$brand->id.'/edit')->with('done', 'Brend je izmenjen.');
-    }
 
 	/**
 	 * Remove the specified resource from storage.

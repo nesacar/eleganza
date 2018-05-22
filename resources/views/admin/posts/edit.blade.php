@@ -17,13 +17,31 @@
 
     <div class="row">
         @include('admin.partials.errors')
-        <div class="col-md-4">
+        <div class="col-md-12">
             <div class="panel panel-white">
                 <div class="panel-heading clearfix">
                     <h4 class="panel-title"><i class="fa fa-file-text-o" style="margin-right: 5px"></i>Podaci o članku</h4>
                 </div>
                 <div class="panel-body">
                     {!! Form::open(['action' => ['PostsController@update', $post->id], 'method' => 'PUT', 'class' => 'form-horizontal', 'files' => true]) !!}
+                    <div class="form-group">
+                        <label for="title" class="col-sm-2 control-label">Naziv <span class="crvena-zvezdica">*</span></label>
+                        <div class="col-sm-10">
+                            {!! Form::text('title', $post->title, array('class' => 'form-control')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="short" class="col-sm-2 control-label">SEO opis <span class="crvena-zvezdica">*</span></label>
+                        <div class="col-sm-10">
+                            {!! Form::textarea('short', $post->short, array('class' => 'form-control')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="body" class="col-sm-2 control-label">Ceo opis</label>
+                        <div class="col-sm-10">
+                            {!! Form::textarea('body', $post->body, array('class' => 'form-control', 'id' => 'body')) !!}
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="publish_at" class="col-sm-3 control-label">Vreme publikovanja <span class="crvena-zvezdica">*</span></label>
                         <div class="col-sm-9">
@@ -33,7 +51,7 @@
                     <div class="form-group">
                         @if($post->image != null && $post->image != '')
                             <div class="place">
-                                <img src="{{ url($post->image) }}" alt="{{ $post->title }}" style="width: 100%; height: auto; margin-bottom: 10px">
+                                <img src="{{ url($post->image) }}" alt="{{ $post->title }}" style="margin-bottom: 10px">
                                 <a class="btn btn-danger remove" href="{{ url('admin/posts/'.$post->id.'/deleteimg') }}">Obriši sliku</a>
                             </div>
                         @else
@@ -70,68 +88,14 @@
                     <hr>
                     <div class="form-group">
                         <div class="col-sm-12">
-                            <input type="submit" class="btn btn-success pull-right" value="Izmeni generalno">
+                            <input type="submit" class="btn btn-success pull-right" value="Izmeni">
                         </div>
                     </div>
                     {!! Form::close() !!}
                 </div>
             </div>
-        </div><!-- .col-md-4 -->
-        <div class="col-md-8">
-            <div class="panel panel-white">
-                <div class="panel-heading clearfix">
-                    <h4 class="panel-title">Jezičke verzije</h4>
-                    <a href="{{ \App\Post::getPostLink($post) }}" class="btn btn-success pull-right" target="_blank">Pregled</a>
-                </div>
-                @if(count($languages)>0)
-                <div class="panel-body">
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs" role="tablist">
-                        @php $br=0; @endphp
-                        @foreach($languages as $language)
-                            @php $br++; @endphp
-                            <li role="presentation" @if($br==1) class="active" @endif><a href="#{{$language->locale}}" aria-controls="profile" role="tab" data-toggle="tab">{{$language->fullname}}</a></li>
-                        @endforeach
-                    </ul>
-                    <div class="tab-content">
-                        @php $br=0; @endphp
-                        @foreach($languages as $language)
-                            @php $br++; @endphp
-                            <div role="tabpanel" class="tab-pane @if($br==1) active @endif" id="{{$language->locale}}">
-                                {!! Form::open(['action' => ['PostsController@updateLang', $post->id], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
-                                {!! Form::hidden('locale', $language->locale) !!}
-                                <div class="form-group">
-                                    <label for="title" class="col-sm-2 control-label">Naziv <span class="crvena-zvezdica">*</span></label>
-                                    <div class="col-sm-10">
-                                        {!! Form::text('title', $post->{'title:'.$language->locale}, array('class' => 'form-control')) !!}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="short" class="col-sm-2 control-label">SEO opis <span class="crvena-zvezdica">*</span></label>
-                                    <div class="col-sm-10">
-                                        {!! Form::textarea('short', $post->{'short:'.$language->locale}, array('class' => 'form-control')) !!}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="body" class="col-sm-2 control-label">Ceo opis</label>
-                                    <div class="col-sm-10">
-                                        {!! Form::textarea('body', $post->{'body:'.$language->locale}, array('class' => 'form-control', 'id' => 'body'.$br)) !!}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <input type="submit" class="btn btn-success lang pull-right" value="Izmeni {{ $language->name }}">
-                                    </div>
-                                </div>
-                                {!! Form::close() !!}
-                            </div><!-- #{{$language->locale}} -->
-                        @endforeach
+        </div><!-- .col-md-12 -->
 
-                    </div>
-                </div>
-                @endif
-            </div><!-- .col-md-8 -->
-        </div><!-- .col-md-8 -->
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -158,17 +122,11 @@
 
     sw.bootstrapSwitch();
 
-    @php $br=0; @endphp
-    @if(count($languages)>0)
     window.onload = function () {
-        @foreach($languages as $language)
-        @php $br++; @endphp
-        CKEDITOR.replace('body{{$br}}', {
+        CKEDITOR.replace('body', {
             "filebrowserBrowseUrl": "{!! url('filemanager/show') !!}"
         });
-        @endforeach
     };
-    @endif
 
     $('#publish_at').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
 

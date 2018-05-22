@@ -82,7 +82,7 @@
             @foreach($posts as $post)
                 <div class="e-col e-col--3">
                     <div class="e-blog">
-                        <a href="{{ \App\Post::getPostLink($post) }}">
+                        <a href="{{ $post->getLink() }}">
                             <div class="e-blog__thumb e-image e-image--43">
                                 {!! HTML::Image($post->image, $post->title) !!}
                                 <div class="e-blog__title e-blog__title--small">

@@ -4,24 +4,19 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Dimsav\Translatable\Translatable;
 
 class Tag extends Model
 {
-    use Translatable;
 
     public static $list_limit = 50;
-
-    public $translatedAttributes = ['title', 'slug'];
 
     protected $table = 'tags';
 
     protected $fillable = ['title', 'slug'];
 
-    public static function addTags(array $tags, $locale){
+    public static function addTags(array $tags){
         for($i=0;$i<count($tags);$i++){
-            $tag = self::select('tags.id as id')->join('tag_translations', 'tags.id', '=', 'tag_translations.tag_id')
-                ->where('tag_translations.locale', $locale)->where('tags.id', $tags[$i])->first();
+            $tag = self::select('tags.id as id')->where('tags.id', $tags[$i])->first();
             if(!isset($tag)){
                 $ta = new Tag;
                 $ta->title = $tags[$i];
@@ -37,11 +32,6 @@ class Tag extends Model
             }
         }
         return $tags;
-    }
-
-    public static function getTagSelect($locale){
-        return self::select('tag_translations.title as title', 'tags.id as id')->join('tag_translations', 'tags.id', '=', 'tag_translations.tag_id')
-            ->where('tag_translations.locale', $locale)->pluck('title', 'id');
     }
 
     public function post(){

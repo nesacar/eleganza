@@ -2,21 +2,19 @@
 
 namespace App;
 
+use App\Traits\UploudableImageTrait;
 use Illuminate\Database\Eloquent\Model;
-use Dimsav\Translatable\Translatable;
 use Session;
 
 class Category extends Model
 {
-    use Translatable;
+    use UploudableImageTrait;
 
     public static $list_limit = 50;
 
-    public $translatedAttributes = ['title', 'slug', 'desc'];
-
     protected $table = 'categories';
 
-    protected $fillable = ['id', 'brand_id', 'order', 'parent', 'level', 'image', 'feature_image', 'collection', 'publish'];
+    protected $fillable = ['id', 'brand_id', 'title', 'slug', 'desc', 'order', 'parent', 'level', 'image', 'feature_image', 'collection', 'publish'];
 
     public function getLink(){
         $str = 'shop/' . $this->slug . '/';
@@ -72,7 +70,7 @@ class Category extends Model
         if(isset($category)){
             $str .=  "<ol class='sortable'>";
             foreach($category as $c){
-                $str .= "<li id='list_{$c->id}'><div>{$c->{'title:hr'}}  /  {$c->id}</div>";
+                $str .= "<li id='list_{$c->id}'><div>{$c->title}  /  {$c->id}</div>";
                 $str .= self::getSortCategory($c->id);
                 $str .= "</li>";
             }
@@ -335,7 +333,7 @@ class Category extends Model
             $str .=  "<ol class='sortable'>";
             foreach($category as $c){
                 $str .= "<li id='list_{$c->id}' style='position: relative'>";
-                $str .= "<div class='udesno'>{$c->{'title:hr'}}</div>";
+                $str .= "<div class='udesno'>{$c->title}}</div>";
                 if (in_array($c->id, $catids)) {
                     $str .= "<input type='radio' name='parent' value='{$c->id}' checked='checked' class='right-sort'";
                     if($c->level > 3){ $str .= "disabled='true'"; }
@@ -364,7 +362,7 @@ class Category extends Model
             $str .=  "<ol class='sortable'>";
             foreach($category as $c){
                 $str .= "<li id='list_{$c->id}' style='position: relative'>";
-                $str .= "<div class='udesno'>{$c->{'title:hr'}}</div>";
+                $str .= "<div class='udesno'>{$c->title}</div>";
                 if (in_array($c->id, $catids)) {
                     $str .= "<input type='checkbox' name='kat[]' value='{$c->id}' checked='checked' class='right-sort'>";
                 }else {
@@ -611,7 +609,7 @@ class Category extends Model
         $category = Category::select('categories.*')->join('category_product', 'categories.id', '=', 'category_product.category_id')
             ->where('category_product.product_id', $product->id)->where('categories.parent', 0)->first();
         if(!empty($category)){
-            return Set::whereTranslation('slug', $category->slug)->first();
+            return Set::where('slug', $category->slug)->first();
         }
     }
 
@@ -638,10 +636,6 @@ class Category extends Model
 
     public function property(){
         return $this->belongsToMany(Property::class);
-    }
-
-    public function translate(){
-        return $this->hasMany(CategoryTranslation::class);
     }
 
 }

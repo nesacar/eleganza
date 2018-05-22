@@ -28,9 +28,7 @@ class AttributesController extends Controller {
 	{
 		\Session::forget('attribute_title');
 		$slug = 'products';
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
-		$attributes = Attribute::orderBy('property_id', 'ASC')->paginate(50);
+		$attributes = Attribute::with('property')->orderBy('id', 'DESC')->paginate(50);
 		return view('admin.attributes.index', compact('attributes','slug'));
 	}
 
@@ -42,11 +40,7 @@ class AttributesController extends Controller {
 	public function create()
 	{
 		$slug = 'products';
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
-		$properties = Property::join('property_translations', 'properties.id', '=', 'property_translations.property_id')
-            ->where('properties.publish', 1)->orderby('property_translations.title', 'ASC')
-            ->pluck('property_translations.title', 'properties.id');
+		$properties = Property::where('publish', 1)->orderby('title', 'ASC')->pluck('title', 'id');
 		return view('admin.attributes.create', compact('slug', 'properties'));
 	}
 
@@ -57,12 +51,7 @@ class AttributesController extends Controller {
 	 */
 	public function store(Requests\CreateAttributeRequest $request)
 	{
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
-		$attribut = Attribute::create($request->all());
-        $attribut->title = $request->input('title');
-		$request->input('publish')? $attribut->publish = 1 : $attribut->publish = 0;
-		$attribut->update();
+		Attribute::create($request->all());
 		return redirect('admin/attributes')->with('done', 'Atribut je kreiran.');
 	}
 
@@ -85,14 +74,9 @@ class AttributesController extends Controller {
 	 */
 	public function edit($id)
 	{
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
 		$attribute = Attribute::find($id);
 		$slug = 'products';
-        $properties = Property::join('property_translations', 'properties.id', '=', 'property_translations.property_id')
-            ->where('properties.publish', 1)->orderby('property_translations.title', 'ASC')
-            ->pluck('property_translations.title', 'properties.id');
-        $languages = Language::where('publish', 1)->orderBy('order', 'ASC')->get();
+        $properties = Property::where('publish', 1)->orderby('title', 'ASC')->pluck('title', 'id');
 		return view('admin.attributes.edit', compact('slug', 'attribute', 'properties', 'languages'));
 	}
 
@@ -102,28 +86,11 @@ class AttributesController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update(Request $request, $id)
+	public function update(Requests\CreateAttributeRequest $request, $id)
 	{
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
 		$attribute = Attribute::find($id);
-		if($attribute){
-			$request->input('publish')? $attribute->publish = 1 : $attribute->publish = 0;
-			$attribute->update($request->except('publish'));
-		}
-		return redirect('admin/attributes')->with('done', 'Atribut je izmenjen');
-	}
-
-	public function updateLang(Request $request, $id)
-	{
-        $primary = Language::getPrimary();
-        $request->input('locale')? $locale = $request->input('locale') : $locale = $primary->locale;
-        app()->setLocale($locale);
-		$attribute = Attribute::find($id);
-        $attribute->title = $request->input('title');
-		if($attribute){
-			$attribute->update($request->except('publish'));
-		}
+		$attribute->publish = request('publish')?: false;
+        $attribute->update(request()->all());
 		return redirect('admin/attributes')->with('done', 'Atribut je izmenjen');
 	}
 

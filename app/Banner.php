@@ -3,17 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Dimsav\Translatable\Translatable;
 
 class Banner extends Model
 {
-    use Translatable;
 
     protected $table = 'banners';
 
-    public $translatedAttributes = ['title', 'link', 'image'];
-
-    protected $fillable = ['width', 'height', 'publish'];
+    protected $fillable = ['title', 'link', 'image', 'width', 'height', 'publish'];
 
     public static function getBannerSelect($locale='sr'){
         return self::join('banner_translations', 'banners.id', '=', 'banner_translations.banner_id')

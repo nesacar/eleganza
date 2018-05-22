@@ -24,7 +24,7 @@
             @if(count($props1)>0)
                 @foreach($props1 as $prop)
                     <div class=filter>
-                        <h4 class=filter__name>{{ $prop->getTitle() }}</h4>
+                        <h4 class=filter__name>{{ $prop->title }}</h4>
                         <ul class=filter-list>
                             @foreach($prop->attribute as $a)
                                 @if($a->publish == 1)
@@ -39,7 +39,7 @@
                                                     <svg class=e-checkbox__checkmark viewBox="0 0 24 24"> <path class=e-checkbox__path fill=none stroke=white d="M1.73,12.91 8.1,19.28 22.79,4.59"></path> </svg>
                                                 </div>
                                             </div>
-                                            <label for="cb-{{$a->id }}">{{ $a->getTitle() }}</label>
+                                            <label for="cb-{{$a->id }}">{{ $a->title }}</label>
                                         </div>
                                         @endif
                                     </li>
@@ -58,7 +58,7 @@
         @if(count($props2)>0)
             @foreach($props2 as $prop)
                 <div class=filter>
-                    <h4 class=filter__name>{{ $prop->getTitle() }}</h4>
+                    <h4 class=filter__name>{{ $prop->title }}</h4>
                     <ul class=filter-list>
                         @foreach($prop->attribute as $a)
                             @if($a->publish == 1)
@@ -71,7 +71,7 @@
                                                 <svg class=e-checkbox__checkmark viewBox="0 0 24 24"> <path class=e-checkbox__path fill=none stroke=white d="M1.73,12.91 8.1,19.28 22.79,4.59"></path> </svg>
                                             </div>
                                         </div>
-                                        <label for="cb-{{$a->id }}">{{ $a->getTitle() }}</label>
+                                        <label for="cb-{{$a->id }}">{{ $a->title }}</label>
                                     </div>
                                     @endif
                                 </li>

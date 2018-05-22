@@ -1,11 +1,8 @@
 <?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Dimsav\Translatable\Translatable;
 
 class Set extends Model {
-
-    use Translatable;
 
     /**
      * The database table used by the model.
@@ -19,9 +16,8 @@ class Set extends Model {
      *
      * @var array
      */
-    public $translatedAttributes = ['title', 'slug'];
 
-    protected $fillable = ['id', 'publish'];
+    protected $fillable = ['id', 'title', 'slug', 'publish'];
 
     /**
      * Get a list of asortimen associated with the current brend.

@@ -1,12 +1,10 @@
 <?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Builder;
 
 class Property extends Model {
 
-    use Translatable;
 
     /**
      * The database table used by the model.
@@ -21,9 +19,7 @@ class Property extends Model {
      * @var array
      */
 
-    public $translatedAttributes = ['title'];
-
-    protected $fillable = ['id', 'order', 'spacial', 'price', 'expanded', 'publish'];
+    protected $fillable = ['id', 'title', 'order', 'spacial', 'price', 'expanded', 'publish'];
 
     /**
      * The "booting" method of the model.
@@ -39,21 +35,6 @@ class Property extends Model {
                 $query->where('publish', 1)->orderBy('order', 'ASC');
             }]);
         });
-
-        static::addGlobalScope('translations', function (Builder $builder) {
-            $builder->with('translations');
-        });
-    }
-
-    public function getTitle(){
-        if(count($this->translations)>0){
-            foreach ($this->translations as $translation){
-                if($translation->locale == app()->getLocale()){
-                    return $translation->title;
-                }
-            }
-        }
-        return 'title';
     }
 
     public static function save_oso_order($niz){
@@ -177,9 +158,5 @@ class Property extends Model {
 
     public function set(){
         return $this->belongsToMany('App\Set');
-    }
-
-    public function translations(){
-        return $this->hasMany(PropertyTranslation::class);
     }
 }

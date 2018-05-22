@@ -9,13 +9,37 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-12">
             <div class="panel panel-white">
                 <div class="panel-heading clearfix">
                     <h4 class="panel-title">Podešavanje sajta</h4>
                 </div>
                 <div class="panel-body">
                     {!! Form::open(['action' => ['SettingsController@update', $setting->id], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
+                    <div class="form-group">
+                        <label for="title" class="col-sm-3 control-label">Slogan sajta</label>
+                        <div class="col-sm-9">
+                            {!! Form::text('title', $setting->title, array('class' => 'form-control', 'id' => 'title')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="keywords" class="col-sm-3 control-label">Ključne reči</label>
+                        <div class="col-sm-9">
+                            {!! Form::text('keywords', $setting->keywords, array('class' => 'form-control', 'id' => 'keywords')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="desc" class="col-sm-3 control-label">Opis sajta</label>
+                        <div class="col-sm-9">
+                            {!! Form::textarea('desc', $setting->desc, array('class' => 'form-control', 'id' => 'desc')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="footer" class="col-sm-3 control-label">Tekst u footeru</label>
+                        <div class="col-sm-9">
+                            {!! Form::textarea('footer', $setting->footer, array('class' => 'form-control', 'id' => 'footer')) !!}
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="course" class="col-sm-3 control-label">Kurs eura</label>
                         <div class="col-sm-9">
@@ -26,12 +50,6 @@
                         <label for="address" class="col-sm-3 control-label">Adresa</label>
                         <div class="col-sm-9">
                             {!! Form::text('address', $setting->address, array('class' => 'form-control', 'id' => 'address')) !!}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="language_id" class="col-sm-3 control-label">Primarni jezik</label>
-                        <div class="col-sm-9">
-                            {!! Form::select('language_id', $langs, $setting->language_id, array('class' => 'form-control')) !!}
                         </div>
                     </div>
                     <div class="form-group">
@@ -126,71 +144,13 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-12">
-                            <input type="submit" class="btn btn-success pull-right" value="Izmeni generalna">
+                            <input type="submit" class="btn btn-success pull-right" value="Izmeni">
                         </div>
                     </div>
                     {!! Form::close() !!}
                 </div>
             </div>
-        </div><!-- .col-md-4 -->
-        @if(count($languages)>0)
-        <div class="col-md-8">
-            <div class="panel panel-white">
-                <div class="panel-heading clearfix">
-                    <h4 class="panel-title">Jezičke verzije</h4>
-                </div>
-                <div class="panel-body">
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs" role="tablist">
-                        @php $br=0; @endphp
-                        @foreach($languages as $language)
-                            @php $br++; @endphp
-                            <li role="presentation" @if($br==1) class="active" @endif><a href="#{{$language->locale}}" aria-controls="profile" role="tab" data-toggle="tab">{{ $language->fullname }}</a></li>
-                        @endforeach
-                    </ul>
-                    <div class="tab-content">
-                        @php $br=0; @endphp
-                        @foreach($languages as $language)
-                            @php $br++; @endphp
-                            <div role="tabpane{{$br}}" class="tab-pane @if($br==1) active @endif" id="{{$language->locale}}">
-                                {!! Form::open(['action' => ['SettingsController@updateLang', $setting->id], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
-                                {!! Form::hidden('locale', $language->locale) !!}
-                                <div class="form-group">
-                                    <label for="title" class="col-sm-2 control-label">Slogan sajta</label>
-                                    <div class="col-sm-10">
-                                        {!! Form::text('title', $setting->{'title:'.$language->locale}, array('class' => 'form-control', 'id' => 'title')) !!}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="keywords" class="col-sm-2 control-label">Ključne reči</label>
-                                    <div class="col-sm-10">
-                                        {!! Form::text('keywords', $setting->{'keywords:'.$language->locale}, array('class' => 'form-control', 'id' => 'keywords')) !!}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="desc" class="col-sm-2 control-label">Opis sajta</label>
-                                    <div class="col-sm-10">
-                                        {!! Form::textarea('desc', $setting->{'desc:'.$language->locale}, array('class' => 'form-control', 'id' => 'desc')) !!}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="footer" class="col-sm-2 control-label">Tekst u footeru</label>
-                                    <div class="col-sm-10">
-                                        {!! Form::textarea('footer', $setting->{'footer:'.$language->locale}, array('class' => 'form-control', 'id' => 'footer')) !!}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <input type="submit" class="btn btn-success pull-right" value="Izmeni @if($language->locale == 'sr') srpski @else hrvatski @endif">
-                                    </div>
-                                </div>
-                                {!! Form::close() !!}
-                            </div><!-- #{{ $language->locale }} -->
-                        @endforeach
-                    </div>
-                </div>
-        </div><!-- .col-md-8 -->
-        @endif
+        </div><!-- .col-md-12 -->
     </div><!-- .row -->
 @endsection
 

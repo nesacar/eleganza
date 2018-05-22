@@ -23,8 +23,6 @@ class BoxesController extends Controller
      */
     public function index()
     {
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
         $slug = 'blocks';
         $boxes = Box::orderby('created_at', 'DESC')->paginate(50);
         return view('admin.boxes.index', compact('boxes','slug'));
@@ -52,23 +50,12 @@ class BoxesController extends Controller
      */
     public function store(CreateBoxRequest $request)
     {
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
-        $box = Box::create($request->all());
-        $box->title = $request->input('title');
-        $box->subtitle = $request->input('subtitle');
-        $box->button = $request->input('button');
-        $box->link = $request->input('link');
-
-        if($request->hasFile('image')){
-            $imageName = str_slug($box->title). '-' . $box->id . '.' . $request->file('image')->getClientOriginalExtension();
-            $imagePath = 'images/blocks/'.$imageName;
-            $request->file('image')->move(base_path() . '/public/images/blocks/', $imageName);
-            $box->image = $imagePath;
-        }
-
-        $request->input('publish')? $box->publish = 1 : $box->publish = 0;
+        $box = Box::create($request->except('image'));
+        $box->publish = request('publish')?: 0;
         $box->update();
+
+        $box->update(['image' => $box->storeImage()]);
+
         return redirect('admin/boxes')->with('done', 'Šablon je kreiran.');
     }
 
@@ -94,8 +81,7 @@ class BoxesController extends Controller
         $slug = 'blocks';
         $blocks = Block::where('publish', 1)->orderBy('title', 'ASC')->pluck('title', 'id');
         if(count($blocks) == 0) return redirect('admin/boxes')->with('error', 'Kreirajte provo šablon');
-        $languages = Language::where('publish', 1)->orderBy('order', 'ASC')->get();
-        return view('admin.boxes.edit', compact('slug', 'box', 'blocks', 'languages'));
+        return view('admin.boxes.edit', compact('slug', 'box', 'blocks'));
     }
 
     /**
@@ -105,43 +91,17 @@ class BoxesController extends Controller
      * @param  \App\Box  $box
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Box $box)
+    public function update(CreateBoxRequest $request, Box $box)
     {
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
-        $box->update($request->all());
-        if($request->hasFile('image')){
-            $imageName = str_slug($box->title). '-' . $box->id . '.' . $request->file('image')->getClientOriginalExtension();
-            $imagePath = 'images/blocks/'.$imageName;
-            $request->file('image')->move(base_path() . '/public/images/blocks/', $imageName);
-            $box->image = $imagePath;
-        }
 
-        $request->input('publish')? $box->publish = 1 : $box->publish = 0;
+        $box->update($request->except('image'));
+        $box->publish = request('publish')?: 0;
         $box->update();
+
+        $box->update(['image' => $box->storeImage()]);
         return redirect('admin/boxes/'.$box->id.'/edit')->with('done', 'Šablon je izmenjen.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Box  $box
-     * @return \Illuminate\Http\Response
-     */
-    public function updateLang(CreateBoxRequest $request, $id)
-    {
-        $primary = Language::getPrimary();
-        $request->input('locale')? $locale = $request->input('locale') : $locale = $primary->locale;
-        app()->setLocale($locale);
-        $box = Box::find($id);
-        $box->title = $request->input('title');
-        $box->subtitle = $request->input('subtitle');
-        $box->button = $request->input('button');
-        $box->link = $request->input('link');
-        $box->update();
-        return redirect('admin/boxes/'.$box->id.'/edit')->with('done', 'Šablon je izmenjen.');
-    }
 
     /**
      * Remove the specified resource from storage.

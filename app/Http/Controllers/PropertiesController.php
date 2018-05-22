@@ -7,7 +7,6 @@ use App\Language;
 use App\Product;
 use App\Property;
 use Illuminate\Support\Facades\Input;
-use App\Osobina;
 use Illuminate\Http\Request;
 
 class PropertiesController extends Controller {
@@ -24,9 +23,7 @@ class PropertiesController extends Controller {
 	public function index()
 	{
 		$slug = 'products';
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
-		$properties = Property::all();
+		$properties = Property::orderBy('id', 'DESC')->paginate(50);
 		return view('admin.properties.index', compact('properties','slug'));
 	}
 
@@ -38,8 +35,6 @@ class PropertiesController extends Controller {
 	public function create()
 	{
 		$slug = 'products';
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
 		$atributi = false;
 		return view('admin.properties.create', compact('slug', 'atributi'));
 	}
@@ -51,8 +46,6 @@ class PropertiesController extends Controller {
 	 */
 	public function store(Requests\CreatePropertyRequest $request)
 	{
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
 		$property = Property::create($request->all());
         $property->title = $request->input('title');
         $property->expanded = $request->input('expanded')?: 0;
@@ -80,13 +73,10 @@ class PropertiesController extends Controller {
 	 */
 	public function edit($id)
 	{
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
         $property = Property::find($id);
 		$slug = 'products';
 		$attributes = $property->attribute;
-        $languages = Language::where('publish', 1)->orderBy('order', 'ASC')->get();
-		return view('admin.properties.edit', compact('slug', 'attributes', 'property', 'languages'));
+		return view('admin.properties.edit', compact('slug', 'attributes', 'property'));
 	}
 
 	/**
@@ -95,27 +85,13 @@ class PropertiesController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update(Request $request, $id)
+	public function update(Requests\CreatePropertyRequest $request, $id)
 	{
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
         $property = Property::find($id);
         $property->expanded = $request->input('expanded')?: 0;
         $property->publish = $request->input('publish')?: 0;
-        $property->update($request->except('publish'));
-        return redirect('admin/properties/'.$id.'/edit')->with('done', 'Osobina je izmenjena.');
-	}
-
-	public function updateLang(Requests\CreatePropertyRequest $request, $id)
-	{
-        $primary = Language::getPrimary();
-        $request->input('locale')? $locale = $request->input('locale') : $locale = $primary->locale;
-        app()->setLocale($locale);
-        $property = Property::find($id);
-        $property->title = $request->input('title');
         $property->update();
-
-		return redirect('admin/properties/'.$id.'/edit')->with('done', 'Osobina je izmenjena.');
+        return redirect('admin/properties/'.$id.'/edit')->with('done', 'Osobina je izmenjena.');
 	}
 
 	/**
@@ -132,7 +108,6 @@ class PropertiesController extends Controller {
 	public function delete($id)
 	{
         $property = Property::find($id);
-		Attribute::where('property_id', $property->id)->delete();
         $property->delete();
 		return redirect('admin/properties')->with('done', 'Osobina je obrisana.');
 	}

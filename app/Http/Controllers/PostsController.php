@@ -30,10 +30,8 @@ class PostsController extends Controller
     public function index()
     {
         $slug = 'posts';
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
         $posts = Post::filteredPosts(Session::get('post_title'), Session::get('post_cat'));
-        $categories = PCategory::listsTranslations('title', 'id')->pluck('title', 'id')->prepend('Sve kategorije', 0);
+        $categories = PCategory::pluck('title', 'id')->prepend('Sve kategorije', 0);
         return view('admin.posts.index', compact('slug', 'posts', 'categories'));
     }
 
@@ -44,11 +42,9 @@ class PostsController extends Controller
      */
     public function create()
     {
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
         $slug = 'posts';
-        $categories = PCategory::listsTranslations('title', 'id')->pluck('title', 'id');
-        $tags = Tag::getTagSelect('sr');
+        $categories = PCategory::pluck('title', 'id');
+        $tags = Tag::pluck('title', 'id');
         $catids = [];
         return view('admin.posts.create', compact('slug', 'categories', 'tags', 'catids'));
     }
@@ -61,42 +57,21 @@ class PostsController extends Controller
      */
     public function store(CreatePostRequest $request)
     {
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
-        $post = \Auth::user()->post()->save(new Post($request->all()));
-        request('home')? $post->home = 1 : $post->home = 0;
-        request('publish')? $post->publish = 1 : $post->publish = 0;
 
-        $post->title = request('title');
-        $post->slug = str_slug(request('title'));
-        $post->short = request('short');
-        $post->body = request('body');
+        $post = \Auth::user()->post()->save(new Post($request->except('image')));
+        $post->home = request('home')?: 0;
+        $post->publish = request('publish')?: 0;
 
         if(request('tags') == null){
             $post->tag()->sync([]);
         }else{
-            $tagovi = Tag::addTags(request('tags'), 'sr');
+            $tagovi = Tag::addTags(request('tags'));
             $post->tag()->sync($tagovi);
         }
 
-        if($request->hasFile('image')){
-            $imageName = $post->slug . '-' . $post->id . '.' . $request->file('image')->getClientOriginalExtension();
-            $imagePath = 'images/posts/'.$imageName;
-            $imagePathTmb = 'images/posts/tmb/'.$imageName;
-            $request->file('image')->move(base_path() . '/public/images/posts/', $imageName);
-            $post->image = $imagePath;
-            $post->tmb = $imagePathTmb;
-
-            $post->update();
-
-            File::copy($imagePath, $imagePathTmb);
-
-            $tmb = \Image::make($post->tmb);
-            $tmb->fit(1080, 500);
-            $tmb->save();
-        }
-
         $post->update();
+
+        $post->update(['image' => $post->storeImage()]);
 
         $post->pcategory()->sync(request('kat'));
 
@@ -123,15 +98,12 @@ class PostsController extends Controller
     public function edit(Post $post)
     {
         $slug = 'posts';
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
-        $categories = PCategory::listsTranslations('title', 'id')->pluck('title', 'id');
-        $tags = Tag::getTagSelect('sr');
+        $categories = PCategory::pluck('title', 'id');
+        $tags = Tag::pluck('title', 'id');
         $tag_ids = $post->tag->pluck('id')->toArray();
-        $languages = Language::where('publish', 1)->orderBy('order', 'ASC')->get();
         $catids = PCategory::select('p_categories.*')->join('p_category_post', 'p_categories.id', '=', 'p_category_post.p_category_id')
             ->where('p_category_post.post_id', $post->id)->pluck('p_categories.id')->toArray();
-        return view('admin.posts.edit', compact('slug', 'post', 'categories', 'tag_ids', 'tags', 'languages', 'catids'));
+        return view('admin.posts.edit', compact('slug', 'post', 'categories', 'tag_ids', 'tags', 'catids'));
     }
 
     /**
@@ -141,39 +113,15 @@ class PostsController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(CreatePostRequest $request, Post $post)
+    public function update(UpdatePostLangRequest $request, Post $post)
     {
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
         $post->update($request->except('image'));
-        $request->input('home')? $post->home = 1 : $post->home = 0;
-        $request->input('publish')? $post->publish = 1 : $post->publish = 0;
-
-
-        if($request->hasFile('image')){
-            $imageName = $post->slug . '-' . $post->id . '.' . $request->file('image')->getClientOriginalExtension();
-            $imagePath = 'images/posts/'.$imageName;
-            $imagePathTmb = 'images/posts/tmb/'.$imageName;
-            $request->file('image')->move(base_path() . '/public/images/posts/', $imageName);
-            $post->image = $imagePath;
-            $post->tmb = $imagePathTmb;
-            $post->update();
-
-            File::copy($imagePath, $imagePathTmb);
-
-            /*$tmb = \Image::make($post->tmb);
-            $tmb->fit(1080, 500);
-            $tmb->save();*/
-        }
-
+        $post->home = request('home')? : 0;
+        $post->publish = request('publish')?: 0;
 
         $post->update($request->except('image'));
 
-        if($request->input('kat') == null){
-            $post->pcategory()->sync([]);
-        }else{
-            $post->pcategory()->sync($request->input('kat'));
-        }
+        $post->pcategory()->sync($request->input('kat'));
 
         if($request->input('tags') == null){
             $post->tag()->sync([]);
@@ -181,24 +129,10 @@ class PostsController extends Controller
             $tagovi = Tag::addTags($request->input('tags'), 'sr');
             $post->tag()->sync($tagovi);
         }
+
+        $post->update(['image' => $post->storeImage()]);
+
         return redirect('admin/posts/'.$post->id.'/edit')->with('done', 'Članak je izmenjen');
-    }
-
-    public function updateLang(UpdatePostLangRequest $request, $id)
-    {
-        //return $request->all();
-        $primary = Language::getPrimary();
-        $request->input('locale')? $locale = $request->input('locale') : $locale = $primary->locale;
-        app()->setLocale($locale);
-        $post = Post::find($id);
-        $post->title = $request->input('title');
-        $post->slug = str_slug($request->input('title'));
-        $post->short = $request->input('short');
-        $post->body = $request->input('body');
-
-        $post->update();
-
-        return redirect()->back()->with('done', 'Članak je izmenjen');
     }
 
     /**

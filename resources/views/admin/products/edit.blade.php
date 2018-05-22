@@ -12,7 +12,7 @@
 
     <div class="row">
         @include('admin.partials.errors')
-        <div class="col-md-4">
+        <div class="col-md-8">
             <div class="panel panel-white">
                 <div class="panel-heading clearfix">
                     <h4 class="panel-title"><i class="fa fa-gift" style="margin-right: 5px"></i>Podaci o proizvodu</h4>
@@ -23,6 +23,30 @@
                 </div>
                 <div class="panel-body">
                     {!! Form::open(['action' => ['ProductsController@update', $product->id], 'method' => 'PUT', 'class' => 'form-horizontal', 'files' => true]) !!}
+                    <div class="form-group">
+                        <label for="title" class="col-sm-2 control-label">Naziv</label>
+                        <div class="col-sm-10">
+                            {!! Form::text('title', $product->title, array('class' => 'form-control')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="short" class="col-sm-2 control-label">SEO opis</label>
+                        <div class="col-sm-10">
+                            {!! Form::textarea('short', $product->short, array('class' => 'form-control')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="body" class="col-sm-2 control-label">Karakteristike</label>
+                        <div class="col-sm-10">
+                            {!! Form::textarea('body', $product->body, array('class' => 'form-control', 'id' => 'body1')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="body2" class="col-sm-2 control-label">Opciono</label>
+                        <div class="col-sm-10">
+                            {!! Form::textarea('body2', $product->body2, array('class' => 'form-control', 'id' => 'body2')) !!}
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="publish_at" class="col-sm-2 control-label">Vidljivo od datuma <span class="crvena-zvezdica">*</span></label>
                         <div class="col-sm-10">
@@ -180,67 +204,8 @@
                 </div>
                 @endif
             </div>
-        </div><!-- .col-md-4 -->
-        <div class="col-md-8">
-            <div class="panel panel-white">
-                <div class="panel-heading clearfix">
-                    <h4 class="panel-title">Jezičke verzije</h4>
-                    <a href="{{ url(\App\Product::getProductLink($product->id)) }}" class="btn btn-success pull-right" target="_blank">Pregled</a>
-                </div>
-                @if(count($languages)>0)
-                <div class="panel-body">
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs" role="tablist">
-                        @php $br=0; @endphp
-                        @foreach($languages as $language)
-                            @php $br++; @endphp
-                            <li role="presentation" @if($br==1) class="active" @endif><a href="#{{$language->locale}}" aria-controls="profile" role="tab" data-toggle="tab">{{$language->fullname}}</a></li>
-                        @endforeach
-                    </ul>
-                    <div class="tab-content">
-                        @php $br=0; @endphp
-                        @foreach($languages as $language)
-                            @php $br++; @endphp
-                            <div role="tabpanel" class="tab-pane @if($br==1) active @endif" id="{{$language->locale}}">
-                                {!! Form::open(['action' => ['ProductsController@updateLang', $product->id], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
-                                    {!! Form::hidden('locale', $language->locale) !!}
-                                    <div class="form-group">
-                                        <label for="title" class="col-sm-2 control-label">Naziv</label>
-                                        <div class="col-sm-10">
-                                            {!! Form::text('title', $product->{'title:'.$language->locale}, array('class' => 'form-control')) !!}
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="short" class="col-sm-2 control-label">SEO opis</label>
-                                        <div class="col-sm-10">
-                                            {!! Form::textarea('short', $product->{'short:'.$language->locale}, array('class' => 'form-control')) !!}
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="body" class="col-sm-2 control-label">Karakteristike</label>
-                                        <div class="col-sm-10">
-                                            {!! Form::textarea('body', $product->{'body:'.$language->locale}, array('class' => 'form-control', 'id' => 'body1'.$br)) !!}
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="body2" class="col-sm-2 control-label">Opciono</label>
-                                        <div class="col-sm-10">
-                                            {!! Form::textarea('body2', $product->{'body2:'.$language->locale}, array('class' => 'form-control', 'id' => 'body2'.$br)) !!}
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-sm-12">
-                                            <input type="submit" class="btn btn-success lang pull-right" value="Izmeni {{ $language->name }}">
-                                        </div>
-                                    </div>
-                                {!! Form::close() !!}
-                            </div><!-- #{{$language->locale}} -->
-                        @endforeach
-
-                    </div>
-                </div>
-                @endif
-            </div><!-- .panel-white -->
+        </div><!-- .col-md-8 -->
+        <div class="col-md-4">
 
             <div class="panel panel-white">
                 <div class="panel-heading clearfix">
@@ -251,18 +216,18 @@
                         @if(!empty($set) && count($set->property)>0)
 
                             @if($set->id == 4)
-                                <div class="col-sm-3">
+                                <div class="col-sm-6">
                                     <h3>Promjer kućišta (mm)</h3>
                                     {!! Form::text('diameter', $product->diameter, array('class' => 'form-control')) !!}
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-6">
                                     <h3>Vodootpornost (m)</h3>
                                     {!! Form::text('water', $product->water, array('class' => 'form-control')) !!}
                                 </div>
                             @endif
 
                             @foreach($set->property as $property)
-                                <div class="col-sm-3">
+                                <div class="col-sm-6">
                                     <h3>{{ $property->title }}</h3>
                                     @if(count($property->attribute)>0)
                                         @foreach($property->attribute as $attribute)
@@ -301,20 +266,15 @@
 
 @section('footer_scripts')
 
-    @php $br=0; @endphp
-    @if(count($languages)>0)
+
         window.onload = function () {
-        @foreach($languages as $language)
-            @php $br++; @endphp
-            CKEDITOR.replace('body1{{$br}}', {
+            CKEDITOR.replace('body1', {
                 "filebrowserBrowseUrl": "{!! url('filemanager/show') !!}"
             });
-            CKEDITOR.replace('body2{{$br}}', {
+            CKEDITOR.replace('body2', {
                 "filebrowserBrowseUrl": "{!! url('filemanager/show') !!}"
             });
-        @endforeach
         };
-    @endif
 
     var br=0;
 

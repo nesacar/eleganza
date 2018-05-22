@@ -6,7 +6,7 @@
         <ul class="sub-menu">
             <li><a href="{{ url('admin/settings/1/edit') }}"><i class="fa fa-search rokni-desno"></i>SEO</a></li>
             <li><a href="{{ url('admin/themes') }}"><i class="fa fa-picture-o rokni-desno"></i>Teme</a></li>
-            <li><a href="{{ url('admin/languages') }}"><i class="fa fa-flag-checkered rokni-desno"></i>Jezici</a></li>
+            {{--<li><a href="{{ url('admin/languages') }}"><i class="fa fa-flag-checkered rokni-desno"></i>Jezici</a></li>--}}
             <li><a href="{{ url('admin/menus') }}"><i class="fa fa-bars rokni-desno"></i>Meniji</a></li>
         </ul>
     </li>

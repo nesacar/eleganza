@@ -54,7 +54,7 @@
                                         {{ $c->id }}
                                     </div>
                                     <div class="col-sm-4 vcenter">
-                                        {{ $c->{'title:hr'} }}
+                                        {{ $c->title }}
                                     </div>
                                     <div class="col-sm-2 vcenter">
                                         {{ $c->order }}

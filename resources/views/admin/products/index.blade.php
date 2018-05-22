@@ -105,7 +105,7 @@
                                         {{ $p->id }}
                                     </div>
                                     <div class="col-md-3 ima-padding">
-                                        {{ $p->{'title:hr'} }}
+                                        {{ $p->title }}
                                     </div>
                                     <div class="col-md-1 ima-padding">
                                         {{ $p->code }}
@@ -123,7 +123,7 @@
                                         {{ $p->price_small }} RSD
                                     </div>
                                     <div class="col-md-2 ima-padding">
-                                        {{ \App\Product::getLastCategory($p->id) }}
+                                        {{ $p->category->first()->title }}
                                     </div>
                                     <div class="col-md-1 ima-padding2">
                                         {!! Form::checkbox('publish', 1, $p->publish, ['id' => $p->id, 'name' => 'primary[]', 'class' => 'switch-state', 'data-on-color' => 'success', 'data-off-color' => 'danger', 'data-on-text' => 'DA', 'data-off-text' => 'NE']) !!}
@@ -133,7 +133,7 @@
                                             <a  type="button" class="btn btn-success" href="{{ URL::action('ProductsController@edit', $p->id) }}" target="_blank">uredi</a>
                                             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="glyphicon glyphicon-triangle-bottom"></i></button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                                <li><a href="{{ url(\App\Product::getProductLink($p->id)) }}" target="_blank">pregled</a></li>
+                                                <li><a href="{{ $p->getLink() }}" target="_blank">pregled</a></li>
                                                 <li><a href="{{ URL::action('ProductsController@cloneProduct', $p->id) }}">kloniraj</a></li>
                                                 <li><a href="{{ URL::action('ProductsController@image', $p->id) }}">slike</a></li>
                                                 <li role="separator" class="divider"></li>

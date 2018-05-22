@@ -1,14 +1,14 @@
 <?php namespace App;
 
+use App\Traits\UploudableImageTrait;
 use Illuminate\Database\Eloquent\Model;
 use Session;
 use DB;
 use Illuminate\Support\Str;
-use Dimsav\Translatable\Translatable;
 
 class PCategory extends Model {
 
-    use Translatable;
+    use UploudableImageTrait;
 
     /**
      * The database table used by the model.
@@ -23,9 +23,7 @@ class PCategory extends Model {
      * @var array
      */
 
-    public $translatedAttributes = ['title', 'slug', 'desc', 'body'];
-
-    protected $fillable = ['brand_id', 'parent', 'level', 'order', 'customProperty', 'show_products', 'image', 'publish', 'w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'cat1', 'cat2'];
+    protected $fillable = ['brand_id', 'title', 'slug', 'desc', 'body', 'parent', 'level', 'order', 'customProperty', 'show_products', 'image', 'publish', 'w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'cat1', 'cat2'];
 
     public static function save_order($id, $poz, $parent = false, $depth){
         if($parent){
@@ -87,7 +85,7 @@ class PCategory extends Model {
             $str .=  "<ol class='sortable'>";
             foreach($category as $c){
                 $title =
-                $str .= "<li id='list_{$c->id}'><div>{$c->{'title:hr'}} / {$c->id}</div>";
+                $str .= "<li id='list_{$c->id}'><div>{$c->title} / {$c->id}</div>";
                 $str .= PCategory::getSortCategory($c->id);
                 $str .= "</li>";
             }
@@ -132,7 +130,7 @@ class PCategory extends Model {
             $str .=  "<ol class='sortable'>";
             foreach($category as $c){
                 $str .= "<li id='list_{$c->id}' style='position: relative'>";
-                $str .= "<div class='udesno'>{$c->{'title:hr'}}</div>";
+                $str .= "<div class='udesno'>{$c->title}</div>";
                 if (in_array($c->id, $catids)) {
                     $str .= "<input type='radio' name='parent' value='{$c->id}' checked='checked' class='right-sort'";
                     if($c->level > 3){ $str .= "disabled='true'"; }
@@ -227,7 +225,7 @@ class PCategory extends Model {
                 $separator = PCategory::getSeparator($c->level);
                 $str .=  "<option value='{$c->id}'";
                 if(Session::get('post_cat') == $c->id){ $str .= "selected>"; }else{ $str .= ">"; }
-                $str .= $separator." {$c->order}. {$c->{'title:hr'}}";
+                $str .= $separator." {$c->order}. {$c->title}";
                 $str .= "</option>";
                 $str .= PCategory::getSortCategorySelectParent($c->id);
             }
@@ -631,8 +629,7 @@ class PCategory extends Model {
 
     public static function getTopParentBySlug($slug=false){
         if($slug){
-            $cat = self::join('p_category_translations', 'p_categories.id', '=', 'p_category_translations.p_category_id')
-                ->where('p_categories.publish', 1)->where('p_category_translations.slug', $slug)->first();
+            $cat = self::where('publish', 1)->where('slug', $slug)->first();
             if(isset($cat)){
                 return $cat;
             }else{
@@ -654,7 +651,7 @@ class PCategory extends Model {
             $str .=  "<ol class='sortable'>";
             foreach($category as $c){
                 $str .= "<li id='list_{$c->id}' style='position: relative'>";
-                $str .= "<div class='udesno'>{$c->{'title:hr'}}</div>";
+                $str .= "<div class='udesno'>{$c->title}</div>";
                 if (in_array($c->id, $catids)) {
                     $str .= "<input type='checkbox' name='kat[]' value='{$c->id}' checked='checked' class='right-sort'>";
                 }else {

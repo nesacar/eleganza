@@ -2,11 +2,8 @@
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Dimsav\Translatable\Translatable;
 
 class Attribute extends Model {
-
-    use Translatable;
 
     /**
      * The database table used by the model.
@@ -21,32 +18,10 @@ class Attribute extends Model {
      * @var array
      */
 
-    public $translatedAttributes = ['title'];
+    protected $fillable = ['id', 'property_id', 'title', 'extra', 'order', 'publish'];
 
-    protected $fillable = ['id', 'property_id', 'extra', 'order', 'publish'];
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot(){
-        parent::boot();
-
-        static::addGlobalScope('translations', function (Builder $builder) {
-            $builder->with('translations');
-        });
-    }
-
-    public function getTitle(){
-        if(count($this->translations)>0){
-            foreach ($this->translations as $translation){
-                if($translation->locale == app()->getLocale()){
-                    return $translation->title;
-                }
-            }
-        }
-        return 'title';
+    public function setPublishAttribute($value){
+        $this->attributes['publish'] = $value?: false;
     }
 
     public static function checkFilter($osobina_id, $category_id){
@@ -143,8 +118,8 @@ class Attribute extends Model {
     }
 
     public static function getAttributesByProduct($product_id){
-        return self::select('attribute_translations.title', 'property_translations.title as property')->join('attribute_translations', 'attributes.id', '=', 'attribute_translations.attribute_id')
-            ->join('properties', 'attributes.property_id', '=', 'properties.id')->join('property_translations', 'properties.id', '=', 'property_translations.property_id')
+        return self::select('attributes.title', 'properties.title as property')
+            ->join('properties', 'attributes.property_id', '=', 'properties.id')
             ->join('attribute_product', 'attributes.id', '=', 'attribute_product.attribute_id')
             ->where('attribute_product.product_id', $product_id)->where('properties.publish', 1)->where('attributes.publish', 1)->groupBy('attributes.id')->get();
     }
@@ -168,9 +143,5 @@ class Attribute extends Model {
 
     public function set(){
         return $this->belongsToMany('App\Set');
-    }
-
-    public function translations(){
-        return $this->hasMany(AttributeTranslation::class);
     }
 }
