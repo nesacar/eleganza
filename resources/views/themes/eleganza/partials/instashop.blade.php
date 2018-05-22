@@ -1,4 +1,4 @@
-<div class="nv-instashop active">
+<div class="nv-instashop js-nv-instashop">
   <div class="nv-container elevation--z24">
     <div class="nv-row">
       <div class="nv-col">
@@ -33,7 +33,7 @@
               </svg>
             </button>
           </div>
-            <button class="nv-icon-btn">
+            <button class="nv-icon-btn js-btn-close">
             <svg viewBox="0 0 1024 1024">
               <path d="M810.7,273.5l-60.2-60.2L512,451.8L273.5,213.3l-60.2,60.2L451.8,512L213.3,750.5l60.2,60.2L512,572.2l238.5,238.5 l60.2-60.2L572.2,512L810.7,273.5z"/>
             </svg>

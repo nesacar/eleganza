@@ -1,10 +1,14 @@
-import Siema from '../components/siema';
+import modal from './modal';
 
+/**
+ * Kicks things off.
+ * Sets slider, and stuff...
+ */
 function init() {
-  const slider = new Siema({
-    perPage: 3,
+  modal.init({
+    open: true,
+    data: 'hello',
   });
-  slider.addPagination();
 }
 
 export default {

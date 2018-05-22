@@ -91,14 +91,18 @@ module.exports = __webpack_require__(143);
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_siema__ = __webpack_require__(207);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modal__ = __webpack_require__(208);
 
 
+/**
+ * Kicks things off.
+ * Sets slider, and stuff...
+ */
 function init() {
-  var slider = new __WEBPACK_IMPORTED_MODULE_0__components_siema__["a" /* default */]({
-    perPage: 3
+  __WEBPACK_IMPORTED_MODULE_0__modal__["a" /* default */].init({
+    open: true,
+    data: 'hello'
   });
-  slider.addPagination();
 }
 
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -833,6 +837,113 @@ var Siema = function () {
 }();
 
 /* harmony default export */ __webpack_exports__["a"] = (Siema);
+
+/***/ }),
+
+/***/ 208:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_siema__ = __webpack_require__(207);
+
+
+// Constants.
+var ACTIVE_CLASS = 'active';
+var NO_SCROLL_CLASS = 'no-scroll';
+var DEFAULT_STATE = {
+  open: false,
+  data: null
+};
+var SLIDER_PARAMS = {
+  perPage: 3
+};
+
+var $modal = void 0;
+var $btnClose = void 0;
+var slider = void 0;
+var state = void 0;
+
+/**
+ * Sets everything up.
+ * 
+ * @param {Object} initialState - Initial state.
+ * @public
+ */
+function init() {
+  var initialState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_STATE;
+
+  $modal = document.querySelector('.js-nv-instashop');
+  $btnClose = $modal.querySelector('.js-btn-close');
+
+  $btnClose.addEventListener('click', _hide);
+
+  _setState(initialState);
+}
+
+/**
+ * Opens the modal and renders the data.
+ *
+ * @param {any} data - Data to render.
+ * @public
+ */
+function show(data) {
+  // Not sure about data format, yet.
+  _setState({
+    open: true,
+    data: data
+  });
+}
+
+/**
+ * Updates the state, and calls render.
+ *
+ * @param {Object} partialState - Update to the state.
+ * @private
+ */
+function _setState(partialState) {
+  state = Object.assign({}, state, partialState);
+  _render();
+}
+
+/**
+ * Updates the UI layer.
+ * @private
+ */
+function _render() {
+  if (state.open && state.data) {
+    // Replace all the data.
+    // Setup Siema.
+    slider = new __WEBPACK_IMPORTED_MODULE_0__components_siema__["a" /* default */](SLIDER_PARAMS);
+    slider.addPagination();
+
+    // Then show the modal.
+    $modal.classList.add(ACTIVE_CLASS);
+    document.body.classList.add(NO_SCROLL_CLASS);
+    return;
+  }
+  // Hide modal.
+  $modal.classList.remove(ACTIVE_CLASS);
+  document.body.classList.remove(NO_SCROLL_CLASS);
+
+  // Destroy slider and cleanup.
+  if (slider) {
+    slider.destroy();
+  }
+}
+
+/**
+ * Convinience function for hiding the modal.
+ * Sets the state to it's default value.
+ * @private
+ */
+function _hide() {
+  _setState(DEFAULT_STATE);
+}
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  init: init,
+  show: show
+});
 
 /***/ })
 
