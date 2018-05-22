@@ -226,8 +226,7 @@ class PagesController extends Controller
 
     public function shopCategory3($slug1, $slug2, $slug3)
     {
-        $s1 = $category = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('category_translations.slug', $slug1)->where('categories.publish', 1)->first();
+        $s1 = $category = Category::where('slug', $slug1)->where('publish', 1)->first();
         $product = Product::find($slug3);
         $theme = Theme::where('active', 1)->first();
         $settings = Setting::find(1);
