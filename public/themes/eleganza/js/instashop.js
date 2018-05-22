@@ -16824,22 +16824,65 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var state = {
   products: window.products,
   currentIndex: 0
+};
 
-  /**
-   * Kicks things off.
-   * Sets slider, and stuff...
-   */
-};function init() {
+var $images = void 0;
+
+/**
+ * Kicks things off.
+ * Sets slider, and stuff...
+ */
+function init() {
+  $images = document.querySelectorAll('.instashop-thumbnail');
+  $images.forEach(function ($image, index) {
+    $image.addEventListener('click', function (evt) {
+      // TODO: Use ID instead of index
+      _setCurrentIndex(index);
+    });
+  });
   // Tmp
   __WEBPACK_IMPORTED_MODULE_0__modal__["a" /* default */].init({
-    open: true,
     data: state.products[state.currentIndex]
   });
 }
 
-window.kurac = function () {
+/**
+ * Sets the current index of the image.
+ *
+ * @param {Number|String} i - Index of the image to render.
+ */
+function _setCurrentIndex(i) {
+  var l = state.products.length;
+  var index = void 0;
+
+  // Keep it looping
+  if (i >= l) {
+    index = 0;
+  } else if (i < 0) {
+    index = l - 1;
+  }
+
+  _setState({
+    currentIndex: index
+  });
+}
+
+/**
+ * Calls show method on modal.
+ */
+function _render() {
   __WEBPACK_IMPORTED_MODULE_0__modal__["a" /* default */].show(state.products[state.currentIndex]);
-};
+}
+
+/**
+ * Updates current state and calls render with the new one.
+ *
+ * @param {Object} partialState - State update.
+ */
+function _setState(partialState) {
+  state = Object.assign({}, state, partialState);
+  _render();
+}
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   init: init
