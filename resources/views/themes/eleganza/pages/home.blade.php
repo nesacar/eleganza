@@ -109,7 +109,7 @@
 
 @section('footer_scripts')
   <script>
-    const products = {!! $instaShops !!};
+    window.products = {!! $instaShops !!};
   </script>
   <script src="{{ url('themes/eleganza/js/instashop.js') }}"></script>
 @endsection
