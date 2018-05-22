@@ -1,0 +1,16 @@
+.nv-row {
+  display: flex;
+  flex-direction: column;
+
+  @include respond-to(small) {
+    flex-direction: row;
+  }
+}
+
+.nv-col {
+  width: 100%;
+
+  @include respond-to(small) {
+    width: 50%;
+  }
+}

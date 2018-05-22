@@ -1,0 +1,51 @@
+.nv-pin {
+  position: absolute;
+  // text-transform: uppercase;
+  font-variant: small-caps;
+  text-decoration: none !important;
+  color: rgba(0, 0, 0, .87);
+  font-size: 12px;
+}
+
+.nv-pin_container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  background-color: #FFF;
+  line-height: 1;
+  position: relative;
+}
+
+.nv-pin_tooltip {
+  position: absolute;
+  bottom: calc(-100% - 16px);
+  left: 50%;
+  background-color: #FFF;
+  padding: 8px 16px;
+  display: inline-block;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity .12s;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  pointer-events: none;
+
+  &::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background-color: inherit;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  .nv-pin_container:hover & {
+    opacity: 1;
+  }
+}

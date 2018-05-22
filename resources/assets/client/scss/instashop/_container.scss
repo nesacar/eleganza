@@ -1,0 +1,21 @@
+.nv-container {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #FFF;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 2;
+
+  @include respond-to(small) {
+    height: auto;
+    max-width: 1200px;
+    top: 17%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 16px;
+    border-radius: 2px;
+  }
+}

@@ -1,0 +1,16 @@
+.nv-scrim {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, .87);
+  opacity: 0;
+  will-change: opacity;
+  transition: opacity .21s;
+  z-index: 1;
+
+  .active & {
+    opacity: .3;
+  }
+}

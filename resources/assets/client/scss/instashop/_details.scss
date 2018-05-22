@@ -1,0 +1,43 @@
+.nv-details {
+  padding: 16px;
+  
+  @include respond-to(small) {
+    padding: 0 0 0 32px;
+  }
+
+  &_related {
+    overflow: hidden;
+    cursor: default !important;
+  }
+  
+  &_info {
+    font-size: 14px;
+    line-height: 18px;
+    max-height: 4 * 18px;
+    overflow-y: auto;
+  }
+
+  &_date {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, .54);
+    font-weight: 500;
+  }
+
+  &_actions {
+    font-size: 12px;
+  }
+
+  &_share {
+    display: flex;
+  }
+
+  &_share-item {
+    display: inline-flex;
+    padding: 3px;
+
+    & + & {
+      margin-left: 8px;
+    }
+  }
+}

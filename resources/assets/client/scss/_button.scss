@@ -1,0 +1,91 @@
+.nv-btn {
+  position: relative;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: .144em;
+  font-weight: 500;
+  color: #FFF;
+  background-color: #f8333f;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  height: 32px;
+  border-radius: 2px;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: currentColor;
+    opacity: 0;
+    will-change: opacity;
+    transition: opacity .12s;
+  }
+
+  &:hover::after {
+    opacity: .12;
+  }
+
+  &:focus::after {
+    opacity: .21;
+  }
+
+  &:active::after {
+    opacity: .3;
+  }
+}
+
+.nv-icon-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  padding: 0;
+  color: inherit;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: currentColor;
+    border-radius: 50%;
+    opacity: 0;
+    will-change: opacity;
+    transition: opacity .12s;
+  }
+
+  &:hover::after {
+    opacity: .12;
+  }
+
+  &:focus::after {
+    opacity: .21;
+  }
+
+  &:active::after {
+    opacity: .3;
+  }
+
+  svg {
+    fill: currentColor;
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+  }
+}

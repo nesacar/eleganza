@@ -13,4 +13,9 @@ let mix = require('laravel-mix');
 
 /*mix.js('resources/assets/js/app.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css');*/
-mix.js('resources/assets/js/app.js', 'public/js');
+mix.js('resources/assets/js/app.js', 'public/js')
+  .js('resources/assets/client/js/instashop.js',
+    'public/themes/eleganza/js/instashop.js');
+
+mix.sass('resources/assets/client/scss/main.scss',
+  'public/themes/eleganza/css/instashop.css');

@@ -92,6 +92,7 @@
 </div>
 
 @yield('modal')
+@yield('instashop')
 
 {!! HTML::script('themes/'.$theme->slug.'/js/app.bundle.js') !!}
 

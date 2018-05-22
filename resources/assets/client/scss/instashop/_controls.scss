@@ -1,0 +1,14 @@
+.nv-controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.nv-arrow {
+  &--left {
+    transform: rotate(90deg);
+  }
+
+  &--right {
+    transform: rotate(-90deg);
+  }
+}

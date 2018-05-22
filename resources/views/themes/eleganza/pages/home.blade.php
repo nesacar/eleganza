@@ -1,5 +1,9 @@
 @extends('themes.'.$theme->slug.'.index')
 
+@section('header-style')
+<link rel="stylesheet" href="{{ url('themes/eleganza/css/instashop.css') }}">
+@endsection
+
 @section('content')
 
     @if(!empty($hero))
@@ -99,8 +103,13 @@
 
 @endsection
 
+@section('instashop')
+  @include('themes.'.$theme->slug.'.partials.instashop')
+@endsection
+
 @section('footer_scripts')
   <script>
     const products = {!! $instaShops !!};
   </script>
+  <script src="{{ url('themes/eleganza/js/instashop.js') }}"></script>
 @endsection
