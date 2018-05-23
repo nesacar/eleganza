@@ -695,7 +695,7 @@ class PagesController extends Controller
                 Click::insertPostClick($newsletter->id, $post->id, $subscriber->id);
             }
         }
-        $pcategory = PCategory::whereTranslation('slug', $slug1)->first();
+        $pcategory = PCategory::where('slug', $slug1)->first();
         $settings = Setting::first();
         $theme = Theme::where('active', 1)->first();
         $related = $pcategory->post()->where('posts.publish', 1)->where('posts.publish_at', '<=', (new \Carbon\Carbon()))->where('posts.id', '<>', $post->id)->orderBy('posts.publish_at', 'DESC')->paginate(3);
@@ -720,7 +720,7 @@ class PagesController extends Controller
                 Click::insertPostClick($newsletter->id, $post->id, $subscriber->id);
             }
         }
-        $pcategory = PCategory::whereTranslation('slug', $slug1)->first();
+        $pcategory = PCategory::where('slug', $slug1)->first();
         $settings = Setting::first();
         $theme = Theme::where('active', 1)->first();
         $related = $pcategory->post()->where('posts.publish', 1)->where('posts.publish_at', '<=', (new \Carbon\Carbon()))->where('posts.id', '<>', $post->id)->orderBy('posts.publish_at', 'DESC')->paginate(3);

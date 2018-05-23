@@ -266,7 +266,7 @@ class Post extends Model
     }
 
     public static function getPostActiveLink($slug){
-        $cat = PCategory::whereTranslation('slug', $slug)->first();
+        $cat = PCategory::where('slug', $slug)->first();
         $parent = PCategory::find($cat->parent);
         if(isset($parent)){
             return $parent->slug;
