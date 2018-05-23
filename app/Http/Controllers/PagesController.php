@@ -3,11 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Attribute;
+use App\AttributeTranslation;
+use App\Banner;
+use App\BannerTranslation;
 use App\Block;
 use App\Box;
+use App\BoxTranslation;
 use App\Brand;
+use App\BrandTranslation;
 use App\Cart;
 use App\Category;
+use App\CategoryTranslation;
 use App\Click;
 use App\Coupon;
 use App\Customer;
@@ -19,7 +25,6 @@ use App\Http\Requests\ListKupovineRequest;
 use App\Http\Requests\SendKontaktFormRequest;
 use App\Http\Requests\SubscribeRequest;
 use App\InstaShop;
-use App\Language;
 use App\Mail\CartOrder;
 use App\Mail\LuxLifeNewsletter;
 use App\Mail\OrderIsReadyMail;
@@ -28,14 +33,20 @@ use App\Menu;
 use App\MenuLink;
 use App\Newsletter;
 use App\PCategory;
+use App\PCategoryTranslation;
 use App\Post;
+use App\PostTranslation;
 use App\Product;
+use App\ProductTranslation;
 use App\Property;
+use App\PropertyTranslation;
 use App\Set;
 use App\Setting;
+use App\SetTranslation;
 use App\ShoppingCart;
 use App\Subscriber;
 use App\Tag;
+use App\TagTranslation;
 use App\Theme;
 use App\User;
 use Illuminate\Http\Request;
@@ -46,11 +57,6 @@ class PagesController extends Controller
 {
     public static $paginate = 20;
     public static $paginateTag = 24;
-
-    public function __construct(){
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
-    }
 
     public function index(){
         $settings = Setting::first();
@@ -70,11 +76,10 @@ class PagesController extends Controller
     public function shopCategory($slug){
         //return request()->all();
         \Session::forget('filter');
-        $category = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('category_translations.slug', $slug)->where('categories.publish', 1)->first();
+        $category = Category::where('slug', $slug)->where('publish', 1)->first();
         $s1 = $category;
         if(isset($category)){
-            $set = Set::whereTranslation('slug', $slug)->first();
+            $set = Set::where('slug', $slug)->first();
             if(!empty($set)){
                 $props1 = Property::with(['set' => function($query) use ($set){
                     $query->where('set_id', $set->id);
@@ -132,10 +137,8 @@ class PagesController extends Controller
     public function shopCategory2($slug1, $slug2)
     {
         \Session::forget('filter');
-        $s1 = $category = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('category_translations.slug', $slug1)->where('categories.publish', 1)->first();
-        $s2 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('category_translations.slug', $slug2)->where('categories.publish', 1)->where('categories.parent', $s1->id)->first();
+        $s1 = $category = Category::where('slug', $slug1)->where('publish', 1)->first();
+        $s2 = Category::where('slug', $slug2)->where('publish', 1)->where('parent', $s1->id)->first();
         $product = Product::find($slug2);
         $theme = Theme::where('active', 1)->first();
         $settings = Setting::find(1);
@@ -167,7 +170,7 @@ class PagesController extends Controller
         }else{
             $category = $s2;
             if(isset($category)){
-                $set = Set::whereTranslation('slug', $slug1)->first();
+                $set = Set::where('slug', $slug1)->first();
                 if(!empty($set)){
                     $props1 = Property::with(['set' => function($query) use ($set){
                         $query->where('set_id', $set->id);
@@ -223,8 +226,7 @@ class PagesController extends Controller
 
     public function shopCategory3($slug1, $slug2, $slug3)
     {
-        $s1 = $category = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('category_translations.slug', $slug1)->where('categories.publish', 1)->first();
+        $s1 = $category = Category::where('slug', $slug1)->where('publish', 1)->first();
         $product = Product::find($slug3);
         $theme = Theme::where('active', 1)->first();
         $settings = Setting::find(1);
@@ -303,10 +305,8 @@ class PagesController extends Controller
     }
 
     public function shopCategory4($slug1, $slug2, $slug3, $slug4){
-        $s1 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('category_translations.slug', $slug1)->where('categories.publish', 1)->first();
-        $s2 = $category = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('category_translations.slug', $slug2)->where('categories.publish', 1)->where('categories.parent', $s1->id)->first();
+        $s1 = Category::where('slug', $slug1)->where('publish', 1)->first();
+        $s2 = $category = Category::where('slug', $slug2)->where('publish', 1)->where('parent', $s1->id)->first();
         $product = Product::find($slug4);
         $theme = Theme::where('active', 1)->first();
         $settings = Setting::find(1);
@@ -695,7 +695,7 @@ class PagesController extends Controller
                 Click::insertPostClick($newsletter->id, $post->id, $subscriber->id);
             }
         }
-        $pcategory = PCategory::whereTranslation('slug', $slug1)->first();
+        $pcategory = PCategory::where('slug', $slug1)->first();
         $settings = Setting::first();
         $theme = Theme::where('active', 1)->first();
         $related = $pcategory->post()->where('posts.publish', 1)->where('posts.publish_at', '<=', (new \Carbon\Carbon()))->where('posts.id', '<>', $post->id)->orderBy('posts.publish_at', 'DESC')->paginate(3);
@@ -720,7 +720,7 @@ class PagesController extends Controller
                 Click::insertPostClick($newsletter->id, $post->id, $subscriber->id);
             }
         }
-        $pcategory = PCategory::whereTranslation('slug', $slug1)->first();
+        $pcategory = PCategory::where('slug', $slug1)->first();
         $settings = Setting::first();
         $theme = Theme::where('active', 1)->first();
         $related = $pcategory->post()->where('posts.publish', 1)->where('posts.publish_at', '<=', (new \Carbon\Carbon()))->where('posts.id', '<>', $post->id)->orderBy('posts.publish_at', 'DESC')->paginate(3);
@@ -905,10 +905,7 @@ class PagesController extends Controller
     }
 
     public function subscribe(SubscribeRequest $request){
-        $primary = Language::getPrimary();
-
         $sub = new Subscriber();
-        $sub->language_id = $primary->id;
         $sub->email = request('email');
         $sub->name = request('name');
         $sub->verification = str_random(32);
@@ -918,46 +915,150 @@ class PagesController extends Controller
     }
 
     public function proba(){
-        /*$array = [
-            'radic.dejan.nbg@gmail.com',
-            'dejan.radic@ministudio.rs',
-            //'nebojsart1409@yahoo.com',
-            //'nebojsa.markovic@ministudio.rs',
-            'nenad@ministudio.rs',
-            'nenad_bg@yahoo.com',
-            'jova.sreco@ministudio.rs',
-        ];
-        foreach ($array as $email){
-            \Mail::to($email)->send(new LuxLifeNewsletter());
+        $br=0;
+//        $attributes = AttributeTranslation::where('locale', 'hr')->get();
+//        if(count($attributes)>0){
+//            foreach ($attributes as $attribute){
+//                $parent = Attribute::find($attribute->attribute_id);
+//                $parent->update(['title' => $attribute->title]);
+//                $br++;
+//            }
+//        }
+
+//        $items = BannerTranslation::where('locale', 'hr')->get();
+//        if(count($items)>0){
+//            foreach ($items as $item){
+//                $parent = Banner::find($item->banner_id);
+//                $parent->update([
+//                    'title' => $item->title,
+//                    'link' => $item->link,
+//                    'image' => $item->image,
+//                ]);
+//                $br++;
+//            }
+//        }
+
+//        $items = BoxTranslation::where('locale', 'hr')->get();
+//        if(count($items)>0){
+//            foreach ($items as $item){
+//                $parent = Box::find($item->box_id);
+//                $parent->update([
+//                    'title' => $item->title,
+//                    'subtitle' => $item->subtitle,
+//                    'button' => $item->button,
+//                    'link' => $item->link,
+//                ]);
+//                $br++;
+//            }
+//        }
+
+//        $items = BrandTranslation::where('locale', 'hr')->get();
+//        if(count($items)>0){
+//            foreach ($items as $item){
+//                $parent = Brand::find($item->brand_id);
+//                $parent->update([
+//                    'title' => $item->title,
+//                    'slug' => $item->slug,
+//                    'short' => $item->short,
+//                    'body' => $item->body,
+//                    'body2' => $item->body2,
+//                ]);
+//                $br++;
+//            }
+//        }
+
+//        $items = CategoryTranslation::where('locale', 'hr')->get();
+//        if(count($items)>0){
+//            foreach ($items as $item){
+//                $parent = Category::find($item->category_id);
+//                $parent->update([
+//                    'title' => $item->title,
+//                    'slug' => $item->slug,
+//                    'desc' => $item->desc,
+//                ]);
+//                $br++;
+//            }
+//        }
+
+//        $items = PostTranslation::where('locale', 'hr')->get();
+//        if(count($items)>0){
+//            foreach ($items as $item){
+//                $parent = Post::find($item->post_id);
+//                $parent->update([
+//                    'title' => $item->title,
+//                    'slug' => $item->slug,
+//                    'short' => $item->short,
+//                    'body' => $item->body,
+//                ]);
+//                $br++;
+//            }
+//        }
+
+//        $items = ProductTranslation::where('locale', 'hr')->get();
+//        if(count($items)>0){
+//            foreach ($items as $item){
+//                $parent = Product::find($item->product_id);
+//                $parent->update([
+//                    'title' => $item->title,
+//                    'slug' => $item->slug,
+//                    'short' => $item->short,
+//                    'body' => $item->body,
+//                    'body2' => $item->body2,
+//                ]);
+//                $br++;
+//            }
+//        }
+
+//        $items = PropertyTranslation::where('locale', 'hr')->get();
+//        if(count($items)>0){
+//            foreach ($items as $item){
+//                $parent = Property::find($item->property_id);
+//                $parent->update([
+//                    'title' => $item->title,
+//                ]);
+//                $br++;
+//            }
+//        }
+
+//        $items = PCategoryTranslation::where('locale', 'hr')->get();
+//        if(count($items)>0){
+//            foreach ($items as $item){
+//                $parent = PCategory::find($item->p_category_id);
+//                $parent->update([
+//                    'title' => $item->title,
+//                    'slug' => $item->slug,
+//                    'desc' => $item->desc,
+//                    'body' => $item->body,
+//                ]);
+//                $br++;
+//            }
+//        }
+
+//        $items = SetTranslation::where('locale', 'hr')->get();
+//        if(count($items)>0){
+//            foreach ($items as $item){
+//                $parent = Set::find($item->set_id);
+//                $parent->update([
+//                    'title' => $item->title,
+//                    'slug' => $item->slug,
+//                ]);
+//                $br++;
+//            }
+//        }
+
+        $items = TagTranslation::where('locale', 'hr')->get();
+        if(count($items)>0){
+            foreach ($items as $item){
+                $parent = Tag::find($item->tag_id);
+                $parent->update([
+                    'title' => $item->title,
+                    'slug' => $item->slug,
+                ]);
+                $br++;
+            }
         }
 
-        return 'oprem';*/
-
-        //return Product::cloneProduct(10, 1);
-        //kopiranje atributa
-
-        /*$products = Product::all();
-        foreach ($products as $product){
-            $product->price_small = rand(23,223);
-            $product->update();
-        }*/
-
-//        $user = User::with('Customer')->where('email', 'nebojsa.markovic@ministudio.rs')->first();
-//        $theme = Theme::where('active', 1)->first();
-//        $cart = Cart::with('Product')->first();
-//
-//        \Mail::to('nebojsart1409@yahoo.com')->send(new OrderIsReadyMail($user, $theme, $cart));
-
-
-//        $coupon = Coupon::getDiscount('xzRBfyby');
-//        dd($coupon);
-
-        //return $products = Property::join('property_translations', 'properties.id', '=', 'property_translations.property_id')->orderBy('properties.order', 'ASC')->pluck('property_translations.title', 'properties.id');
-        //session()->forget('cart');
-//        $product = Product::find(29);
-//        return Product::getRelatedByColor($product);
-        \Artisan::call('storage:link');
-        return 'done2';
+        return 'done - ' . $br;
     }
 
     public function eleganza(){

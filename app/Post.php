@@ -2,20 +2,43 @@
 
 namespace App;
 
+use App\Traits\UploudableImageTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Dimsav\Translatable\Translatable;
 
 class Post extends Model
 {
-    use Translatable;
+    use UploudableImageTrait;
 
     public static $list_limit = 50;
 
-    public $translatedAttributes = ['title', 'slug', 'short', 'body'];
-
     protected $table = 'posts';
 
-    protected $fillable = ['id', 'user_id', 'image' , 'tmb', 'home', 'publish_at', 'publish'];
+    protected $fillable = ['id', 'user_id', 'title', 'slug', 'short', 'body', 'image' , 'tmb', 'home', 'publish_at', 'publish'];
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot(){
+        parent::boot();
+
+        static::addGlobalScope('pcategory', function (Builder $builder) {
+            $builder->with('pcategory');
+        });
+    }
+
+    public function getLink(){
+        $str = '';
+        if(count($this->pcategory())>0){
+            foreach ($this->pcategory as $category){
+                $str .= $category->slug . '/';
+            }
+        }
+        $str .= $this->slug . '/' . $this->id;
+        return url($str);
+    }
 
     public static function getLastsPost($limit){
         return self::select('posts.*')->join('categories', 'posts.category_id', '=', 'categories.id')
@@ -34,17 +57,16 @@ class Post extends Model
 
     public static function filteredPosts($s=false,$c=0){
         if($c>0){
-            return self::select('posts.*')->join('post_translations', 'posts.id', '=', 'post_translations.post_id')
-                ->join('p_category_post', 'posts.id', '=', 'p_category_post.post_id')
+            return self::select('posts.*')->join('p_category_post', 'posts.id', '=', 'p_category_post.post_id')
                 ->where(function ($query) use ($s){
                     if(isset($s)){
                         $query->where('posts.title', 'like', '%'.$s.'%')->orWhere('posts.id', 'like', '%'.$s.'%')
-                            ->orWhere('post_translations.short', 'like', '%'.$s.'%')->orWhere('post_translations.slug', 'like', '%'.$s.'%');
+                            ->orWhere('posts.short', 'like', '%'.$s.'%')->orWhere('posts.slug', 'like', '%'.$s.'%');
                     }
                 })->where('p_category_post.p_category_id', $c)->groupBy('posts.id')->orderby('posts.publish_at', 'DESC')->paginate(self::$list_limit);
         }else{
-            return self::whereTranslationLike('title', '%'.$s.'%')->orWhereTranslationLike('id', '%'.$s.'%')->orWhereTranslationLike('short', '%'.$s.'%')
-                ->orWhereTranslationLike('slug', '%'.$s.'%')->groupBy('posts.id')->orderby('posts.publish_at', 'DESC')->paginate(self::$list_limit);
+            return self::where('title', 'LIKE', '%'.$s.'%')->orWhere('id', 'LIKE', '%'.$s.'%')->orWhere('short', 'LIKE', '%'.$s.'%')
+                ->orWhere('slug', 'LIKE', '%'.$s.'%')->groupBy('posts.id')->orderby('posts.publish_at', 'DESC')->paginate(self::$list_limit);
         }
     }
 
@@ -196,16 +218,16 @@ class Post extends Model
         return $res;
     }
 
-    public static function getLink($post, $home=false, $cat=false){
-        $post = self::find($post);
-        if($home){
-            $link = $post->pcategory()->first()->slug.'/'.$post->slug.'/'.$post->id;
-        }else{
-            $category = PCategory::find($cat);
-            $link = $category->slug.'/'.$post->slug.'/'.$post->id;
-        }
-        return $link;
-    }
+//    public static function getLink($post, $home=false, $cat=false){
+//        $post = self::find($post);
+//        if($home){
+//            $link = $post->pcategory()->first()->slug.'/'.$post->slug.'/'.$post->id;
+//        }else{
+//            $category = PCategory::find($cat);
+//            $link = $category->slug.'/'.$post->slug.'/'.$post->id;
+//        }
+//        return $link;
+//    }
 
     public static function getTwo($cat=false){
         if($cat){
@@ -244,7 +266,7 @@ class Post extends Model
     }
 
     public static function getPostActiveLink($slug){
-        $cat = PCategory::whereTranslation('slug', $slug)->first();
+        $cat = PCategory::where('slug', $slug)->first();
         $parent = PCategory::find($cat->parent);
         if(isset($parent)){
             return $parent->slug;
@@ -254,7 +276,7 @@ class Post extends Model
     }
 
     public function pcategory(){
-        return $this->belongsToMany('App\PCategory');
+        return $this->belongsToMany('App\PCategory')->orderBy('parent', 'ASC');
     }
 
     public function tag(){

@@ -12,13 +12,31 @@
 
     <div class="row">
         @include('admin.partials.errors')
-        <div class="col-md-4">
+        <div class="col-md-12">
             <div class="panel panel-white">
                 <div class="panel-heading clearfix">
                     <h4 class="panel-title"><i class="glyphicon glyphicon-th-list" style="margin-right: 5px"></i>Podaci o kategoriji</h4>
                 </div>
                 <div class="panel-body">
                     {!! Form::open(['action' => ['PCategoriesController@update', $pcategory->id], 'method' => 'PUT', 'class' => 'form-horizontal', 'files' => true]) !!}
+                    <div class="form-group">
+                        <label for="title" class="col-sm-2 control-label">Naziv</label>
+                        <div class="col-sm-10">
+                            {!! Form::text('title', $pcategory->title, array('class' => 'form-control')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="desc" class="col-sm-2 control-label">SEO opis</label>
+                        <div class="col-sm-10">
+                            {!! Form::textarea('desc', $pcategory->desc, array('class' => 'form-control')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="body" class="col-sm-2 control-label">Ceo opis</label>
+                        <div class="col-sm-10">
+                            {!! Form::textarea('body', $pcategory->body, array('class' => 'form-control', 'id' => 'body')) !!}
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="parent" class="col-sm-2 control-label">Nad kategorija</label>
                         <div class="col-sm-10">
@@ -40,7 +58,7 @@
                     <hr>
                     <div class="form-group">
                         <div class="col-sm-12">
-                            <input type="submit" class="btn btn-success pull-right" value="Izmeni generalno">
+                            <input type="submit" class="btn btn-success pull-right" value="Izmeni">
                         </div>
                     </div>
                     {!! Form::close() !!}
@@ -65,61 +83,8 @@
                 </div>
                 @endif
             </div>
-        </div><!-- .col-md-4 -->
-        <div class="col-md-8">
-            <div class="panel panel-white">
-                <div class="panel-heading clearfix">
-                    <h4 class="panel-title">Jezičke verzije</h4>
-                </div>
-                @if(count($languages)>0)
-                <div class="panel-body">
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs" role="tablist">
-                        @php $br=0; @endphp
-                        @foreach($languages as $language)
-                            @php $br++; @endphp
-                            <li role="presentation" @if($br==1) class="active" @endif><a href="#{{$language->locale}}" aria-controls="profile" role="tab" data-toggle="tab">{{$language->fullname}}</a></li>
-                        @endforeach
-                    </ul>
-                    <div class="tab-content">
-                        @php $br=0; @endphp
-                        @foreach($languages as $language)
-                            @php $br++; @endphp
-                            <div role="tabpanel" class="tab-pane @if($br==1) active @endif" id="{{$language->locale}}">
-                                {!! Form::open(['action' => ['PCategoriesController@updateLang', $pcategory->id], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
-                                    {!! Form::hidden('locale', $language->locale) !!}
-                                    <div class="form-group">
-                                        <label for="title" class="col-sm-2 control-label">Naziv</label>
-                                        <div class="col-sm-10">
-                                            {!! Form::text('title', $pcategory->{'title:'.$language->locale}, array('class' => 'form-control')) !!}
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="desc" class="col-sm-2 control-label">SEO opis</label>
-                                        <div class="col-sm-10">
-                                            {!! Form::textarea('desc', $pcategory->{'desc:'.$language->locale}, array('class' => 'form-control')) !!}
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="body" class="col-sm-2 control-label">Ceo opis</label>
-                                        <div class="col-sm-10">
-                                            {!! Form::textarea('body', $pcategory->{'body:'.$language->locale}, array('class' => 'form-control', 'id' => 'body')) !!}
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-sm-12">
-                                            <input type="submit" class="btn btn-success lang pull-right" value="Izmeni {{ $language->name }}">
-                                        </div>
-                                    </div>
-                                {!! Form::close() !!}
-                            </div><!-- #{{$language->locale}} -->
-                        @endforeach
+        </div><!-- .col-md-12 -->
 
-                    </div>
-                </div>
-                @endif
-            </div><!-- .col-md-8 -->
-        </div><!-- .col-md-8 -->
     </div>
     <div class="row">
         <div class="col-md-12">

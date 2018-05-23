@@ -17,40 +17,24 @@
                 <div class="panel-heading clearfix">
                     <h4 class="panel-title"><i class="glyphicon glyphicon-th-list" style="margin-right: 5px"></i>Podaci o tagovi</h4>
                 </div>
-                @if(count($languages)>0)
+
                 <div class="panel-body">
-                    <ul class="nav nav-tabs" role="tablist">
-                        @php $br=0; @endphp
-                        @foreach($languages as $language)
-                            @php $br++; @endphp
-                            <li role="presentation" @if($br==1) class="active" @endif><a href="#{{$language->locale}}" aria-controls="profile" role="tab" data-toggle="tab">{{$language->fullname}}</a></li>
-                        @endforeach
-                    </ul>
-                    <div class="tab-content">
-                        @php $br=0; @endphp
-                        @foreach($languages as $language)
-                            @php $br++; @endphp
-                            <div role="tabpanel" class="tab-pane @if($br==1) active @endif" id="{{$language->locale}}">
-                                {!! Form::open(['action' => ['TagsController@updateLang', $tag->id], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
-                                    {!! Form::hidden('locale', $language->locale) !!}
-                                    <div class="form-group">
-                                        <label for="title" class="col-sm-2 control-label">Naziv</label>
-                                        <div class="col-sm-10">
-                                            {!! Form::text('title', $tag->{'title:'.$language->locale}, array('class' => 'form-control')) !!}
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="form-group">
-                                        <div class="col-sm-12">
-                                            <input type="submit" class="btn btn-success pull-right" value="Izmeni">
-                                        </div>
-                                    </div>
-                                {!! Form::close() !!}
-                            </div><!-- #{{$language->locale}} -->
-                        @endforeach
-                    </div>
+
+                    {!! Form::open(['action' => ['TagsController@update', $tag->id], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
+                        <div class="form-group">
+                            <label for="title" class="col-sm-2 control-label">Naziv</label>
+                            <div class="col-sm-10">
+                                {!! Form::text('title', $tag->title, array('class' => 'form-control')) !!}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <input type="submit" class="btn btn-success pull-right" value="Izmeni">
+                            </div>
+                        </div>
+                    {!! Form::close() !!}
                 </div>
-                @endif
             </div>
         </div><!-- .col-md-12 -->
     </div>

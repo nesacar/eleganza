@@ -17,7 +17,7 @@
         "chars_only_latin": true,
         "dateFormat": "d M Y H:i",
         "serverRoot": true,
-        "fileRoot": "uploads/",
+        "fileRoot": "storage/app/public/uploads/media/",
         "relPath": false,
         "logger": false,
         "capabilities": ["select", "download", "rename", "move", "delete", "replace"],

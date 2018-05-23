@@ -13,7 +13,7 @@ class Subscriber extends Model
 
     protected $table = 'subscribers';
 
-    protected $fillable = ['language_id', 'email', 'name', 'verification', 'block'];
+    protected $fillable = ['email', 'name', 'verification', 'block'];
 
     public static function createSubscriber(Request $request){
         $sub = self::where('email', $request->input('email'))->first();
@@ -34,11 +34,8 @@ class Subscriber extends Model
         $sub->update();
     }
 
-    public static function filtered($locale=0, $email=false){
-        return self::where(function ($query) use ($locale){
-            if($locale != 0){
-                $query->where('language_id', $locale);
-            }
+    public static function filtered($email=false){
+        return self::where(function ($query){
         })->where(function ($query) use ($email){
             if($email){
                 $query->where('email', 'LIKE', '%' . $email . '%');
@@ -56,10 +53,6 @@ class Subscriber extends Model
             }
         }
         return true;
-    }
-
-    public function language(){
-        return $this->belongsTo(Language::class);
     }
 
 }

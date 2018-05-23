@@ -44,7 +44,7 @@
                                         {{ $p->id }}
                                     </div>
                                     <div class="col-md-4 vcenter">
-                                        {{ $p->{'title:hr'} }}
+                                        {{ $p->title }}
                                     </div>
                                     <div class="col-md-2">
                                         @if($p->expanded) Da @else Ne @endif

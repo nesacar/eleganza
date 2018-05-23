@@ -31,18 +31,13 @@ class CategoriesController extends Controller
     public function index()
     {
         $slug = 'categories';
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
         Session::get('category_id')? $category_id = Session::get('category_id') : $category_id = 0;
         if($category_id == 0){
-            $categories = Category::orderby('order', 'ASC')->paginate(Category::$list_limit);
+            $categories = Category::orderby('id', 'DESC')->paginate(Category::$list_limit);
         }else{
-            $categories = Category::where('parent', $category_id)->orderby('order', 'ASC')->paginate(Category::$list_limit);
+            $categories = Category::where('parent', $category_id)->orderby('id', 'DESC')->paginate(Category::$list_limit);
         }
-        $cats = Category::join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('categories.level', '<', 4)->where('categories.publish', 1)->where('category_translations.locale', app()->getLocale())
-            ->orderBy('categories.order', 'ASC')
-            ->pluck('category_translations.title', 'categories.id')->prepend('Sve kategorije', 0);
+        $cats = Category::where('level', '<', 4)->where('publish', 1)->orderBy('order', 'ASC')->pluck('title', 'id')->prepend('Sve kategorije', 0);
         return view('admin.categories.index', compact('slug', 'categories', 'cats', 'category_id'));
     }
 
@@ -54,19 +49,13 @@ class CategoriesController extends Controller
     public function create()
     {
         $slug = 'categories';
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
         $catids = [];
         $cats = Category::orderby('order', 'ASC')->get();
-        $c = Category::join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('categories.publish', 1)->where('categories.level', '<', 3)
-            ->pluck('category_translations.title', 'categories.id')->toArray();
+        $c = Category::where('publish', 1)->where('level', '<', 3)->pluck('title', 'id')->toArray();
         if(count($c)){
             $catids = $c;
         }
-        $catids;
-        $brands = Brand::join('brand_translations', 'brands.id', '=', 'brand_translations.brand_id')
-            ->where('brands.publish', 1)->pluck('brand_translations.title', 'brands.id')->prepend('Bez brenda...', 0);
+        $brands = Brand::where('publish', 1)->pluck('title', 'brands.id')->prepend('Bez brenda...', 0);
         return view('admin.categories.create', compact('slug', 'parents', 'catids', 'cats', 'brands'));
     }
 
@@ -78,24 +67,15 @@ class CategoriesController extends Controller
      */
     public function store(CreateCategoriesRequest $request)
     {
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
-        $category = Category::create($request->all());
-        $category->title = $request->input('title');
+        $category = Category::create($request->except('image'));
         $category->slug = str_slug($request->input('title'));
-        $category->desc = $request->input('desc');
-        $request->input('publish')? $category->publish = 1 : $category->publish = 0;
-        $request->input('parent')? $category->parent = $request->input('parent') : $category->parent = 0;
-        $request->input('level')? $category->parent = $request->input('level') : $category->level = 1;
-
-        if($request->hasFile('image')){
-            $imageName = $category->slug . '-' . $category->id . '.' . $request->file('image')->getClientOriginalExtension();
-            $imagePath = 'images/categories/featured/'.$imageName;
-            $request->file('image')->move(base_path() . '/public/images/categories/featured/', $imageName);
-            $category->image = $imagePath;
-        }
-
+        $category->publish = request('publish')?: 0;
+        $category->parent = request('parent')?: 0;
+        $category->parent = request('level')?: 1;
         $category->update();
+
+        $category->update(['image' => $category->storeImage()]);
+
         return redirect('admin/categories')->with('done', 'Kategorija je kreirana.');
     }
 
@@ -118,15 +98,10 @@ class CategoriesController extends Controller
      */
     public function edit(Category $category)
     {
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
         $slug = 'categories';
-        $cats = Category::join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('categories.publish', 1)->pluck('category_translations.title', 'categories.id')->prepend('Bez kategorije...', 0);
+        $cats = Category::where('publish', 1)->pluck('title', 'id')->prepend('Bez kategorije...', 0);
         $catids = array($category->parent);
-        $languages = Language::where('publish', 1)->orderBy('order', 'ASC')->get();
-        $brands = Brand::join('brand_translations', 'brands.id', '=', 'brand_translations.brand_id')
-            ->where('brands.publish', 1)->pluck('brand_translations.title', 'brands.id')->prepend('Bez brenda...', 0);
+        $brands = Brand::where('publish', 1)->pluck('title', 'brands.id')->prepend('Bez brenda...', 0);
         return view('admin.categories.edit', compact('slug', 'category', 'parents', 'languages', 'cats', 'catids', 'brands'));
     }
 
@@ -137,41 +112,15 @@ class CategoriesController extends Controller
      * @param  \App\PCategory  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryLangRequest $request, Category $category)
     {
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
-        $category->brand_id = $request->input('brand_id');
-        $category->update($request->all());
-        $request->input('publish')? $category->publish = 1 : $category->publish = 0;
-
-        if($request->hasFile('image')){
-            $imageName = $category->slug . '-' . $category->id . '.' . $request->file('image')->getClientOriginalExtension();
-            $imagePath = 'images/categories/featured/'.$imageName;
-            $request->file('image')->move(base_path() . '/public/images/categories/featured/', $imageName);
-            $category->image = $imagePath;
-        }
-
+        $category->update(request()->except('image'));
+        $category->publish = request('publish')?: 0;
         $category->update();
 
+        $category->update(['image' => $category->storeImage()]);
+
         return redirect('admin/categories/'.$category->id.'/edit')->with('done', 'Kategorija je izmenjeno');
-    }
-
-    public function updateLang(UpdateCategoryLangRequest $request, $id)
-    {
-        $primary = Language::getPrimary();
-        $request->input('locale')? $locale = $request->input('locale') : $locale = $primary->locale;
-        app()->setLocale($locale);
-        $cat = Category::find($id);
-
-        if(isset($cat)){
-            $cat->title = $request->input('title');
-            $cat->slug = str_slug($request->input('title'));
-            $cat->desc = $request->input('desc');
-        }
-        $cat->update();
-
-        return redirect('admin/categories/'.$id.'/edit')->with('done', 'Kategorija je izmenjena.');
     }
 
     /**
@@ -189,7 +138,7 @@ class CategoriesController extends Controller
     {
         if(\Auth::user()->role >= 2){
             $category = Category::find($id);
-            File::delete($category->image);
+            if($category->image) File::delete($category->image);
             $category->delete();
             return redirect('admin/categories')->with('done', 'Kategorija je obrisana.');
         }else{

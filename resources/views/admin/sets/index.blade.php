@@ -41,7 +41,7 @@
                                         {{ $s->id }}
                                     </div>
                                     <div class="col-md-3 vcenter">
-                                        {{ $s->{'title:hr'} }}
+                                        {{ $s->title }}
                                     </div>
                                     <div class="col-md-3">
                                         {!! Form::checkbox('publish', 1, $s->publish, ['id' => $s->id, 'name' => 'primary[]', 'class' => 'switch-state', 'data-on-color' => 'success', 'data-off-color' => 'danger', 'data-on-text' => 'DA', 'data-off-text' => 'NE']) !!}

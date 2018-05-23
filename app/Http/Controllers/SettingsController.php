@@ -20,8 +20,6 @@ class SettingsController extends Controller
     public function index()
     {
         $slug = 'settings';
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
         $settings = Setting::first();
         if(isset($settings)){
             return redirect('admin/settings/'.$settings->id.'/edit', compact('slug'));
@@ -37,8 +35,6 @@ class SettingsController extends Controller
      */
     public function create()
     {
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
         $slug = 'settings';
         $settings = Setting::first();
         if(count($settings)){
@@ -56,8 +52,7 @@ class SettingsController extends Controller
      */
     public function store(Request $request)
     {
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
+
         $setting = Setting::create($request->all());
         $request->input('blog')? $setting->blog = 1 : $setting->blog = 0;
         $request->input('shop')? $setting->shop = 1 : $setting->shop = 0;
@@ -88,9 +83,7 @@ class SettingsController extends Controller
     public function edit(Setting $setting)
     {
         $slug = 'settings';
-        $langs = Language::where('publish', 1)->orderBy('order', 'ASC')->pluck('fullname', 'id');
-        $languages = Language::where('publish', 1)->orderBy('order', 'ASC')->get();
-        return view('admin.settings.edit', compact('setting', 'slug', 'langs', 'languages'));
+        return view('admin.settings.edit', compact('setting', 'slug'));
     }
 
     /**
@@ -102,10 +95,7 @@ class SettingsController extends Controller
      */
     public function update(Request $request, Setting $setting)
     {
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
         $setting->update($request->all());
-        $setting->language_id = $request->input('language_id');
         $request->input('blog')? $setting->blog = 1 : $setting->blog = 0;
         $request->input('shop')? $setting->shop = 1 : $setting->shop = 0;
         $request->input('colorDependence')? $setting->colorDependence = 1 : $setting->colorDependence = 0;
@@ -116,27 +106,6 @@ class SettingsController extends Controller
         return redirect('admin/settings/'.$setting->id.'/edit')->with('done', 'Podešavanja su izmenjena.');
     }
 
-    public function updateLang(Request $request, $id)
-    {
-        $primary = Language::getPrimary();
-        $request->input('locale')? $locale = $request->input('locale') : $locale = $primary->locale;
-        app()->setLocale($locale);
-        $settings = Setting::find($id);
-        if($settings){
-            $settings->title = $request->input('title');
-            $settings->keywords = $request->input('keywords');
-            $settings->desc = $request->input('desc');
-            $settings->footer = $request->input('footer');
-            $settings->update();
-
-            $settings->translate($locale)->title = $request->input('title');
-            $settings->translate($locale)->keywords = $request->input('keywords');
-            $settings->translate($locale)->desc = $request->input('desc');
-            $settings->translate($locale)->footer = $request->input('footer');
-            $settings->update();
-        }
-        return redirect('admin/settings/'.$settings->id.'/edit')->with('done', 'Podešavanja su izmenjena');
-    }
 
     /**
      * Remove the specified resource from storage.

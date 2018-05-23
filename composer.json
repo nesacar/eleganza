@@ -10,7 +10,6 @@
         "barryvdh/laravel-cors": "^0.10.0",
         "codezero/cookie": "^1.0",
         "devfactory/imagecache": "^3.0",
-        "dimsav/laravel-translatable": "^8.0",
         "fideloper/proxy": "~3.3",
         "gloudemans/shoppingcart": "^2.5",
         "illuminate/html": "^5.0",

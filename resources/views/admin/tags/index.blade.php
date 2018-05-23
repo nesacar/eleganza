@@ -32,7 +32,7 @@
                             @foreach($tags as $t)
                                 <div class="row">
                                     <div class="col-sm-6 vcenter">
-                                        {{ $t->{'title:sr'} }}
+                                        {{ $t->title }}
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="btn-group pull-right" role="group" aria-label="...">

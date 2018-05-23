@@ -168,7 +168,6 @@ return [
          * Package Service Providers...
          */
         Laravel\Tinker\TinkerServiceProvider::class,
-        Dimsav\Translatable\TranslatableServiceProvider::class,
         Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         CodeZero\Cookie\LaravelCookieServiceProvider::class,
@@ -180,6 +179,7 @@ return [
         App\Providers\ViewComposerServiseProvider::class,
         Devfactory\Imagecache\ImagecacheServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -246,6 +246,7 @@ return [
         'Imagecache' => Devfactory\Imagecache\Facades\ImagecacheFacade::class,
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'Imagecache'  => Devfactory\Imagecache\Facades\ImagecacheFacade::class,
     ],
 
 ];

@@ -32,7 +32,7 @@
             @foreach($related as $item)
                 <div class="e-col e-col--3">
                     <div class=e-blog>
-                        <a href={{ \App\Post::getPostLink($item) }}>
+                        <a href={{ $item->getLink() }}>
                             <div class="e-blog__thumb e-image e-image--43">
                                 {!! HTML::Image($item->image, $item->title) !!}
                                 <div class="e-blog__title e-blog__title--small">

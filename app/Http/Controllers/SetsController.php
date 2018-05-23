@@ -27,9 +27,7 @@ class SetsController extends Controller {
 	public function index()
 	{
 		$slug = 'sets';
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
-		$sets = Set::all();
+		$sets = Set::paginate(50);
 		return view('admin.sets.index', compact('sets','slug'));
 	}
 
@@ -41,10 +39,6 @@ class SetsController extends Controller {
 	public function create()
 	{
 		$slug = 'sets';
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
-		//$asortimen = Asortiman::lists('title', 'id');
-		//$brends = Brand::lists('title', 'id');
 		return view('admin.sets.create', compact('slug'));
 	}
 
@@ -55,8 +49,6 @@ class SetsController extends Controller {
 	 */
 	public function store(Requests\CreateBrandRequest $request)
 	{
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
 	    $set = new Set();
 	    $set->title = $request->input('title');
 	    $set->slug = str_slug($request->input('title'));
@@ -86,8 +78,7 @@ class SetsController extends Controller {
 	{
 		$slug = 'sets';
 		$set = Set::find($id);
-        $languages = Language::where('publish', 1)->orderBy('order', 'ASC')->get();
-		return view('admin.sets.edit', compact('slug', 'set', 'languages'));
+		return view('admin.sets.edit', compact('slug', 'set'));
 	}
 
 	/**
@@ -98,25 +89,13 @@ class SetsController extends Controller {
 	 */
 	public function update(Request $request, $id)
 	{
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
 		$set = Set::find($id);
-        $request->input('publish')? $set->publish = 1 : $set->publish = 0;
+		$set->update(request()->all());
+        $set->slug = str_slug(request('title'));
+        $set->publish = $request->input('publish')?: 0;
         $set->update();
         return redirect('admin/sets/'.$set->id.'/edit')->with('save', 'Set je izmenjen.');
 	}
-
-    public function updateLang(Requests\CreateBrandRequest $request, $id)
-    {
-        $primary = Language::getPrimary();
-        $request->input('locale')? $locale = $request->input('locale') : $locale = $primary->locale;
-        app()->setLocale($locale);
-        $set = Set::find($id);
-        $set->title = $request->input('title');
-        $set->slug = str_slug($request->input('title'));
-        $set->update();
-        return redirect('admin/sets/'.$set->id.'/edit')->with('done', 'Set je izmenjen');
-    }
 
 	/**
 	 * Remove the specified resource from storage.

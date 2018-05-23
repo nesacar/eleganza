@@ -26,10 +26,7 @@ class TagsController extends Controller
     public function index()
     {
         $slug = 'posts';
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
-        $tags = Tag::select('tags.id', 'tag_translations.title')->join('tag_translations', 'tags.id', '=', 'tag_translations.tag_id')
-            ->where('tag_translations.locale', 'sr')->orderBy('tag_translations.title', 'ASC')->paginate(self::$num);
+        $tags = Tag::select('id', 'title')->orderBy('title', 'ASC')->paginate(self::$num);
         $sum = Tag::count();
         return view('admin.tags.index',compact('tags', 'slug', 'sum'));
     }
@@ -55,8 +52,6 @@ class TagsController extends Controller
      */
     public function store(EditTagRequest $request)
     {
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
         $tag = Tag::create($request->all());
         $tag->slug = Str::slug($request->input('title'));
         $tag->update();
@@ -72,8 +67,7 @@ class TagsController extends Controller
     public function edit(Tag $tag)
     {
         $slug = 'posts';
-        $languages = Language::where('publish', 1)->orderBy('order', 'ASC')->get();
-        return view('admin.tags.edit', compact('tag', 'slug', 'languages'));
+        return view('admin.tags.edit', compact('tag', 'slug'));
     }
 
     /**
@@ -85,23 +79,10 @@ class TagsController extends Controller
      */
     public function update(EditTagRequest $request, Tag $tag)
     {
-        $primary = Language::getPrimary();
-        app()->setLocale($primary->locale);
-        $tag->slug = Str::slug($request->input('name'));
         $tag->update($request->all());
-        return redirect('admin/tags');
-    }
-
-    public function updateLang($id, EditTagRequest $request)
-    {
-        $primary = Language::getPrimary();
-        $request->input('locale')? $locale = $request->input('locale') : $locale = $primary->locale;
-        app()->setLocale($locale);
-        $tag = Tag::findOrFail($id);
-        $tag->title = $request->input('title');
-        $tag->slug = Str::slug($request->input('title'));
+        $tag->slug = Str::slug($request->input('name'));
         $tag->update();
-        return redirect('admin/tags/'.$tag->id.'/edit')->with('done', 'Tag je izmenjen');
+        return redirect('admin/tags');
     }
 
     /**
@@ -114,7 +95,6 @@ class TagsController extends Controller
     {
         $tag = Tag::find($id);
         $tag->delete();
-        TagTranslation::where('tag_id', $tag->id)->delete();
         return redirect('admin/tags');
     }
 }
