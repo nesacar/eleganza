@@ -2,12 +2,15 @@
 
 namespace App;
 
+use App\Traits\UploudableImageTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use File;
 
 class InstaShop extends Model
 {
+    use UploudableImageTrait;
+
     protected $fillable = ['title', 'image', 'desc', 'order', 'featured', 'publish'];
 
     /**
@@ -21,17 +24,6 @@ class InstaShop extends Model
         static::addGlobalScope('coordinate', function (Builder $builder) {
             $builder->with('coordinate');
         });
-    }
-
-    public function storeImage(){
-        if($image = request()->file('image')){
-            $file_path = 'storage/' . $image->storeAs(
-                'insta-shops/',
-                str_slug($this->title) . '-' . $this->id . '.' . $image->getClientOriginalExtension(),
-                'public'
-                );
-            $this->update(['image' => $file_path]);
-        }
     }
 
     public function saveCoordinates(){

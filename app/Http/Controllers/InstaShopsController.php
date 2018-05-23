@@ -42,8 +42,8 @@ class InstaShopsController extends Controller
      */
     public function store(CreateInstaShopRequest $request)
     {
-        $instaShop = InstaShop::create(request()->all());
-        $instaShop->storeImage();
+        $instaShop = InstaShop::create(request()->except('image'));
+        $instaShop->update(['image' => $instaShop->storeImage()]);
         return view('admin.instaShops.edit', compact('slug', 'instaShop'));
     }
 
@@ -80,12 +80,12 @@ class InstaShopsController extends Controller
      */
     public function update(UpdateInstaShopRequest $request, InstaShop $instaShop)
     {
-        $instaShop->update(request()->all());
+        $instaShop->update(request()->except('image'));
         $instaShop->featured = request('featured')?: false;
         $instaShop->publish = request('publish')?: false;
         $instaShop->update();
 
-        $instaShop->storeImage();
+        $instaShop->update(['image' => $instaShop->storeImage()]);
         $instaShop->saveCoordinates();
 
         return redirect('admin/insta-shops/' . $instaShop->id . '/edit');
