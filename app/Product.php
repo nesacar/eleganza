@@ -35,6 +35,8 @@ class Product extends Model {
 
     protected static $searchable = ['filters', 'minPrice', 'maxPrice', 'minWater', 'maxWater', 'minPromer', 'MaxPromer'];
 
+    protected $appends = ['fullImagePath'];
+
     /**
      * The "booting" method of the model.
      *
@@ -1060,6 +1062,11 @@ class Product extends Model {
         }else{
             return false;
         }
+    }
+
+
+    public function getFullImagePathAttribute(){
+        return url($this->image);
     }
 
     public function brand(){

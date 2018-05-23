@@ -13,6 +13,8 @@ class InstaShop extends Model
 
     protected $fillable = ['title', 'image', 'desc', 'order', 'featured', 'publish'];
 
+    protected $appends = ['fullImagePath'];
+
     /**
      * The "booting" method of the model.
      *
@@ -45,6 +47,10 @@ class InstaShop extends Model
                 ]);
             }
         }
+    }
+
+    public function getFullImagePathAttribute(){
+        return url($this->image);
     }
 
     public function coordinate(){
