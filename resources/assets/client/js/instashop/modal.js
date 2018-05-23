@@ -111,7 +111,7 @@ function _render() {
 function _renderImage() {
   const dots = state.data.coordinate;
 
-  $image.style.backgroundImage = `url(${state.data.image})`;
+  $image.style.backgroundImage = `url(${state.data.fullImagePath})`;
   $image.innerHTML = dots.reduce((html, dot) => {
     return html + `
       <a class="nv-pin"
@@ -139,7 +139,7 @@ function _renderProducts() {
       <div class="nv-item">
         <a href="#product-link">
           <figure class="nv-image nv-image--34">
-            <img src="/eleganza/public/${p.image}">
+            <img src="${p.fullImagePath}">
           </figure>
         </a>
         <div class="nv-item_details">

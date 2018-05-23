@@ -16823,7 +16823,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 var state = {
   products: window.products,
-  currentIndex: 0
+  currentID: 0
 };
 
 var $images = void 0;
@@ -16836,34 +16836,25 @@ function init() {
   $images = document.querySelectorAll('.instashop-thumbnail');
   $images.forEach(function ($image, index) {
     $image.addEventListener('click', function (evt) {
+      var id = $image.dataset.id;
       // TODO: Use ID instead of index
-      _setCurrentIndex(index);
+      _setCurrentID(parseInt(id));
     });
   });
   // Tmp
   __WEBPACK_IMPORTED_MODULE_0__modal__["a" /* default */].init({
-    data: state.products[state.currentIndex]
+    data: state.products[state.currentID]
   });
 }
 
 /**
- * Sets the current index of the image.
+ * Sets the current id of the image.
  *
- * @param {Number|String} i - Index of the image to render.
+ * @param {Number|String} id - ID of the image to render.
  */
-function _setCurrentIndex(i) {
-  var l = state.products.length;
-  var index = void 0;
-
-  // Keep it looping
-  if (i >= l) {
-    index = 0;
-  } else if (i < 0) {
-    index = l - 1;
-  }
-
+function _setCurrentID(id) {
   _setState({
-    currentIndex: index
+    currentID: id
   });
 }
 
@@ -16871,7 +16862,10 @@ function _setCurrentIndex(i) {
  * Calls show method on modal.
  */
 function _render() {
-  __WEBPACK_IMPORTED_MODULE_0__modal__["a" /* default */].show(state.products[state.currentIndex]);
+  var data = state.products.find(function (el) {
+    return el.id === state.currentID;
+  });
+  __WEBPACK_IMPORTED_MODULE_0__modal__["a" /* default */].show(data);
 }
 
 /**
@@ -17011,7 +17005,7 @@ function _render() {
 function _renderImage() {
   var dots = state.data.coordinate;
 
-  $image.style.backgroundImage = 'url(' + state.data.image + ')';
+  $image.style.backgroundImage = 'url(' + state.data.fullImagePath + ')';
   $image.innerHTML = dots.reduce(function (html, dot) {
     return html + ('\n      <a class="nv-pin"\n        style="top: ' + dot.y + '%; left: ' + dot.x + '%;"\n        href="#product-link">\n        <span class="nv-pin_container elevation--z2">\n          <span>' + dot.order + '</span>\n          <span class="nv-pin_tooltip elevation--z2">\n            prikazi u web trgovini\n          </span>\n        </span>\n      </a>\n    ');
   }, '');
@@ -17024,7 +17018,7 @@ function _renderProducts() {
     var p = dot.product;
 
     // TODO: Figure image paths...
-    return html + ('\n      <div class="nv-item">\n        <a href="#product-link">\n          <figure class="nv-image nv-image--34">\n            <img src="/eleganza/public/' + p.image + '">\n          </figure>\n        </a>\n        <div class="nv-item_details">\n          <h2 class="nv-item_name nv-spacer--1">\n            <a href="#product-link">' + p.title + '</a>\n          </h2>\n          <div class="nv-item_price nv-spacer--1">' + p.price_small + '</div>\n          <button class="nv-btn">u kosaricu</button>\n        </div>\n      </div>    \n    ');
+    return html + ('\n      <div class="nv-item">\n        <a href="#product-link">\n          <figure class="nv-image nv-image--34">\n            <img src="' + p.fullImagePath + '">\n          </figure>\n        </a>\n        <div class="nv-item_details">\n          <h2 class="nv-item_name nv-spacer--1">\n            <a href="#product-link">' + p.title + '</a>\n          </h2>\n          <div class="nv-item_price nv-spacer--1">' + p.price_small + '</div>\n          <button class="nv-btn">u kosaricu</button>\n        </div>\n      </div>    \n    ');
   }, '');
 }
 

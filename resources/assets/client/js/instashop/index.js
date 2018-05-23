@@ -2,7 +2,7 @@ import modal from './modal';
 
 let state = {
   products: window.products,
-  currentIndex: 0,
+  currentID: 0,
 };
 
 let $images;
@@ -15,34 +15,25 @@ function init() {
   $images = document.querySelectorAll('.instashop-thumbnail');
   $images.forEach(($image, index) => {
     $image.addEventListener('click', (evt) => {
+      const id = $image.dataset.id;
       // TODO: Use ID instead of index
-      _setCurrentIndex(index);
+      _setCurrentID(parseInt(id));
     });
   });
   // Tmp
   modal.init({
-    data: state.products[state.currentIndex],
+    data: state.products[state.currentID],
   });
 }
 
 /**
- * Sets the current index of the image.
+ * Sets the current id of the image.
  *
- * @param {Number|String} i - Index of the image to render.
+ * @param {Number|String} id - ID of the image to render.
  */
-function _setCurrentIndex(i) {
-  const l = state.products.length;
-  let index;
-
-  // Keep it looping
-  if (i >= l) {
-    index = 0;
-  } else if (i < 0) {
-    index = l - 1;
-  }
-
+function _setCurrentID(id) {
   _setState({
-    currentIndex: index,
+    currentID: id,
   });
 }
 
@@ -50,7 +41,10 @@ function _setCurrentIndex(i) {
  * Calls show method on modal.
  */
 function _render() {
-  modal.show(state.products[state.currentIndex]);
+  const data = state.products.find((el) => {
+    return el.id === state.currentID;
+  })
+  modal.show(data);
 }
 
 /**
