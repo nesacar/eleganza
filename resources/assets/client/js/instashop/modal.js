@@ -98,7 +98,8 @@ function _render() {
 
   // Destroy slider.
   if (slider) {
-    let paggination = $modal.querySelector('.siema-bullet');
+    let paggination = $modal.querySelector('.siema-pagination');
+    console.log(paggination)
     paggination.parentElement.removeChild(paggination)
     slider.destroy();
   }

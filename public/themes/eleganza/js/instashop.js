@@ -16992,7 +16992,8 @@ function _render() {
 
   // Destroy slider.
   if (slider) {
-    var paggination = $modal.querySelector('.siema-bullet');
+    var paggination = $modal.querySelector('.siema-pagination');
+    console.log(paggination);
     paggination.parentElement.removeChild(paggination);
     slider.destroy();
   }
