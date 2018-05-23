@@ -25,87 +25,71 @@
                 </div>
                 <div class="panel-body">
 
-                    @if(count($languages)>0)
-                        <div class="panel-body">
-                            <!-- Nav tabs -->
-                            <ul class="nav nav-tabs" role="tablist">
-                                @php $br=0; @endphp
-                                @foreach($languages as $language)
-                                    @php $br++; @endphp
-                                    <li role="presentation" @if($br==1) class="active" @endif><a href="#{{$language->locale}}" aria-controls="profile" role="tab" data-toggle="tab">{{$language->fullname}}</a></li>
-                                @endforeach
-                            </ul>
-                            <div class="tab-content">
-                                @php $br=0; @endphp
-                                @foreach($languages as $language)
-                                    @php $br++; @endphp
-                                    <div role="tabpanel" class="tab-pane @if($br==1) active @endif" id="{{$language->locale}}">
-                                        {!! Form::open(['action' => ['MenusController@editLinkUpdate', $link->id], 'method' => 'POST', 'class' => 'form-horizontal', 'files' => true]) !!}
-                                        {!! Form::hidden('locale', $language->locale) !!}
-                                        <div class="form-group">
-                                            <label for="title" class="col-sm-2 control-label">Naziv</label>
-                                            <div class="col-sm-10">
-                                                {!! Form::text('title', $link->title, array('class' => 'form-control', 'id' => 'title')) !!}
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="link" class="col-sm-2 control-label">Link</label>
-                                            <div class="col-sm-10">
-                                                {!! Form::text('link', $link->link, array('class' => 'form-control', 'id' => 'prefix')) !!}
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="sufix" class="col-sm-2 control-label">Sufix</label>
-                                            <div class="col-sm-10">
-                                                {!! Form::text('sufix', $link->sufix, array('class' => 'form-control', 'id' => 'sufix')) !!}
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="desc" class="col-sm-2 control-label">Opis</label>
-                                            <div class="col-sm-10">
-                                                {!! Form::text('desc', $link->desc, array('class' => 'form-control', 'id' => 'desc')) !!}
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            @if($link->image != null && $link->image != '')
-                                                <div class="col-sm-2"></div>
-                                                <div class="col-sm-10">
-                                                    <img src="{{ url($link->image) }}" alt="{{ $link->title }}" style="width: 100%; height: auto; margin-bottom: 10px">
-                                                </div>
-                                                <label for="image" class="col-sm-2 control-label">Slika</label>
-                                                <div class="col-sm-10">
-                                                    {!! Form::file('image') !!}
-                                                </div>
-                                            @else
-                                                <label for="image" class="col-sm-2 control-label">Slika</label>
-                                                <div class="col-sm-10">
-                                                    {!! Form::file('image') !!}
-                                                </div>
-                                            @endif
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="tip" class="col-sm-2 control-label">Tip</label>
-                                            <div class="col-sm-10">
-                                                @if($link->type == 1)
-                                                    {!! Form::text('tip', 'Kategorija prodavnice', array('class' => 'form-control', 'id' => 'tip', 'disabled' => true)) !!}
-                                                @elseif($link->type == 2)
-                                                    {!! Form::text('tip', 'Kategorija bloga', array('class' => 'form-control', 'id' => 'tip', 'disabled' => true)) !!}
-                                                @else
-                                                    {!! Form::text('tip', 'Custom link', array('class' => 'form-control', 'id' => 'tip', 'disabled' => true)) !!}
-                                                @endif
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="col-sm-12">
-                                                <input type="submit" class="btn btn-success pull-right" value="Izmeni">
-                                            </div>
-                                        </div>
-                                        {!! Form::close() !!}
-                                    </div><!-- #{{$language->locale}} -->
-                                @endforeach
+
+
+                            {!! Form::open(['action' => ['MenusController@editLinkUpdate', $link->id], 'method' => 'POST', 'class' => 'form-horizontal', 'files' => true]) !!}
+
+                            <div class="form-group">
+                                <label for="title" class="col-sm-2 control-label">Naziv</label>
+                                <div class="col-sm-10">
+                                    {!! Form::text('title', $link->title, array('class' => 'form-control', 'id' => 'title')) !!}
+                                </div>
                             </div>
-                        </div>
-                    @endif
+                            <div class="form-group">
+                                <label for="link" class="col-sm-2 control-label">Link</label>
+                                <div class="col-sm-10">
+                                    {!! Form::text('link', $link->link, array('class' => 'form-control', 'id' => 'prefix')) !!}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="sufix" class="col-sm-2 control-label">Sufix</label>
+                                <div class="col-sm-10">
+                                    {!! Form::text('sufix', $link->sufix, array('class' => 'form-control', 'id' => 'sufix')) !!}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="desc" class="col-sm-2 control-label">Opis</label>
+                                <div class="col-sm-10">
+                                    {!! Form::text('desc', $link->desc, array('class' => 'form-control', 'id' => 'desc')) !!}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @if($link->image != null && $link->image != '')
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-10">
+                                        <img src="{{ url($link->image) }}" alt="{{ $link->title }}" style="margin-bottom: 10px">
+                                    </div>
+                                    <label for="image" class="col-sm-2 control-label">Slika</label>
+                                    <div class="col-sm-10">
+                                        {!! Form::file('image') !!}
+                                    </div>
+                                @else
+                                    <label for="image" class="col-sm-2 control-label">Slika</label>
+                                    <div class="col-sm-10">
+                                        {!! Form::file('image') !!}
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="tip" class="col-sm-2 control-label">Tip</label>
+                                <div class="col-sm-10">
+                                    @if($link->type == 1)
+                                        {!! Form::text('tip', 'Kategorija prodavnice', array('class' => 'form-control', 'id' => 'tip', 'disabled' => true)) !!}
+                                    @elseif($link->type == 2)
+                                        {!! Form::text('tip', 'Kategorija bloga', array('class' => 'form-control', 'id' => 'tip', 'disabled' => true)) !!}
+                                    @else
+                                        {!! Form::text('tip', 'Custom link', array('class' => 'form-control', 'id' => 'tip', 'disabled' => true)) !!}
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <input type="submit" class="btn btn-success pull-right" value="Izmeni">
+                                </div>
+                            </div>
+                            {!! Form::close() !!}
+
+
                 </div>
             </div>
         </div><!-- .col-md-12 -->

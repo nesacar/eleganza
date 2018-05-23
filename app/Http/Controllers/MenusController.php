@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Http\Requests\CreateMenuImageRequest;
 use App\Http\Requests\CreateMenuRequest;
-use App\Language;
 use App\Menu;
 use App\MenuImage;
 use App\MenuLink;
@@ -247,8 +246,7 @@ class MenusController extends Controller
             $properties = Property::where('publish', 1)->orderBy('order', ' asc')->get();
             $ids = $link->attribute->pluck('id')->toArray();
         }
-        $languages = Language::where('publish', 1)->orderBy('order', 'ASC')->get();
-        return view('admin.menus.editLink', compact('slug', 'menu', 'link', 'ids', 'properties', 'languages'));
+        return view('admin.menus.editLink', compact('slug', 'menu', 'link', 'ids', 'properties'));
     }
 
     public function editLinkUpdate(Request $request, $id){
@@ -321,8 +319,7 @@ class MenusController extends Controller
         $slug = 'settings';
         $image = MenuImage::find($id);
         $menu = Menu::find($image->menu_id);
-        $languages = Language::where('publish', 1)->orderBy('order', 'ASC')->get();
-        return view('admin.menus.editImage', compact('slug', 'menu', 'languages', 'image'));
+        return view('admin.menus.editImage', compact('slug', 'menu', 'image'));
     }
 
     public function updateImage(Request $request, $id){
