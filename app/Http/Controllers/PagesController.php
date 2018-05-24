@@ -69,7 +69,7 @@ class PagesController extends Controller
         $posts = Post::where('publish', 1)->where('home', 1)->where('publish_at', '<=', (new \Carbon\Carbon()))->orderBy('publish_at', 'DESC')->take(3)->get();
         $bestSellers = Group::find(1);
         $products = $bestSellers? $bestSellers->product()->where('publish', 1)->get() : [];
-        return $instaShops = InstaShop::where('featured', 1)->take(6)->orderBy('order', 'ASC')->get();
+        $instaShops = InstaShop::where('featured', 1)->take(6)->orderBy('order', 'ASC')->get();
         return view('themes.'.$theme->slug.'.pages.home', compact('settings', 'theme', 'hero', 'hero2', 'home4', 'home1', 'home12', 'posts', 'products', 'instaShops'));
     }
 
