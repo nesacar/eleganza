@@ -35,7 +35,7 @@ class Product extends Model {
 
     protected static $searchable = ['filters', 'minPrice', 'maxPrice', 'minWater', 'maxWater', 'minPromer', 'MaxPromer'];
 
-    protected $appends = ['fullImagePath'];
+    protected $appends = ['fullImagePath', 'link'];
 
     /**
      * The "booting" method of the model.
@@ -77,6 +77,10 @@ class Product extends Model {
             $str .= $this->slug . '/' . $this->id;
             return url($str);
         }
+    }
+
+    public function getLinkAttribute(){
+        return $this->getLink();
     }
 
     public static function getAtt($product_id, $category_id){
