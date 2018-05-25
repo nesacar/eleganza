@@ -16894,6 +16894,7 @@ function _setState(partialState) {
 
 
 // Constants.
+var ADD_ROUTE = 'http://localhost/eleganza/public/add-to-cart/';
 var ACTIVE_CLASS = 'active';
 var NO_SCROLL_CLASS = 'no-scroll';
 var DEFAULT_STATE = {
@@ -16910,6 +16911,7 @@ var $image = void 0;
 var $products = void 0;
 var $desc = void 0;
 var $date = void 0;
+var $btns = void 0;
 var slider = void 0;
 var state = void 0;
 
@@ -16978,6 +16980,8 @@ function _render() {
     // Then show the modal.
     $modal.classList.add(ACTIVE_CLASS);
     document.body.classList.add(NO_SCROLL_CLASS);
+
+    _addEventListeners();
     return;
   }
   // Hide modal.
@@ -16990,10 +16994,14 @@ function _render() {
   $desc.innerHTML = '';
   $date.innerHTML = '';
 
+  // Cleanup after buttons if there are any.
+  if ($btns) {
+    _removeEventListeners();
+  }
+
   // Destroy slider.
   if (slider) {
     var paggination = $modal.querySelector('.siema-pagination');
-    console.log(paggination);
     paggination.parentElement.removeChild(paggination);
     slider.destroy();
   }
@@ -17018,9 +17026,39 @@ function _renderProducts() {
   $products.innerHTML = dots.reduce(function (html, dot) {
     var p = dot.product;
 
-    // TODO: Figure image paths...
-    return html + ('\n      <div class="nv-item">\n        <a href="' + p.link + '">\n          <figure class="nv-image nv-image--34">\n            <img src="' + p.fullImagePath + '">\n          </figure>\n        </a>\n        <div class="nv-item_details">\n          <h2 class="nv-item_name nv-spacer--1">\n            <a href="#product-link">' + p.title + '</a>\n          </h2>\n          <div class="nv-item_price nv-spacer--1">' + p.price_small + '</div>\n          <button class="nv-btn">u kosaricu</button>\n        </div>\n      </div>    \n    ');
+    return html + ('\n      <div class="nv-item">\n        <a href="' + p.link + '">\n          <figure class="nv-image nv-image--34">\n            <img src="' + p.fullImagePath + '">\n          </figure>\n        </a>\n        <div class="nv-item_details">\n          <h2 class="nv-item_name nv-spacer--1">\n            <a href="#product-link">' + p.title + '</a>\n          </h2>\n          <div class="nv-item_price nv-spacer--1">' + p.price_small + '</div>\n          <button class="nv-btn js-nv-action-btn" data-id=' + p.id + '>u kosaricu</button>\n        </div>\n      </div>    \n    ');
   }, '');
+}
+
+/**
+ * Removes all event listeners from buttons.
+ */
+function _removeEventListeners() {
+  Array.from($btns).forEach(function ($btn) {
+    $btn.removeEventListener('click', _addToCart);
+  });
+  $btns = [];
+}
+
+/**
+ * Binds click events on buttons.
+ */
+function _addEventListeners() {
+  $btns = $products.querySelectorAll('.js-nv-action-btn');
+  Array.from($btns).forEach(function ($btn) {
+    $btn.addEventListener('click', _addToCart);
+  });
+}
+
+/**
+ * Add selected item to cart.
+ *
+ * @param {Event} evt 
+ */
+function _addToCart(evt) {
+  var id = evt.target.dataset.id;
+  // Do the post stuff...
+  console.log(id);
 }
 
 /**

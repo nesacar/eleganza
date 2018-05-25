@@ -2,6 +2,7 @@ import moment from 'moment';
 import Siema from '../components/siema';
 
 // Constants.
+const ADD_ROUTE = 'http://localhost/eleganza/public/add-to-cart/';
 const ACTIVE_CLASS = 'active';
 const NO_SCROLL_CLASS = 'no-scroll';
 const DEFAULT_STATE = {
@@ -18,6 +19,7 @@ let $image;
 let $products;
 let $desc;
 let $date;
+let $btns;
 let slider;
 let state;
 
@@ -84,6 +86,8 @@ function _render() {
     // Then show the modal.
     $modal.classList.add(ACTIVE_CLASS);
     document.body.classList.add(NO_SCROLL_CLASS);
+
+    _addEventListeners();
     return;
   }
   // Hide modal.
@@ -96,10 +100,14 @@ function _render() {
   $desc.innerHTML = '';
   $date.innerHTML = '';
 
+  // Cleanup after buttons if there are any.
+  if ($btns) {
+    _removeEventListeners();
+  }
+
   // Destroy slider.
   if (slider) {
     let paggination = $modal.querySelector('.siema-pagination');
-    console.log(paggination)
     paggination.parentElement.removeChild(paggination)
     slider.destroy();
   }
@@ -135,7 +143,6 @@ function _renderProducts() {
   $products.innerHTML = dots.reduce((html, dot) => {
     let p = dot.product;
 
-    // TODO: Figure image paths...
     return html + `
       <div class="nv-item">
         <a href="${p.link}">
@@ -148,11 +155,42 @@ function _renderProducts() {
             <a href="#product-link">${p.title}</a>
           </h2>
           <div class="nv-item_price nv-spacer--1">${p.price_small}</div>
-          <button class="nv-btn">u kosaricu</button>
+          <button class="nv-btn js-nv-action-btn" data-id=${p.id}>u kosaricu</button>
         </div>
       </div>    
     `;
   }, '');
+}
+
+/**
+ * Removes all event listeners from buttons.
+ */
+function _removeEventListeners() {
+  Array.from($btns).forEach(($btn) => {
+    $btn.removeEventListener('click', _addToCart);
+  });
+  $btns = [];
+}
+
+/**
+ * Binds click events on buttons.
+ */
+function _addEventListeners() {
+  $btns = $products.querySelectorAll('.js-nv-action-btn');
+  Array.from($btns).forEach(($btn) => {
+    $btn.addEventListener('click', _addToCart);
+  });
+}
+
+/**
+ * Add selected item to cart.
+ *
+ * @param {Event} evt 
+ */
+function _addToCart(evt) {
+  const id = evt.target.dataset.id;
+  // Do the post stuff...
+  console.log(id)
 }
 
 /**
