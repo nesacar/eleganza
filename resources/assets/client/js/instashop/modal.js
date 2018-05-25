@@ -117,7 +117,7 @@ function _renderImage() {
     return html + `
       <a class="nv-pin"
         style="top: ${dot.y}%; left: ${dot.x}%;"
-        href="#product-link">
+        href="${dot.product.link}">
         <span class="nv-pin_container elevation--z2">
           <span>${dot.order}</span>
           <span class="nv-pin_tooltip elevation--z2">
@@ -138,7 +138,7 @@ function _renderProducts() {
     // TODO: Figure image paths...
     return html + `
       <div class="nv-item">
-        <a href="#product-link">
+        <a href="${p.link}">
           <figure class="nv-image nv-image--34">
             <img src="${p.fullImagePath}">
           </figure>

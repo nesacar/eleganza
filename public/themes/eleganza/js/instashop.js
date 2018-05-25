@@ -17008,7 +17008,7 @@ function _renderImage() {
 
   $image.style.backgroundImage = 'url(' + state.data.fullImagePath + ')';
   $image.innerHTML = dots.reduce(function (html, dot) {
-    return html + ('\n      <a class="nv-pin"\n        style="top: ' + dot.y + '%; left: ' + dot.x + '%;"\n        href="#product-link">\n        <span class="nv-pin_container elevation--z2">\n          <span>' + dot.order + '</span>\n          <span class="nv-pin_tooltip elevation--z2">\n            prikazi u web trgovini\n          </span>\n        </span>\n      </a>\n    ');
+    return html + ('\n      <a class="nv-pin"\n        style="top: ' + dot.y + '%; left: ' + dot.x + '%;"\n        href="' + dot.product.link + '">\n        <span class="nv-pin_container elevation--z2">\n          <span>' + dot.order + '</span>\n          <span class="nv-pin_tooltip elevation--z2">\n            prikazi u web trgovini\n          </span>\n        </span>\n      </a>\n    ');
   }, '');
 }
 
@@ -17019,7 +17019,7 @@ function _renderProducts() {
     var p = dot.product;
 
     // TODO: Figure image paths...
-    return html + ('\n      <div class="nv-item">\n        <a href="#product-link">\n          <figure class="nv-image nv-image--34">\n            <img src="' + p.fullImagePath + '">\n          </figure>\n        </a>\n        <div class="nv-item_details">\n          <h2 class="nv-item_name nv-spacer--1">\n            <a href="#product-link">' + p.title + '</a>\n          </h2>\n          <div class="nv-item_price nv-spacer--1">' + p.price_small + '</div>\n          <button class="nv-btn">u kosaricu</button>\n        </div>\n      </div>    \n    ');
+    return html + ('\n      <div class="nv-item">\n        <a href="' + p.link + '">\n          <figure class="nv-image nv-image--34">\n            <img src="' + p.fullImagePath + '">\n          </figure>\n        </a>\n        <div class="nv-item_details">\n          <h2 class="nv-item_name nv-spacer--1">\n            <a href="#product-link">' + p.title + '</a>\n          </h2>\n          <div class="nv-item_price nv-spacer--1">' + p.price_small + '</div>\n          <button class="nv-btn">u kosaricu</button>\n        </div>\n      </div>    \n    ');
   }, '');
 }
 
