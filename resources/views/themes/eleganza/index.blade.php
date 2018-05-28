@@ -98,5 +98,10 @@
 
 @yield('footer_scripts')
 
+<script>
+  window._token = "{{ csrf_token() }}";
+  window._url = "{{ url('/') }}";
+</script>
+
 </body>
 </html>
