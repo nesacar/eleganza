@@ -527,14 +527,12 @@ class ProductsController extends Controller {
             //$reader->select(['iznos', 'poziv_na_broj'])->get();
             $reader->get();
         })->get();
-        //return $rows[0];
 
-        if(count($rows[0])>0){
+        if(count($rows)>0){
             $n=0; $o=0;
-            foreach($rows[0] as $row){
+            foreach($rows as $row){
                 if(!empty($row->sifra_artikla)){
                     $old = Product::where('code', $row->sifra_artikla)->first();
-                    app()->setLocale($row->locale);
                     if(!empty($old)){
                         $old->user_id = auth()->user()->id;
                         $old->set_id = $row->set_id;

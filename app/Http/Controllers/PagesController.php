@@ -1160,12 +1160,12 @@ class PagesController extends Controller
             \Cart::add(['id' => $product->id, 'name' => $product->title, 'qty' => 1, 'price' => $price]);
 
             return response([
-                'message' => 'done'
+                'message' => 'proizvod je dodat u košaricu'
             ], 200);
         }
         return response([
-            'message' => 'already exist'
-        ], 422);
+            'message' => 'proizvod je već u košarici'
+        ], 201);
     }
 
     public function addToCart($id){
@@ -1176,12 +1176,12 @@ class PagesController extends Controller
             \Cart::add(['id' => $product->id, 'name' => $product->title, 'qty' => 1, 'price' => $price]);
 
             return response([
-                'message' => 'done'
+                'message' => 'proizvod je dodat u košaricu'
             ], 200);
         }
         return response([
-            'message' => 'already exist'
-        ], 422);
+            'message' => 'proizvod je već u košarici'
+        ], 201);
     }
 
     public function removeFromCart($id){

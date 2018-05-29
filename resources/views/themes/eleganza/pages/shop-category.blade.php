@@ -87,7 +87,7 @@
                                 </ul>
                             </div>
                             <div class=product-item__info-box>
-                                <span class=product-item__brand>@if(isset($product->brand)) {{ $product->brand->getTitle() }} @endif</span>
+                                <span class=product-item__brand>@if(isset($product->brand)) {{ $product->brand->title }} @endif</span>
                                 <h2 class=product-item__name>{{ $product->title }}</h2>
                                 @if($product->discount != null && $product->discount > 0)
                                     <span class=product-item__price>{{ $product->price_outlet }}</span>
