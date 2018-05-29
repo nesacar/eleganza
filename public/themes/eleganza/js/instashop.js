@@ -19562,9 +19562,10 @@ function _postRequest(route, msg) {
   var _token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
   __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(route, { _token: _token }).then(function (res) {
-    __WEBPACK_IMPORTED_MODULE_1__components_toast__["a" /* Toast */].create(msg);
+    __WEBPACK_IMPORTED_MODULE_1__components_toast__["a" /* Toast */].create(res.data.message);
   }).catch(function (err) {
-    __WEBPACK_IMPORTED_MODULE_1__components_toast__["a" /* Toast */].create('something went wrong :(');
+    console.error(err);
+    __WEBPACK_IMPORTED_MODULE_1__components_toast__["a" /* Toast */].create(res.data.message);
   });
 }
 

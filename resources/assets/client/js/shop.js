@@ -35,10 +35,11 @@ function _postRequest(route, msg) {
 
   axios.post(route, {_token})
     .then((res) => {
-      Toast.create(msg);
+      Toast.create(res.data.message);
     })
     .catch((err) => {
-      Toast.create('something went wrong :(');
+      console.error(err);
+      Toast.create(res.data.message);
     });
 }
 
