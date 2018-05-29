@@ -18538,7 +18538,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 var state = {
   products: window.products,
-  currentID: 0
+  currentIndex: 0
 };
 
 var $images = void 0;
@@ -18551,9 +18551,12 @@ function init() {
   $images = document.querySelectorAll('.instashop-thumbnail');
   $images.forEach(function ($image, index) {
     $image.addEventListener('click', function (evt) {
-      var id = $image.dataset.id;
-      // TODO: Use ID instead of index
-      _setCurrentID(parseInt(id));
+      var index = Array.from($images).indexOf($image);
+
+      // TODO: Create API for setting index.
+      _setState({
+        currentIndex: index
+      });
     });
   });
   // Tmp
@@ -18561,22 +18564,14 @@ function init() {
 }
 
 /**
- * Sets the current id of the image.
- *
- * @param {Number|String} id - ID of the image to render.
- */
-function _setCurrentID(id) {
-  _setState({
-    currentID: id
-  });
-}
-
-/**
  * Calls show method on modal.
  */
 function _render() {
+  var img = $images[state.currentIndex];
+  var id = parseInt(img.dataset.id);
+
   var data = state.products.find(function (el) {
-    return el.id === state.currentID;
+    return el.id === id;
   });
   __WEBPACK_IMPORTED_MODULE_0__modal__["a" /* default */].show(data);
 }
