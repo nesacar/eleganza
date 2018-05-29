@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import {Toast} from './components/toast';
 /**
  * Convinience function for adding product to cart.
  *
@@ -35,12 +35,10 @@ function _postRequest(route, msg) {
 
   axios.post(route, {_token})
     .then((res) => {
-      // $().toastmessage('showSuccessToast', msg)
-      console.log(res)
+      Toast.create(msg);
     })
     .catch((err) => {
-      // $().toastmessage('showErrorToast', 'something went wrong :(');
-      console.log(err)
+      Toast.create('something went wrong :(');
     });
 }
 

@@ -19526,6 +19526,7 @@ var Siema = function () {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(138);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_toast__ = __webpack_require__(211);
 
 
 /**
@@ -19561,11 +19562,9 @@ function _postRequest(route, msg) {
   var _token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
   __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(route, { _token: _token }).then(function (res) {
-    // $().toastmessage('showSuccessToast', msg)
-    console.log(res);
+    __WEBPACK_IMPORTED_MODULE_1__components_toast__["a" /* Toast */].create(msg);
   }).catch(function (err) {
-    // $().toastmessage('showErrorToast', 'something went wrong :(');
-    console.log(err);
+    __WEBPACK_IMPORTED_MODULE_1__components_toast__["a" /* Toast */].create('something went wrong :(');
   });
 }
 
@@ -19583,6 +19582,67 @@ function _getRoute(store, id) {
   addToCart: addToCart,
   addToWishlist: addToWishlist
 });
+
+/***/ }),
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Toast; });
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Toast = function () {
+  function Toast() {
+    _classCallCheck(this, Toast);
+  }
+
+  _createClass(Toast, null, [{
+    key: 'create',
+    value: function create(msg, options) {
+      var toastContainer = document.querySelector('.toast-container');
+
+      if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.classList.add('toast-container');
+        document.body.appendChild(toastContainer);
+      }
+
+      options = options || {};
+      var tag = options.tag || Date.now().toString();
+      Array.from(toastContainer.querySelectorAll('.toast[data-tag="' + tag + '"]')).forEach(function (t) {
+        t.parentNode.removeChild(t);
+      });
+
+      // Make a toast
+      var toast = document.createElement('div');
+      var toastContent = document.createElement('div');
+      toast.classList.add('toast');
+      toastContent.classList.add('toast_content');
+      toastContent.textContent = msg;
+      toast.appendChild(toastContent);
+      toast.dataset.tag = tag;
+      toastContainer.insertBefore(toast, toastContainer.firstChild);
+
+      // Wait a secund, than fade out
+      var timeout = options.timeout || 3000;
+      setTimeout(function () {
+        toast.classList.add('toast--dismissed');
+      }, timeout);
+
+      // Than remove it
+      toast.addEventListener('transitionend', function (evt) {
+        evt.target.parentNode.removeChild(evt.target);
+      });
+    }
+  }]);
+
+  return Toast;
+}();
 
 /***/ })
 /******/ ]);
