@@ -21,9 +21,7 @@ function init() {
     });
   });
   // Tmp
-  modal.init({
-    data: state.products[state.currentID],
-  });
+  modal.init();
 }
 
 /**

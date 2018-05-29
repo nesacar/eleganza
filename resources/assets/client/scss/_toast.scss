@@ -1,0 +1,33 @@
+.toast-container {
+  position: fixed;
+  padding: 16px;
+  width: 100%;
+  top: 0;
+  right: 0;
+  pointer-events: none;
+  z-index: 1000000;
+}
+
+.toast {
+  transition: opacity .24s ease-in;
+  font-weight: 400;
+  width: 100%;
+  margin-top: 16px;
+  pointer-events: none;
+  display: flex;
+  justify-content: flex-end;
+  opacity: .9;
+
+  &_content {
+    padding: 16px 24px;
+    background: whitesmoke;
+    border: 1px solid gray;
+    color: rgba(0, 0, 0, 0.87);
+    display: inline;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+  }
+
+  &--dismissed {
+    opacity: 0;
+  }
+}

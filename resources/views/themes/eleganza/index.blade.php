@@ -86,7 +86,7 @@
 </footer>
 <div class=sub-footer>
     <div class="container sub-footer__container">
-        <div>Developed by <a href="https://www.ministudio.rs/" target="_blank">Mini STUDIO Publishing Group</a> & radionica</div>
+        <div>Developed by <a href="https://www.ministudio.rs/" target="_blank">Mini STUDIO Publishing Group</a> &amp; radionica</div>
         <div class=copy> <span>2018</span> P-grupacija. Sva prava zadržana. </div>
     </div>
 </div>

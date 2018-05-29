@@ -1,5 +1,6 @@
 import moment from 'moment';
 import Siema from '../components/siema';
+import shop from '../shop';
 
 // Constants.
 const ADD_ROUTE = 'http://localhost/eleganza/public/add-to-cart/';
@@ -190,7 +191,8 @@ function _addEventListeners() {
 function _addToCart(evt) {
   const id = evt.target.dataset.id;
   // Do the post stuff...
-  console.log(id)
+  shop.addToCart(id);
+  // console.log(id)
 }
 
 /**
