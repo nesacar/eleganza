@@ -18657,6 +18657,7 @@ var SLIDER_PARAMS = {
 
 var $modal = void 0;
 var $btnClose = void 0;
+var $scrim = void 0;
 var $image = void 0;
 var $products = void 0;
 var $desc = void 0;
@@ -18680,9 +18681,11 @@ function init() {
   $products = $modal.querySelector('.js-nv-products');
   $desc = $modal.querySelector('.js-nv-desc');
   $btnClose = $modal.querySelector('.js-btn-close');
+  $scrim = $modal.querySelector('.js-nv-scrim');
   $date = $modal.querySelector('.js-nv-date');
 
   $btnClose.addEventListener('click', _hide);
+  $scrim.addEventListener('click', _hide);
 
   _setState(initialState);
 }

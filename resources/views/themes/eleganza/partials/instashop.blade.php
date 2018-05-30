@@ -43,5 +43,5 @@
       </div>
     </div>
   </div>
-  <div class="nv-scrim"></div>
+  <div class="nv-scrim js-nv-scrim"></div>
 </div>

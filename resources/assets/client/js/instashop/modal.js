@@ -16,6 +16,7 @@ const SLIDER_PARAMS = {
 
 let $modal;
 let $btnClose;
+let $scrim;
 let $image;
 let $products;
 let $desc;
@@ -37,9 +38,11 @@ function init(initialState = DEFAULT_STATE) {
   $products = $modal.querySelector('.js-nv-products');
   $desc = $modal.querySelector('.js-nv-desc');
   $btnClose = $modal.querySelector('.js-btn-close');
+  $scrim = $modal.querySelector('.js-nv-scrim');
   $date = $modal.querySelector('.js-nv-date');
 
   $btnClose.addEventListener('click', _hide);
+  $scrim.addEventListener('click', _hide);
 
   _setState(initialState);
 }
