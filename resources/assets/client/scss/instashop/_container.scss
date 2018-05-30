@@ -12,6 +12,7 @@
   @include respond-to(small) {
     height: auto;
     max-width: 1200px;
+    width: calc(100% - 64px);
     top: 17%;
     left: 50%;
     transform: translateX(-50%);
