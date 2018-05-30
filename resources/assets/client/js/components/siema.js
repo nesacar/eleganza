@@ -599,6 +599,11 @@ export default class Siema {
     const n = Math.ceil(this.innerElements.length / this.perPage);
     const paggination = document.createElement('div');
     paggination.className = 'siema-pagination';
+    
+    // No need for paggination.
+    if (n < 2) {
+      return;
+    }
 
     for (let i = 0; i < n; i++) {
       const bullet = document.createElement('button');

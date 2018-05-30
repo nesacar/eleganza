@@ -19460,6 +19460,11 @@ var Siema = function () {
       var paggination = document.createElement('div');
       paggination.className = 'siema-pagination';
 
+      // No need for paggination.
+      if (n < 2) {
+        return;
+      }
+
       var _loop = function _loop(i) {
         var bullet = document.createElement('button');
         bullet.className = 'siema-bullet';
