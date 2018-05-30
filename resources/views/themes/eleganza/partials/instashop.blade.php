@@ -9,12 +9,12 @@
       <div class="nv-col nv-details">
         <div class="nv-controls">
           <div class="nv-arrows">
-            <button class="nv-icon-btn nv-arrow--left">
+            <button class="nv-icon-btn nv-arrow--left js-nv-prev">
               <svg viewBox="0 0 1024 1024">
                 <path d="M316.2,366.5L512,561.9l195.8-195.4l60.2,60.2l-256,256l-256-256L316.2,366.5z"/>
               </svg>
             </button>
-            <button class="nv-icon-btn nv-arrow--right">
+            <button class="nv-icon-btn nv-arrow--right js-nv-next">
               <svg viewBox="0 0 1024 1024">
                 <path d="M316.2,366.5L512,561.9l195.8-195.4l60.2,60.2l-256,256l-256-256L316.2,366.5z"/>
               </svg>

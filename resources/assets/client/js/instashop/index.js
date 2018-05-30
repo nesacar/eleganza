@@ -6,12 +6,18 @@ let state = {
 };
 
 let $images;
+let $btnNext;
+let $btnPrev;
 
 /**
  * Kicks things off.
  * Sets slider, and stuff...
  */
 function init() {
+  $btnNext = document.querySelector('.js-nv-next');
+  $btnPrev = document.querySelector('.js-nv-prev');
+  $btnNext.addEventListener('click', next);
+  $btnPrev.addEventListener('click', prev);
   $images = document.querySelectorAll('.instashop-thumbnail');
   $images.forEach(($image, index) => {
     $image.addEventListener('click', (evt) => {
@@ -25,6 +31,40 @@ function init() {
   });
   // Tmp
   modal.init();
+}
+
+/**
+ * Sets the image with the matching index as active.
+ *
+ * @param {Number} index - Index of the image to set as acitve
+ */
+function goTo(index) {
+  const l = $images.length;
+  let currentIndex = index;
+
+  if (index < 0) {
+    currentIndex = l - 1;
+  } else if (index >= l) {
+    currentIndex = 0;
+  }
+
+  _setState({
+    currentIndex,
+  });
+}
+
+/**
+ * Sets next image as active.
+ */
+function next() {
+  goTo(state.currentIndex + 1);
+}
+
+/**
+ * Sets prev image as active.
+ */
+function prev() {
+  goTo(state.currentIndex - 1);
 }
 
 /**

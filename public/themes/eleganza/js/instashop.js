@@ -18542,12 +18542,18 @@ var state = {
 };
 
 var $images = void 0;
+var $btnNext = void 0;
+var $btnPrev = void 0;
 
 /**
  * Kicks things off.
  * Sets slider, and stuff...
  */
 function init() {
+  $btnNext = document.querySelector('.js-nv-next');
+  $btnPrev = document.querySelector('.js-nv-prev');
+  $btnNext.addEventListener('click', next);
+  $btnPrev.addEventListener('click', prev);
   $images = document.querySelectorAll('.instashop-thumbnail');
   $images.forEach(function ($image, index) {
     $image.addEventListener('click', function (evt) {
@@ -18561,6 +18567,40 @@ function init() {
   });
   // Tmp
   __WEBPACK_IMPORTED_MODULE_0__modal__["a" /* default */].init();
+}
+
+/**
+ * Sets the image with the matching index as active.
+ *
+ * @param {Number} index - Index of the image to set as acitve
+ */
+function goTo(index) {
+  var l = $images.length;
+  var currentIndex = index;
+
+  if (index < 0) {
+    currentIndex = l - 1;
+  } else if (index >= l) {
+    currentIndex = 0;
+  }
+
+  _setState({
+    currentIndex: currentIndex
+  });
+}
+
+/**
+ * Sets next image as active.
+ */
+function next() {
+  goTo(state.currentIndex + 1);
+}
+
+/**
+ * Sets prev image as active.
+ */
+function prev() {
+  goTo(state.currentIndex - 1);
 }
 
 /**
