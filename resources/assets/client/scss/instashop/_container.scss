@@ -5,8 +5,6 @@
   top: 0;
   left: 0;
   background: #FFF;
-  overflow-y: auto;
-  overflow-x: hidden;
   z-index: 2;
 
   @include respond-to(small) {
@@ -18,5 +16,10 @@
     transform: translateX(-50%);
     padding: 16px;
     border-radius: 2px;
+  }
+
+  @media (max-width: 766px) {
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 }

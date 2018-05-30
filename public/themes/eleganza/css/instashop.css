@@ -267,8 +267,6 @@ ol {
   top: 0;
   left: 0;
   background: #FFF;
-  overflow-y: auto;
-  overflow-x: hidden;
   z-index: 2;
 }
 
@@ -286,6 +284,13 @@ ol {
   }
 }
 
+@media (max-width: 766px) {
+  .nv-container {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
+
 .nv-controls {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -295,14 +300,37 @@ ol {
           justify-content: space-between;
 }
 
-.nv-arrow--left {
+.nv-arrow--left svg {
   -webkit-transform: rotate(90deg);
           transform: rotate(90deg);
 }
 
-.nv-arrow--right {
+.nv-arrow--right svg {
   -webkit-transform: rotate(-90deg);
           transform: rotate(-90deg);
+}
+
+@media (min-width: 767px) {
+  .nv-arrow {
+    position: absolute;
+    top: 50%;
+    background: #FFF;
+    border-radius: 50%;
+    -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+            box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  }
+
+  .nv-arrow--left {
+    left: 0;
+    -webkit-transform: translate(-100%, -50%);
+            transform: translate(-100%, -50%);
+  }
+
+  .nv-arrow--right {
+    right: 0;
+    -webkit-transform: translate(100%, -50%);
+            transform: translate(100%, -50%);
+  }
 }
 
 .nv-details {
@@ -356,6 +384,7 @@ ol {
 }
 
 .nv-row {
+  position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
