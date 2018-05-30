@@ -74,6 +74,15 @@ function _setState(partialState) {
  * @private
  */
 function _render() {
+  // Destroy slider.
+  if (slider) {
+    let paggination = $modal.querySelector('.siema-pagination');
+    if (paggination) {
+      paggination.parentElement.removeChild(paggination)
+    }
+    slider.destroy();
+  }
+
   if (state.open && state.data) {
     // Replace all the data.
     _renderImage();
@@ -104,13 +113,6 @@ function _render() {
   // Cleanup after buttons if there are any.
   if ($btns) {
     _removeEventListeners();
-  }
-
-  // Destroy slider.
-  if (slider) {
-    let paggination = $modal.querySelector('.siema-pagination');
-    paggination.parentElement.removeChild(paggination)
-    slider.destroy();
   }
 }
 
