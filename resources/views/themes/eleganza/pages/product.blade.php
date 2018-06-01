@@ -8,13 +8,7 @@
 
     <div>
         <div class=container>
-            <nav aria-label=breadcrumb>
-                <ol class=breadcrumb>
-                    <li class=breadcrumb-item><a href="{{ url('/') }}">Home</a></li>
-                    @if($s1->id != $category->id) <li class=breadcrumb-item><a href={{ $s1->getLink() }}>{{ $s1->title }}</a></li> @endif
-                    <li class="breadcrumb-item active" aria-current=page>{{ $product->title }}</li>
-                </ol>
-            </nav>
+            {!! $breadcrumb !!}
         </div>
     </div>
 

@@ -79,6 +79,25 @@ class Product extends Model {
         }
     }
 
+    public function getBreadcrumb($slug){
+        $str = '<nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="'. url('/') . '">Home</a></li>';
+        $level = -1;
+        if(count($this->category)>0){
+            foreach ($this->category as $category){
+                if(($level == -1 && $category->slug == $slug) || $level != -1){
+                    if($level != $category->level){
+                        $level = $category->level;
+                        $str .= '<li class="breadcrumb-item"><a href="' . $category->getLink() . '">' . $category->title . '</a></li>';
+                    }
+                }
+            }
+        }
+
+        $str .= '<li class="breadcrumb-item active" aria-current="page">' . $this->title . '</li></ol></nav>';
+
+        return $str;
+    }
+
     public function getLinkAttribute(){
         return $this->getLink();
     }

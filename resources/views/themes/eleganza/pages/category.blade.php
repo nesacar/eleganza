@@ -3,17 +3,7 @@
 @section('content')
     <div>
         <div class=container>
-            <nav aria-label=breadcrumb>
-                <ol class=breadcrumb>
-                    <li class=breadcrumb-item><a href="{{ url('/') }}">Home</a></li>
-                    @if(!empty($topParent))
-                        <li class=breadcrumb-item><a href={{ url($topParent->slug) }}>{{ $topParent->title }}</a></li>
-                        <li class="breadcrumb-item active" aria-current=page>{{ $category->title }}</li>
-                    @else
-                        <li class="breadcrumb-item active" aria-current=page>{{ $category->title }}</li>
-                    @endif
-                </ol>
-            </nav>
+            {!! $category->getBreadcrumb() !!}
         </div>
     </div>
 
