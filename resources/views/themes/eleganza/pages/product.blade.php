@@ -11,10 +11,7 @@
             <nav aria-label=breadcrumb>
                 <ol class=breadcrumb>
                     <li class=breadcrumb-item><a href="{{ url('/') }}">Home</a></li>
-                    @if($s1 != null) @if($s1->id != $category->id) <li class=breadcrumb-item><a href={{ url(\App\Category::getCategoryLink($s1, 'hr')) }}>{{ $s1->title }}</a></li> @endif @endif
-                    @if($s2 != null) @if($s2->id != $category->id) <li class=breadcrumb-item><a href={{ url(\App\Category::getCategoryLink($s2, 'hr')) }}>{{ $s2->title }}</a></li> @endif @endif
-                    @if($s3 != null) @if($s3->id != $category->id) <li class=breadcrumb-item><a href={{ url(\App\Category::getCategoryLink($s3, 'hr')) }}>{{ $s3->title }}</a></li> @endif @endif
-                    @if($s4 != null) @if($s4->id != $category->id) <li class=breadcrumb-item><a href={{ url(\App\Category::getCategoryLink($s4, 'hr')) }}>{{ $s4->title }}</a></li> @endif @endif
+                    @if($s1->id != $category->id) <li class=breadcrumb-item><a href={{ $s1->getLink() }}>{{ $s1->title }}</a></li> @endif
                     <li class="breadcrumb-item active" aria-current=page>{{ $product->title }}</li>
                 </ol>
             </nav>
@@ -52,7 +49,9 @@
                     <div class="col-xl-9" style="position: relative;">
                         <div class="product-image-box owl-carousel" data-slider-id="image-box" id="jsImageBox">
                             <div class="e-image e-image--11 product-image-box__image">
-                                {!! HTML::Image($product->image, $product->title, array('data-zoom' => url($product->image))) !!}
+                                @if(!empty($product->image))
+                                    {!! HTML::Image($product->image, $product->title, array('data-zoom' => url($product->image))) !!}
+                                @endif
                             </div>
                             @if(count($images)>0)
                                 @foreach($images as $image)
@@ -132,9 +131,12 @@
                         @else
                             <ul class="product__attrs-list">
                                 <li class="product-attr">
-                                    <span class="product-attr__key">Kolekcija:</span>
+                                    @php $collection = $product->getCollection(); @endphp
+                                    @if(!empty($product))
+                                        <span class="product-attr__key">Kolekcija:</span> {{ $collection }}
+                                    @endif
                                     <span class="product-attr__value">{{ \App\Product::getLastCategory($product->id) }}</span>
-                                </li>
+                                 </li>
                                 @if(count($attributes))
                                     @foreach($attributes as $attribute)
                                         <li class="product-attr">
