@@ -1084,8 +1084,9 @@ class Product extends Model {
     }
 
     public function getCollection(){
-        return Attribute::join('attribute_product', 'attributes.id', '=', 'attribute_product.attribute_id')
-            ->where('attribute_product.product_id', $this->id)->where('attributes.property_id', 33)->first()->title;
+        $collection = Attribute::join('attribute_product', 'attributes.id', '=', 'attribute_product.attribute_id')
+            ->where('attribute_product.product_id', $this->id)->where('attributes.property_id', 33)->first();
+        return $collection? $collection->title : null;
     }
 
     public function getFullImagePathAttribute(){

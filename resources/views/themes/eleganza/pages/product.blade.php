@@ -120,32 +120,38 @@
                     <hr>
                     <div class="product-info__section product__attrs">
                         <h3>karakteristike</h3>
-                        @if(!empty($product->body))
-                            {!! $product->body !!}
-                        @else
-                            <ul class="product__attrs-list">
-                                <li class="product-attr">
-                                    @php $collection = $product->getCollection(); @endphp
-                                    @if(!empty($product))
-                                        <span class="product-attr__key">Kolekcija:</span> {{ $collection }}
-                                    @endif
-                                    <span class="product-attr__value">{{ \App\Product::getLastCategory($product->id) }}</span>
-                                 </li>
-                                @if(count($attributes))
-                                    @foreach($attributes as $attribute)
-                                        <li class="product-attr">
-                                            <span class="product-attr__key">{{ $attribute->property }}:</span>
-                                            <span class="product-attr__value">{{ $attribute->title }}</span>
-                                        </li>
-                                    @endforeach
+
+                        <ul class="product__attrs-list">
+                            <li class="product-attr">
+                                @php $collection = $product->getCollection(); @endphp
+                                @if(!empty($product))
+                                    <span class="product-attr__key">Kolekcija:</span> {{ $collection }}
                                 @endif
-                            </ul>
-                        @endif
+                                <span class="product-attr__value">{{ \App\Product::getLastCategory($product->id) }}</span>
+                             </li>
+                            @if(count($attributes))
+                                @foreach($attributes as $attribute)
+                                    <li class="product-attr">
+                                        <span class="product-attr__key">{{ $attribute->property }}:</span>
+                                        <span class="product-attr__value">{{ $attribute->title }}</span>
+                                    </li>
+                                @endforeach
+                            @endif
+                        </ul>
+
                     </div>
                 </div>
             </div>
 
         </div>
+
+        @if(!empty($product->body))
+            <div class="container">
+                <div class="row">
+                    {!! $product->body !!}
+                </div>
+            </div>
+        @endif
 
         @if(count($related)>0)
         <div class="content similar">
