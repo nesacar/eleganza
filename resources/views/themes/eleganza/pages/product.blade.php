@@ -130,16 +130,20 @@
                         @if(!empty($product->body))
                             {!! $product->body !!}
                         @else
-                            <ul class="product__attrs-list">
-                                <li class="product-attr">
-                                    <span class="product-attr__key">Kolekcija:</span>
-                                    <span class="product-attr__value">{{ \App\Product::getLastCategory($product->id) }}</span>
+                            <ul class="product__attrs-list js-v-grid">
+                                <li class="product-attr js-v-grid-item">
+                                  <div class="js-v-grid-item_content">
+                                    <b>Kolekcija:</b>
+                                    <span>{{ \App\Product::getLastCategory($product->id) }}</span>
+                                  </div>
                                 </li>
                                 @if(count($attributes))
                                     @foreach($attributes as $attribute)
-                                        <li class="product-attr">
-                                            <span class="product-attr__key">{{ $attribute->property }}:</span>
-                                            <span class="product-attr__value">{{ $attribute->title }}</span>
+                                        <li class="product-attr js-v-grid-item">
+                                          <div class="js-v-grid-item_content">
+                                            <b>{{ $attribute->property }}:</b>
+                                            <span>{{ $attribute->title }}</span>
+                                          </div>
                                         </li>
                                     @endforeach
                                 @endif
