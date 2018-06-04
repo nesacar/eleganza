@@ -53,12 +53,12 @@
 </div>
 
 <div class=filters>
-    <div class=filters__header data-toggle=collapse href=#jsAdvancedFilters role=button aria-expanded=true aria-controls=#jsAdvancedFilters>prošireni filter<span style=margin-left:auto>&plus;</span></div>
-    <div class="filters__body collapse show" id=jsAdvancedFilters>
+    <div class="filters__header collapsed" data-toggle=collapse href=#jsAdvancedFilters role=button aria-expanded=false aria-controls=#jsAdvancedFilters>prošireni filter<span style=margin-left:auto>&plus;</span></div>
+    <div class="filters__body collapse" id=jsAdvancedFilters>
         @if(count($props2)>0)
             @foreach($props2 as $prop)
                 <div class=filter>
-                    <h4 class=filter__name>{{ $prop->title }}</h4>
+                    <h4 class="filter__name">{{ $prop->title }}</h4>
                     <ul class=filter-list>
                         @foreach($prop->attribute as $a)
                             @if($a->publish == 1)

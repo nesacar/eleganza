@@ -8,16 +8,7 @@
 
     <div>
         <div class=container>
-            <nav aria-label=breadcrumb>
-                <ol class=breadcrumb>
-                    <li class=breadcrumb-item><a href="{{ url('/') }}">Home</a></li>
-                    @if($s1 != null) @if($s1->id != $category->id) <li class=breadcrumb-item><a href={{ url(\App\Category::getCategoryLink($s1, 'hr')) }}>{{ $s1->title }}</a></li> @endif @endif
-                    @if($s2 != null) @if($s2->id != $category->id) <li class=breadcrumb-item><a href={{ url(\App\Category::getCategoryLink($s2, 'hr')) }}>{{ $s2->title }}</a></li> @endif @endif
-                    @if($s3 != null) @if($s3->id != $category->id) <li class=breadcrumb-item><a href={{ url(\App\Category::getCategoryLink($s3, 'hr')) }}>{{ $s3->title }}</a></li> @endif @endif
-                    @if($s4 != null) @if($s4->id != $category->id) <li class=breadcrumb-item><a href={{ url(\App\Category::getCategoryLink($s4, 'hr')) }}>{{ $s4->title }}</a></li> @endif @endif
-                    <li class="breadcrumb-item active" aria-current=page>{{ $product->title }}</li>
-                </ol>
-            </nav>
+            {!! $breadcrumb !!}
         </div>
     </div>
 
@@ -52,7 +43,9 @@
                     <div class="col-xl-9" style="position: relative;">
                         <div class="product-image-box owl-carousel" data-slider-id="image-box" id="jsImageBox">
                             <div class="e-image e-image--11 product-image-box__image">
-                                {!! HTML::Image($product->image, $product->title, array('data-zoom' => url($product->image))) !!}
+                                @if(!empty($product->image))
+                                    {!! HTML::Image($product->image, $product->title, array('data-zoom' => url($product->image))) !!}
+                                @endif
                             </div>
                             @if(count($images)>0)
                                 @foreach($images as $image)
@@ -127,33 +120,41 @@
                     <hr>
                     <div class="product-info__section product__attrs">
                         <h3>karakteristike</h3>
-                        @if(!empty($product->body))
-                            {!! $product->body !!}
-                        @else
-                            <ul class="product__attrs-list js-v-grid">
-                                <li class="product-attr js-v-grid-item">
-                                  <div class="js-v-grid-item_content">
-                                    <b>Kolekcija:</b>
-                                    <span>{{ \App\Product::getLastCategory($product->id) }}</span>
-                                  </div>
-                                </li>
-                                @if(count($attributes))
-                                    @foreach($attributes as $attribute)
-                                        <li class="product-attr js-v-grid-item">
-                                          <div class="js-v-grid-item_content">
-                                            <b>{{ $attribute->property }}:</b>
-                                            <span>{{ $attribute->title }}</span>
-                                          </div>
-                                        </li>
-                                    @endforeach
+                        <ul class="product__attrs-list js-v-grid">
+                            <li class="product-attr js-v-grid-item">
+                              <div class="js-v-grid-item_content">
+                                @php $collection = $product->getCollection(); @endphp
+                                @if(!empty($product))
+                                <b>Kolekcija:</b> {{$collection}}
                                 @endif
-                            </ul>
-                        @endif
+                                <span>{{ \App\Product::getLastCategory($product->id) }}</span>
+                              </div>
+                            </li>
+                            @if(count($attributes))
+                            @foreach($attributes as $attribute)
+                            <li class="product-attr js-v-grid-item">
+                              <div class="js-v-grid-item_content">
+                                <b>{{ $attribute->property }}:</b>
+                                <span>{{ $attribute->title }}</span>
+                              </div>
+                            </li>
+                            @endforeach
+                            @endif
+                        </ul>
+
                     </div>
                 </div>
             </div>
 
         </div>
+
+        @if(!empty($product->body))
+            <div class="container">
+                <div class="row">
+                    {!! $product->body !!}
+                </div>
+            </div>
+        @endif
 
         @if(count($related)>0)
         <div class="content similar">

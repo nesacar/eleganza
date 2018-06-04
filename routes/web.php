@@ -76,9 +76,6 @@ Route::post('kupovina', 'PagesController@kupovina');
 
 Route::get('proba', 'PagesController@proba');
 
-Route::get('shop/{slug1}/{slug2}/{slug3}/{slug4}/{slug5}/{slug6}', 'PagesController@shopCategory6');
-Route::get('shop/{slug1}/{slug2}/{slug3}/{slug4}/{slug5}', 'PagesController@shopCategory5');
-Route::get('shop/{slug1}/{slug2}/{slug3}/{slug4}', 'PagesController@shopCategory4');
 Route::get('shop/{slug1}/{slug2}/{slug3}', 'PagesController@shopCategory3');
 Route::get('shop/{slug1}/{slug2}', 'PagesController@shopCategory2');
 Route::get('shop/{slug}', 'PagesController@shopCategory');

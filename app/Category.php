@@ -5,6 +5,7 @@ namespace App;
 use App\Traits\UploudableImageTrait;
 use Illuminate\Database\Eloquent\Model;
 use Session;
+use Illuminate\Database\Eloquent\Builder;
 
 class Category extends Model
 {
@@ -16,14 +17,46 @@ class Category extends Model
 
     protected $fillable = ['id', 'brand_id', 'title', 'slug', 'desc', 'order', 'parent', 'level', 'image', 'feature_image', 'collection', 'publish'];
 
+    protected static function boot(){
+        parent::boot();
+
+        static::addGlobalScope('parentCategory', function (Builder $builder) {
+            $builder->with(['parentCategory' => function($query){
+                $query->where('publish', 1);
+            }]);
+        });
+    }
+
     public function getLink(){
-        $str = 'shop/' . $this->slug . '/';
-        if(count($this->children)>0){
-            foreach ($this->children as $category){
-                $str .= $category->slug . '/';
+        $str = '';
+        if(!empty($parent = $this->parentCategory)){
+            $str = $parent->slug . '/';
+            if(!empty($parent2 = $parent->parentCategory)){
+                $str = $parent2->slug . '/' . $str;
+                if(!empty($parent3 = $parent2->parentCategory)){
+                    $str = $parent3->slug . '/' . $str;
+                }
             }
         }
+        $str = 'shop/' . $str . $this->slug . '/';
         return url($str);
+    }
+
+    public function getBreadcrumb(){
+        $str = '';
+        if(!empty($parent = $this->parentCategory)){
+            $str = '<li class="breadcrumb-item"><a href="' . $parent->getLink() . '">' . $parent->title . '</a></li>' . $str;
+            if(!empty($parent2 = $parent->parentCategory)){
+                $str = '<li class="breadcrumb-item"><a href="' . $parent2->getLink() . '">' . $parent2->title . '</a></li>' . $str;
+                if(!empty($parent3 = $parent2->parentCategory)){
+                    $str = '<li class="breadcrumb-item"><a href="' . $parent3->getLink() . '">' . $parent3->title . '</a></li>' . $str;
+                }
+            }
+        }
+
+        $str = '<nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="'. url('/') . '">Home</a></li>' . $str . '<li class="breadcrumb-item active" aria-current="page">' . $this->title . '</li></ol></nav>';
+
+        return $str;
     }
 
     public static function tree() {
@@ -31,11 +64,11 @@ class Category extends Model
     }
 
     public function parentCategory() {
-        return $this->hasOne(Category::class, 'id', 'parent');
+        return $this->hasOne(self::class, 'id', 'parent');
     }
 
     public function children() {
-        return $this->hasMany(Category::class, 'parent', 'id');
+        return $this->hasMany(self::class, 'parent', 'id');
     }
 
     public static function save_cat_order($niz){

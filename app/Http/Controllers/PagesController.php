@@ -91,42 +91,9 @@ class PagesController extends Controller
                 $props1 = null;
                 $props2 = null;
             }
-            //return MenuLink::tree(3);
             $data = Product::search($category);
-            //$topParent = PCategory::getTopParentBySlug($slug);
-//            $bred = Category::getBredcrumb($category->id);
-//            $bred = array_reverse($bred);
-//            $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
-//
-//            request('filters') ? $filters = request('filters') : $filters = [];
-//            //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
-//            request('min-price') ? $price[0] = request('max-price') : $price[0] = 0;
-//            request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
-//            request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
-//            request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
-//            request('min-water') ? $water[0] = request('min-water') : $water[0] = 0;
-//            request('max-water') ? $water[1] = request('max-water') : $water[1] = 0;
-//            request('sort') ? $sort = request('sort') : $sort = 2;
-//            request('page') ? $page = request('page') : $page = 1;
-//            request('limit') ? $limit = request('limit') : $limit = 9;
-//
-//            $count = Property::countPropertyFilter($filters);
-//            $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1], $water[0], $water[1]);
-//
-//            $filteri = Product::getFiltersByCategory($category->id);
-//
-//            if($count > 0){
-//                $oo = Property::sredi($filters);
-//                $products = Product::filtered($products, $count, $limit, $sort, $oo);
-//            }else{
-//                $products = Product::paginateRender($products, $limit, $sort);
-//            }
-
-            //$max = Product::newMaxPrice($category->id, $filters);
             $theme = Theme::where('active', 1)->first();
             $settings = Setting::find(1);
-            //$topCat = [];
-            //$active = $slug;
             $s2 = null; $s3 = null; $s4 = null;
             return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props1', 'props2', 'max', 'price', 'set', 'data'));
         }else{
@@ -166,7 +133,8 @@ class PagesController extends Controller
             $product->increment('views');
             $images = $product->images;
             $attributes = Attribute::getAttributesByProduct($product->id);
-            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 'related', 'rel_posts', 'settings', 'active', 'images', 'attributes'));
+            $breadcrumb = $product->getBreadcrumb($slug1);
+            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 'related', 'rel_posts', 'settings', 'active', 'images', 'attributes', 'breadcrumb'));
         }else{
             $category = $s2;
             if(isset($category)){
@@ -182,39 +150,7 @@ class PagesController extends Controller
                     $props1 = null;
                     $props2 = null;
                 }
-                //return MenuLink::tree(3);
                 $data = Product::search($category);
-//                $topParent = PCategory::getTopParentBySlug($slug2);
-//                $bred = Category::getBredcrumb($category->id);
-//                $bred = array_reverse($bred);
-//                $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
-//
-//                request('filters') ? $filters = request('filters') : $filters = [];
-//                //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
-//                request('min-price') ? $price[0] = request('max-price') : $price[0] = 0;
-//                request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
-//                request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
-//                request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
-//                request('min-water') ? $water[0] = request('min-water') : $water[0] = 0;
-//                request('max-water') ? $water[1] = request('max-water') : $water[1] = 0;
-//                request('sort') ? $sort = request('sort') : $sort = 2;
-//                request('page') ? $page = request('page') : $page = 1;
-//                request('limit') ? $limit = request('limit') : $limit = 9;
-//
-//                $count = Property::countPropertyFilter($filters);
-//                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1], $water[0], $water[1]);
-//                //$properties = Property::getPropertiesAndAttributesByCategory($category->id);
-//
-//                //$filteri = Product::getFiltersByCheckboxes($products);
-//                $filteri = Product::getFiltersByCategory($category->id);
-//                if($count > 0){
-//                    $oo = Property::sredi($filters);
-//                    $products = Product::filtered($products, $count, $limit, $sort, $oo);
-//                }else{
-//                    $products = Product::paginateRender($products, $limit, $sort);
-//                }
-//                $topCat = [];
-//                $max = Product::newMaxPrice($category->id, $filters);
                 $s3 = null; $s4 = null;
                 return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props1', 'props2', 'max', 'set', 'data'));
             }else{
@@ -248,7 +184,8 @@ class PagesController extends Controller
             $images = $product->images;
             $attributes = Attribute::getAttributesByProduct($product->id);
             $s2 = null; $s3 = null; $s4 = null;
-            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 's4', 'related', 'rel_posts', 'settings', 'theme', 'active', 'images', 'attributes'));
+            $breadcrumb = $product->getBreadcrumb($slug1);
+            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 's4', 'related', 'rel_posts', 'settings', 'theme', 'active', 'images', 'attributes', 'breadcrumb'));
         }else{
             $s2 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
                 ->where('category_translations.slug', $slug2)->where('categories.publish', 1)->where('categories.parent', $s1->id)->first();
@@ -298,248 +235,6 @@ class PagesController extends Controller
                 $max = Product::newMaxPrice($category->id, $filters);
                 $s4 = null;
                 return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props1', 'props2', 'max', 'set'));
-            }else{
-                return 'error 404';
-            }
-        }
-    }
-
-    public function shopCategory4($slug1, $slug2, $slug3, $slug4){
-        $s1 = Category::where('slug', $slug1)->where('publish', 1)->first();
-        $s2 = $category = Category::where('slug', $slug2)->where('publish', 1)->where('parent', $s1->id)->first();
-        $product = Product::find($slug4);
-        $theme = Theme::where('active', 1)->first();
-        $settings = Setting::find(1);
-        $active = $slug1;
-        \Session::forget('filter');
-        if(isset($product)){
-            if(request('email') && request('news')){
-                $newsletter = Newsletter::where('verification', request('news'))->first();
-                $subscriber = Subscriber::where('verification', request('email'))->first();
-                if(isset($newsletter) && isset($subscriber)){
-                    Click::insertProductClick($newsletter->id, $product->id, $subscriber->id);
-                }
-            }
-            $topParent = PCategory::getTopParentBySlug($slug1);
-            $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
-            $related = Product::getRelatedByCategory($category->id, $product->id, 4);
-            $rel_posts = array();
-            $product->increment('views');
-            $images = $product->images;
-            $attributes = Attribute::getAttributesByProduct($product->id);
-            $s3 = null; $s4 = null;
-            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 's4', 's5', 'related', 'rel_posts', 'settings', 'theme', 'active', 'images', 'attributes'));
-        }else{
-            $s3 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-                ->where('category_translations.slug', $slug3)->where('categories.publish', 1)->where('categories.parent', $s2->id)->first();
-            $category = $s4 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-                ->where('category_translations.slug', $slug4)->where('categories.publish', 1)->where('categories.parent', $s3->id)->first();
-            if(isset($category)){
-                $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
-                if(!empty($set)){
-                    $props1 = $set->property()->where('properties.expanded', 0)->orderBy('properties.order', 'ASC')->get();
-                    $props2 = $set->property()->where('properties.expanded', 1)->orderBy('properties.order', 'ASC')->get();
-                }else{
-                    $props1 = null;
-                    $props2 = null;
-                }
-                $topParent = PCategory::getTopParentBySlug($slug2);
-                //$bred = Category::getBredcrumb($category->id);
-                //$bred = array_reverse($bred);
-                $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
-
-                request('filters') ? $filters = request('filters') : $filters = [];
-                //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
-                request('min-price') ? $price[0] = request('max-price') : $price[0] = 0;
-                request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
-                request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
-                request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
-                request('min-water') ? $water[0] = request('min-water') : $water[0] = 0;
-                request('max-water') ? $water[1] = request('max-water') : $water[1] = 0;
-                request('sort') ? $sort = request('sort') : $sort = 2;
-                request('page') ? $page = request('page') : $page = 1;
-                request('limit') ? $limit = request('limit') : $limit = 9;
-
-                $count = Property::countPropertyFilter($filters);
-                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1], $water[0], $water[1]);
-                //$properties = Property::getPropertiesAndAttributesByCategory($category->id);
-
-                //$filteri = Product::getFiltersByCheckboxes($products);
-                $filteri = Product::getFiltersByCategory($category->id);
-                if($count > 0){
-                    $oo = Property::sredi($filters);
-                    $products = Product::filtered($products, $count, $limit, $sort, $oo);
-                }else{
-                    $products = Product::paginateRender($products, $limit, $sort);
-                }
-                $topCat = [];
-                $max = Product::newMaxPrice($category->id, $filters);
-                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props1', 'props2', 'max', 'set'));
-            }else{
-                return 'error 404';
-            }
-        }
-    }
-
-    public function shopCategory5($slug1, $slug2, $slug3, $slug4, $slug5)
-    {
-        $s1 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('category_translations.slug', $slug1)->where('categories.publish', 1)->first();
-        $s2 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('category_translations.slug', $slug2)->where('categories.publish', 1)->where('categories.parent', $s1->id)->first();
-        $s3 = $category = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('category_translations.slug', $slug3)->where('categories.publish', 1)->where('categories.parent', $s2->id)->first();
-        $product = Product::find($slug5);
-        $theme = Theme::where('active', 1)->first();
-        $settings = Setting::find(1);
-        $active = $slug1;
-        \Session::forget('filter');
-        if($product){
-            if(request('email') && request('news')){
-                $newsletter = Newsletter::where('verification', request('news'))->first();
-                $subscriber = Subscriber::where('verification', request('email'))->first();
-                if(isset($newsletter) && isset($subscriber)){
-                    Click::insertProductClick($newsletter->id, $product->id, $subscriber->id);
-                }
-            }
-            $topParent = PCategory::getTopParentBySlug($slug1);
-            $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
-            $related = Product::getRelatedByCategory($category->id, $product->id, 4);
-            $rel_posts = array();
-            $product->increment('views');
-            $images = $product->images;
-            $attributes = Attribute::getAttributesByProduct($product->id);
-            $s4 = null;
-            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 's4', 's5', 'related', 'rel_posts', 'settings', 'theme', 'active', 'images', 'attributes'));
-        }else{
-            $s4 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-                ->where('category_translations.slug', $slug4)->where('categories.publish', 1)->where('categories.parent', $s3->id)->first();
-            $category = $s5 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-                ->where('category_translations.slug', $slug5)->where('categories.publish', 1)->where('categories.parent', $s4->id)->first();
-            if($category){
-                $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
-                if(!empty($set)){
-                    $props1 = $set->property()->where('properties.expanded', 0)->orderBy('properties.order', 'ASC')->get();
-                    $props2 = $set->property()->where('properties.expanded', 1)->orderBy('properties.order', 'ASC')->get();
-                }else{
-                    $props1 = null;
-                    $props2 = null;
-                }
-                $topParent = PCategory::getTopParentBySlug($slug2);
-                //$bred = Category::getBredcrumb($category->id);
-                //$bred = array_reverse($bred);
-                $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
-
-                request('filters') ? $filters = request('filters') : $filters = [];
-                //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
-                request('min-price') ? $price[0] = request('max-price') : $price[0] = 0;
-                request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
-                request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
-                request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
-                request('min-water') ? $water[0] = request('min-water') : $water[0] = 0;
-                request('max-water') ? $water[1] = request('max-water') : $water[1] = 0;
-                request('sort') ? $sort = request('sort') : $sort = 2;
-                request('page') ? $page = request('page') : $page = 1;
-                request('limit') ? $limit = request('limit') : $limit = 9;
-
-                $count = Property::countPropertyFilter($filters);
-                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1], $water[0], $water[1]);
-                //$properties = Property::getPropertiesAndAttributesByCategory($category->id);
-
-                //$filteri = Product::getFiltersByCheckboxes($products);
-                $filteri = Product::getFiltersByCategory($category->id);
-                if($count > 0){
-                    $oo = Property::sredi($filters);
-                    $products = Product::filtered($products, $count, $limit, $sort, $oo);
-                }else{
-                    $products = Product::paginateRender($products, $limit, $sort);
-                }
-                $topCat = [];
-                $max = Product::newMaxPrice($category->id, $filters);
-                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 's5', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props1', 'props2', 'max', 'set'));
-            }else{
-                return 'error 404';
-            }
-        }
-    }
-
-    public function shopCategory6($slug1, $slug2, $slug3, $slug4, $slug5, $slug6)
-    {
-        $s1 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('category_translations.slug', $slug1)->where('categories.publish', 1)->first();
-        $s2 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('category_translations.slug', $slug2)->where('categories.publish', 1)->where('categories.parent', $s1->id)->first();
-        $s3 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('slug', $slug3)->where('publish', 1)->where('parent', $s2->id)->first();
-        $s4 = $category = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-            ->where('category_translations.slug', $slug4)->where('categories.publish', 1)->first();
-        $product = Product::find($slug6);
-        $theme = Theme::where('active', 1)->first();
-        $settings = Setting::find(1);
-        $active = $slug1;
-        \Session::forget('filter');
-        if(isset($product)){
-            if(request('email') && request('news')){
-                $newsletter = Newsletter::where('verification', request('news'))->first();
-                $subscriber = Subscriber::where('verification', request('email'))->first();
-                if(isset($newsletter) && isset($subscriber)){
-                    Click::insertProductClick($newsletter->id, $product->id, $subscriber->id);
-                }
-            }
-            $topParent = PCategory::getTopParentBySlug($slug1);
-            $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
-            $related = Product::getRelatedByCategory($category->id, $product->id, 4);
-            $rel_posts = array();
-            $product->increment('views');
-            $images = $product->images;
-            $attributes = Attribute::getAttributesByProduct($product->id);
-            return view('themes.'.$theme->slug.'.pages.product', compact('product', 'topParent', 'categories', 'category', 's1', 's2', 's3', 's4', 's5', 'related', 'rel_posts', 'settings', 'theme', 'active', 'images', 'attributes'));
-        }else{
-            $s5 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-                ->where('category_translations.slug', $slug5)->where('categories.publish', 1)->where('categories.parent', $s4->id)->first();
-            $category = $s6 = Category::select('categories.*')->join('category_translations', 'categories.id', '=', 'category_translations.category_id')
-                ->where('category_translations.slug', $slug6)->where('categories.publish', 1)->where('categories.parent', $s5->id)->first();
-            if(isset($category)){
-                $set = Set::select('sets.*')->join('set_translations', 'sets.id', '=', 'set_translations.set_id')->where('set_translations.slug', $slug1)->first();
-                if(!empty($set)){
-                    $props1 = $set->property()->where('properties.expanded', 0)->orderBy('properties.order', 'ASC')->get();
-                    $props2 = $set->property()->where('properties.expanded', 1)->orderBy('properties.order', 'ASC')->get();
-                }else{
-                    $props1 = null;
-                    $props2 = null;
-                }
-                $topParent = PCategory::getTopParentBySlug($slug2);
-                //$bred = Category::getBredcrumb($category->id);
-                //$bred = array_reverse($bred);
-                $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
-
-                request('filters') ? $filters = request('filters') : $filters = [];
-                //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
-                request('min-price') ? $price[0] = request('max-price') : $price[0] = 0;
-                request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
-                request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
-                request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
-                request('min-water') ? $water[0] = request('min-water') : $water[0] = 0;
-                request('max-water') ? $water[1] = request('max-water') : $water[1] = 0;
-                request('sort') ? $sort = request('sort') : $sort = 2;
-                request('page') ? $page = request('page') : $page = 1;
-                request('limit') ? $limit = request('limit') : $limit = 9;
-
-                $count = Property::countPropertyFilter($filters);
-                $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1], $water[0], $water[1]);
-                //$properties = Property::getPropertiesAndAttributesByCategory($category->id);
-
-                //$filteri = Product::getFiltersByCheckboxes($products);
-                $filteri = Product::getFiltersByCategory($category->id);
-                if($count > 0){
-                    $oo = Property::sredi($filters);
-                    $products = Product::filtered($products, $count, $limit, $sort, $oo);
-                }else{
-                    $products = Product::paginateRender($products, $limit, $sort);
-                }
-                $topCat = [];
-                $max = Product::newMaxPrice($category->id, $filters);
-                return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 's5', 's6', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props1', 'props2', 'max', 'set'));
             }else{
                 return 'error 404';
             }

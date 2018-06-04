@@ -79,6 +79,25 @@ class Product extends Model {
         }
     }
 
+    public function getBreadcrumb($slug){
+        $str = '<nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="'. url('/') . '">Home</a></li>';
+        $level = -1;
+        if(count($this->category)>0){
+            foreach ($this->category as $category){
+                if(($level == -1 && $category->slug == $slug) || $level != -1){
+                    if($level != $category->level){
+                        $level = $category->level;
+                        $str .= '<li class="breadcrumb-item"><a href="' . $category->getLink() . '">' . $category->title . '</a></li>';
+                    }
+                }
+            }
+        }
+
+        $str .= '<li class="breadcrumb-item active" aria-current="page">' . $this->title . '</li></ol></nav>';
+
+        return $str;
+    }
+
     public function getLinkAttribute(){
         return $this->getLink();
     }
@@ -517,36 +536,32 @@ class Product extends Model {
 
     public static function getColorsList(){
         return Attribute::leftJoin('properties', 'attributes.property_id', '=', 'properties.id')
-            ->leftJoin('attribute_translations', 'attributes.id', '=', 'attribute_id')
-            ->where('properties.id', 12)->where('attribute_translations.locale', app()->getLocale())->pluck('attribute_translations.title', 'attribute_translations.attribute_id')
+            ->where('properties.id', 12)->pluck('attributes.title', 'attributes.id')
             ->prepend('Odaberite boju', 0)->toArray();
     }
 
     public static function getMaterialsList(){
         return Attribute::leftJoin('properties', 'attributes.property_id', '=', 'properties.id')
-            ->leftJoin('attribute_translations', 'attributes.id', '=', 'attribute_id')
-            ->where('properties.id', 14)->where('attribute_translations.locale', app()->getLocale())
-            ->pluck('attribute_translations.title', 'attribute_translations.attribute_id')
+            ->where('properties.id', 14)
+            ->pluck('attributes.title', 'attributes.id')
             ->prepend(trans('language.Select material'), 0)->toArray();
     }
 
     public static function getMaterialListByProduct($product_id){
         return Attribute::leftJoin('properties', 'attributes.property_id', '=', 'properties.id')
-            ->leftJoin('attribute_translations', 'attributes.id', '=', 'attribute_id')
             ->leftJoin('attribute_product', 'attributes.id', '=', 'attribute_product.attribute_id')
             ->leftJoin('products', 'attribute_product.product_id', '=', 'products.id')
-            ->where('properties.id', 14)->where('attribute_translations.locale', app()->getLocale())->where('products.id', $product_id)
-            ->pluck('attribute_translations.title', 'attribute_translations.attribute_id')
+            ->where('properties.id', 14)->where('products.id', $product_id)
+            ->pluck('attributes.title', 'attributes.id')
             ->prepend(trans('language.Select material'), 0)->toArray();
     }
 
     public static function getMaterialListByProductFront($product_id){
         return Attribute::leftJoin('properties', 'attributes.property_id', '=', 'properties.id')
-            ->leftJoin('attribute_translations', 'attributes.id', '=', 'attribute_id')
             ->leftJoin('attribute_product', 'attributes.id', '=', 'attribute_product.attribute_id')
             ->leftJoin('products', 'attribute_product.product_id', '=', 'products.id')
-            ->where('properties.id', 14)->where('attribute_translations.locale', app()->getLocale())->where('products.id', $product_id)
-            ->pluck('attribute_translations.title', 'attribute_translations.attribute_id')
+            ->where('properties.id', 14)->where('products.id', $product_id)
+            ->pluck('attributes.title', 'attributes.id')
             ->toArray();
     }
 
@@ -1068,6 +1083,11 @@ class Product extends Model {
         }
     }
 
+    public function getCollection(){
+        $collection = Attribute::join('attribute_product', 'attributes.id', '=', 'attribute_product.attribute_id')
+            ->where('attribute_product.product_id', $this->id)->where('attributes.property_id', 33)->first();
+        return $collection? $collection->title : null;
+    }
 
     public function getFullImagePathAttribute(){
         return url($this->image);
