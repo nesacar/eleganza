@@ -124,7 +124,7 @@
                             <li class="product-attr js-v-grid-item">
                               <div class="js-v-grid-item_content">
                                 @php $collection = $product->getCollection(); @endphp
-                                @if(!empty($product))
+                                @if(!empty($collection))
                                 <b>Kolekcija:</b> {{$collection}}
                                 @endif
                                 <span>{{ \App\Product::getLastCategory($product->id) }}</span>
@@ -134,7 +134,7 @@
                             @foreach($attributes as $attribute)
                             <li class="product-attr js-v-grid-item">
                               <div class="js-v-grid-item_content">
-                                <b>{{ $attribute->property }}:</b>
+                                <b>{{ \App\Helper::removeBrackets($attribute->property) }}:</b>
                                 <span>{{ $attribute->title }}</span>
                               </div>
                             </li>

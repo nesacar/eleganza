@@ -450,4 +450,8 @@ class Helper extends Model
         return $res;
     }
 
+    public static function removeBrackets($str){
+        return substr($str, 0, strpos($str, "("));
+    }
+
 }
