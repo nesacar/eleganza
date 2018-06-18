@@ -102,22 +102,21 @@
                             dodaj u listu zelja
                         </button>
                     </div>
+                    @if(count($similar)>0)
                     <div class="product-info__section product__alt-colors">
                         <p class="product__hint-text">proizvod je dostupan i u drugim bojama</p>
                         <ul class="product__alt-colors__list">
-                            <li class="e-image e-image--11">
-                                <a href="#">
-                                    {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!}
-                                </a>
-                            </li>
-                            <li class="e-image e-image--11">
-                                <a href="#">
-                                    {!! HTML::Image('themes/'.$theme->slug.'/img/product.jpg', '') !!}
-                                </a>
-                            </li>
+                            @foreach($similar as $item)
+                                <li class="e-image e-image--11">
+                                    <a href="{{ $item->getLink() }}">
+                                        {!! HTML::Image($item->image, $item->title) !!}
+                                    </a>
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
                     <hr>
+                    @endif
                     <div class="product-info__section product__attrs">
                         <h3>karakteristike</h3>
                         <ul class="product__attrs-list js-v-grid">
@@ -125,7 +124,7 @@
                               <div class="js-v-grid-item_content">
                                 @php $collection = $product->getCollection(); @endphp
                                 @if(!empty($collection))
-                                <b>Kolekcija:</b> {{$collection}}
+                                <b>Kolekcija:</b> {{ $collection }}
                                 @endif
                                 <span>{{ \App\Product::getLastCategory($product->id) }}</span>
                               </div>

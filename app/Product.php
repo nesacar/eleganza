@@ -1089,6 +1089,17 @@ class Product extends Model {
         return $collection? $collection->title : null;
     }
 
+    public function similarProducts(){
+        $ids = $this->attribute()->where('attributes.extra', null)->pluck('attributes.id')->toArray();
+        return self::select('products.*')->join('attribute_product', 'products.id', '=', 'attribute_product.product_id')->join('attributes', 'attribute_product.attribute_id', '=', 'attributes.id')
+            ->where(function($query) use ($ids){
+                $query->whereIn('attributes.id', $ids);
+
+            })
+            ->where('products.id', '<>', $this->id)->groupBy('products.id')
+            ->havingRaw('COUNT(DISTINCT attributes.id) = ' . count($ids))->get();
+    }
+
     public function getFullImagePathAttribute(){
         return url($this->image);
     }
