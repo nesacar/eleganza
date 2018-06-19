@@ -1,7 +1,8 @@
 <div class=filters>
     <div class=filters__header data-toggle=collapse href=#jsBasicFilters role=button aria-expanded=true
          aria-controls=#jsBasicFilters>osnovni filter<span style=margin-left:auto>&plus;</span></div>
-    <div class="filters__body collapse show" id=jsBasicFilters>
+    <div class="collapse show" id=jsBasicFilters>
+      <div class="filters__body">
         @if($data['max'])
             <div class="filter cijena">
                 <h4 class=filter__name>cijena</h4>
@@ -61,13 +62,15 @@
                 </div>
             @endforeach
         @endif
+      </div>
     </div>
 </div>
 
 <div class=filters>
     <div class="filters__header collapsed" data-toggle=collapse href=#jsAdvancedFilters role=button aria-expanded=false
          aria-controls=#jsAdvancedFilters>prošireni filter<span style=margin-left:auto>&plus;</span></div>
-    <div class="filters__body collapse" id=jsAdvancedFilters>
+    <div class="collapse" id=jsAdvancedFilters>
+      <div class="filters__body">
         @if(count($props2)>0)
             @foreach($props2 as $prop)
                 <div class=filter>
@@ -151,5 +154,6 @@
                 </div>
             </div>
         @endif
+      </div>
     </div>
 </div>
