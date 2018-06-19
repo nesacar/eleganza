@@ -12,12 +12,12 @@
         </div>
     </div>
 
-    <div class=page-header>
+    {{-- <div class=page-header>
         <div class="container page-header__container">
             <h2 class=page-header__title>{{ $product->title }}</h2>
             <p>{{ $product->short }}</p>
         </div>
-    </div>
+    </div> --}}
 
     <section class="container content">
         <div class="row">
