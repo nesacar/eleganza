@@ -1,4 +1,5 @@
 <div class=filters>
+  <div class="filters-wrap">
     <div class=filters__header data-toggle=collapse href=#jsBasicFilters role=button aria-expanded=true
          aria-controls=#jsBasicFilters>osnovni filter<span style=margin-left:auto>&plus;</span></div>
     <div class="collapse show" id=jsBasicFilters>
@@ -64,9 +65,11 @@
         @endif
       </div>
     </div>
+  </div>
 </div>
 
 <div class=filters>
+  <div class="filters-wrap">
     <div class="filters__header collapsed" data-toggle=collapse href=#jsAdvancedFilters role=button aria-expanded=false
          aria-controls=#jsAdvancedFilters>prošireni filter<span style=margin-left:auto>&plus;</span></div>
     <div class="collapse" id=jsAdvancedFilters>
@@ -156,4 +159,5 @@
         @endif
       </div>
     </div>
+  </div>
 </div>
