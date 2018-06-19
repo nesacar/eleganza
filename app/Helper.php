@@ -2,6 +2,7 @@
 
 namespace App;
 
+use function GuzzleHttp\Psr7\str;
 use Illuminate\Database\Eloquent\Model;
 use File;
 use Ixudra\Curl\Facades\Curl;
@@ -451,7 +452,11 @@ class Helper extends Model
     }
 
     public static function removeBrackets($str){
-        return substr($str, 0, strpos($str, "("));
+        if (strpos($str, '(') !== false) {
+            return substr($str, 0, strpos($str, "("));
+        }else{
+            return $str;
+        }
     }
 
 }

@@ -61,11 +61,11 @@
                 </div>
 
                 @if(!empty($product->body2))
-                <div class="row">
-                    <div class="col-xl-9 offset-xl-3">
-                        {!! $product->body2 !!}
+                    <div class="row">
+                        <div class="col-xl-9 offset-xl-3">
+                            {!! $product->body2 !!}
+                        </div>
                     </div>
-                </div>
                 @endif
             </div>
 
@@ -84,60 +84,64 @@
                             <span class="product__price product__price--current">{{ $product->price_small }} kn</span>
                         @endif
                         @if($product->discount > 0)
-                        <span class="product__price product__price--discount product__hint-text">popust {{ $product->discount }}%</span>
+                            <span class="product__price product__price--discount product__hint-text">popust {{ $product->discount }}
+                                %</span>
                         @endif
                         <p class="product__hint-text">dodatnih 5% popusta na online placanje</p>
                     </div>
                     <div class="product-info__section">
                         @if($product->amount > 0)
-                            <button class="e-btn e-btn--primary e-btn--fat e-btn--block addCart" data-href="{{ url('add-to-cart/'.$product->id) }}">
+                            <button class="e-btn e-btn--primary e-btn--fat e-btn--block addCart"
+                                    data-href="{{ url('add-to-cart/'.$product->id) }}">
                                 dodaj u košaricu
                             </button>
                         @else
-                            <button class="e-btn e-btn--primary e-btn--fat e-btn--block" data-e-controls="#jsModalOrder">
+                            <button class="e-btn e-btn--primary e-btn--fat e-btn--block"
+                                    data-e-controls="#jsModalOrder">
                                 rezerviši
                             </button>
                         @endif
-                        <button class="e-btn e-btn--primary e-btn--fat e-btn--block addWish" data-href="{{ url('add-to-wishlist/'.$product->id) }}">
+                        <button class="e-btn e-btn--primary e-btn--fat e-btn--block addWish"
+                                data-href="{{ url('add-to-wishlist/'.$product->id) }}">
                             dodaj u listu zelja
                         </button>
                     </div>
                     @if(count($similar)>0)
-                    <div class="product-info__section product__alt-colors">
-                        <p class="product__hint-text">proizvod je dostupan i u drugim bojama</p>
-                        <ul class="product__alt-colors__list">
-                            @foreach($similar as $item)
-                                <li class="e-image e-image--11">
-                                    <a href="{{ $item->getLink() }}">
-                                        {!! HTML::Image($item->image, $item->title) !!}
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    <hr>
+                        <div class="product-info__section product__alt-colors">
+                            <p class="product__hint-text">proizvod je dostupan i u drugim bojama</p>
+                            <ul class="product__alt-colors__list">
+                                @foreach($similar as $item)
+                                    <li class="e-image e-image--11">
+                                        <a href="{{ $item->getLink() }}">
+                                            {!! HTML::Image($item->image, $item->title) !!}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <hr>
                     @endif
                     <div class="product-info__section product__attrs">
                         <h3>karakteristike</h3>
                         <ul class="product__attrs-list js-v-grid">
                             <li class="product-attr js-v-grid-item">
-                              <div class="js-v-grid-item_content">
-                                @php $collection = $product->getCollection(); @endphp
-                                @if(!empty($collection))
-                                <b>Kolekcija:</b> {{ $collection }}
-                                @endif
-                                <span>{{ \App\Product::getLastCategory($product->id) }}</span>
-                              </div>
+                                <div class="js-v-grid-item_content">
+                                    @php $collection = $product->getCollection(); @endphp
+                                    @if(!empty($collection))
+                                        <b>Kolekcija:</b> {{ $collection }}
+                                    @endif
+                                    <span>{{ \App\Product::getLastCategory($product->id) }}</span>
+                                </div>
                             </li>
                             @if(count($attributes))
-                            @foreach($attributes as $attribute)
-                            <li class="product-attr js-v-grid-item">
-                              <div class="js-v-grid-item_content">
-                                <b>{{ \App\Helper::removeBrackets($attribute->property) }}:</b>
-                                <span>{{ $attribute->title }}</span>
-                              </div>
-                            </li>
-                            @endforeach
+                                @foreach($attributes as $attribute)
+                                    <li class="product-attr js-v-grid-item">
+                                        <div class="js-v-grid-item_content">
+                                            <b>{{ \App\Helper::removeBrackets($attribute->property) }}:</b>
+                                            <span>{{ $attribute->title }}</span>
+                                        </div>
+                                    </li>
+                                @endforeach
                             @endif
                         </ul>
 
@@ -156,25 +160,25 @@
         @endif
 
         @if(count($related)>0)
-        <div class="content similar">
-            <h2>slični proizvodi</h2>
-            <ul class="similar-list">
-                @foreach($related as $p)
-                    <li class="product-item similar-list__item with-shadow">
-                        <a href="{{ $p->getLink() }}">
-                            <div class="product-item__img-box">
-                                {!! HTML::Image($p->image, $p->title) !!}
-                            </div>
-                            <div class="product-item__info-box">
-                                <h2 class="product-item__name">{{ $p->title }}</h2>
-                                <span class="product-item__price">{{ $p->price_small }}</span>
-                            </div>
-                            <button class="e-btn e-btn--primary e-btn--block">saznaj više</button>
-                        </a>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
+            <div class="content similar">
+                <h2>slični proizvodi</h2>
+                <ul class="similar-list">
+                    @foreach($related as $p)
+                        <li class="product-item similar-list__item with-shadow">
+                            <a href="{{ $p->getLink() }}">
+                                <div class="product-item__img-box">
+                                    {!! HTML::Image($p->image, $p->title) !!}
+                                </div>
+                                <div class="product-item__info-box">
+                                    <h2 class="product-item__name">{{ $p->title }}</h2>
+                                    <span class="product-item__price">{{ $p->price_small }}</span>
+                                </div>
+                                <button class="e-btn e-btn--primary e-btn--block">saznaj više</button>
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
         @endif
     </section>
 
@@ -194,18 +198,18 @@
     <script>
         $(function () {
 
-            $('.addWish').click(function(e){
+            $('.addWish').click(function (e) {
                 e.preventDefault();
                 var link = $(this).attr('data-href');
-                $.post(link, {_token: '{{ csrf_token() }}' }, function(data){
+                $.post(link, {_token: '{{ csrf_token() }}'}, function (data) {
                     $().toastmessage('showSuccessToast', "proizvod je dodat u listu želja");
                 });
             });
 
-            $('.addCart').click(function(e){
+            $('.addCart').click(function (e) {
                 e.preventDefault();
                 var link = $(this).attr('data-href');
-                $.post(link, {_token: '{{ csrf_token() }}' }, function(data){
+                $.post(link, {_token: '{{ csrf_token() }}'}, function (data) {
                     $().toastmessage('showSuccessToast', "proizvod je dodat u košaricu");
                 });
             });
