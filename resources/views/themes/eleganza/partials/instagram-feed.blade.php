@@ -5,64 +5,30 @@
                 <h3 class="e-subheading">#instashop</h3>
                 <p>Pokazite nam kako nosite proizvode iz nase kolekcije. #ELEGANZA</p>
 
-                <div class="instashop-list">
-                    @if(count($instaShops)>5)
-                        @php $slices1 = $instaShops->slice(0,2); @endphp
-                        @php $slices2 = $instaShops->slice(2,2); @endphp
-                        @php $slices3 = $instaShops->slice(4,2); @endphp
-
-                        <div class="instashop-list__item">
-                            @if(count($slices1)>0)
-                                @foreach($slices1 as $slice)
-                                    <div class="instashop-image">
-                                        <div class="e-image e-image--11 instashop-thumbnail with-zoom" data-id="{{ $slice->id }}">
-                                            {!! HTML::Image($slice->image, $slice->title) !!}
-                                            <div class="instashop-overlay">
-                                                <div class="instashop-overlay__action">
-                                                    <i class="fab fa-instagram"></i>
-                                                    <span>shop the look</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            @endif
+                <div class="instashop-list js-grid">
+                  @if(count($instaShops)>5)
+                    @php $instaShops = $instaShops->slice(0,6); @endphp
+                    @foreach($instaShops as $i=>$item)
+                    @php
+                    $base = 'e-image instashop-thumbnail with-zoom';
+                    $img_className = ($i % 2 == 0)
+                      ? $base.' e-image--11'
+                      : $base.' e-image--43';
+                    @endphp
+                    <div class="instashop-image js-grid-cell">
+                      <div class="{{$img_className}}"
+                        data-id="{{ $item->id }}">
+                          {!! HTML::Image($item->image, $item->title) !!}
+                        <div class="instashop-overlay">
+                          <div class="instashop-overlay__action">
+                            <i class="fab fa-instagram"></i>
+                            <span>shop the look</span>
+                          </div>
                         </div>
-                        <div class="instashop-list__item">
-                            @if(count($slices2)>0)
-                                @foreach($slices2 as $slice)
-                                    <div class="instashop-image">
-                                        <div class="e-image e-image--11 instashop-thumbnail with-zoom" data-id="{{ $slice->id }}">
-                                            {!! HTML::Image($slice->image, $slice->title) !!}
-                                            <div class="instashop-overlay">
-                                                <div class="instashop-overlay__action">
-                                                    <i class="fab fa-instagram"></i>
-                                                    <span>shop the look</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            @endif
-                        </div>
-                        <div class="instashop-list__item">
-                            @if(count($slices3)>0)
-                                @foreach($slices3 as $slice)
-                                    <div class="instashop-image">
-                                        <div class="e-image e-image--11 instashop-thumbnail with-zoom" data-id="{{ $slice->id }}">
-                                            {!! HTML::Image($slice->image, $slice->title) !!}
-                                            <div class="instashop-overlay">
-                                                <div class="instashop-overlay__action">
-                                                    <i class="fab fa-instagram"></i>
-                                                    <span>shop the look</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            @endif
-                        </div>
-                    @endif
+                      </div>
+                    </div>
+                    @endforeach
+                  @endif
                 </div>
             </div>
         </div>
