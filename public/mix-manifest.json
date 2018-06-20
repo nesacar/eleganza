@@ -1,5 +1,6 @@
 {
     "/js/app.js": "/js/app.js",
     "/themes/eleganza/css/instashop.css": "/themes/eleganza/css/instashop.css",
-    "/themes/eleganza/js/instashop.js": "/themes/eleganza/js/instashop.js"
+    "/themes/eleganza/js/instashop.js": "/themes/eleganza/js/instashop.js",
+    "/themes/eleganza/js/app.bundle.js": "/themes/eleganza/js/app.bundle.js"
 }
