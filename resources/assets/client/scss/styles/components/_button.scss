@@ -1,0 +1,77 @@
+.e-btn {
+  position: relative;
+  display: inline-flex;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 30px;
+  font-size: 14px;
+  font-weight: $font-weight--medium;
+  text-transform: uppercase;
+  text-decoration: none !important;
+
+  &::before,
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    height: 100%;
+    width: 100%;
+    content: "";
+    background-color: $white;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .12s;
+  }
+
+  &--secondary {
+    background-color: $color--secondary;
+    color: $font-color__light--primary !important;
+
+    &:hover::after,
+    &:active::before {
+      opacity: .2;
+    }
+  }
+
+  &--primary {
+    background-color: $color--primary;
+    color: $font-color__light--primary !important;
+
+    &:hover::after,
+    &:active::before {
+      opacity: .2;
+    }
+  }
+
+  &--invert {
+    border: 1px solid $color--primary;
+    color: $font-color__dark--primary !important;
+
+    &:hover {
+      background-color: $color--primary;
+      color: $font-color__light--primary !important;
+    }
+
+    &:active::before {
+      opacity: .2;
+    }
+  }
+
+  &--block {
+    width: 100%;
+    display: flex;
+  }
+
+  &--fat {
+    height: 48px;
+  }
+}
+
+.e-fab {
+  height: 56px !important;
+  width: 56px !important;
+  border-radius: 50%;
+  padding: 0;
+}

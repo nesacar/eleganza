@@ -1,0 +1,53 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba($black, .5);
+  z-index: 1001;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .2s;
+
+  &.active {
+    pointer-events: auto;
+    opacity: 1;
+  }
+
+  &__dialog {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    width: calc(100% - 30px);
+    max-width: 550px;
+    background-color: $color--primary;
+    color: $font-color__light--primary;
+  }
+
+  &__header {
+    display: flex;
+
+    .icon-btn {
+      margin-left: auto;
+    }
+  }
+
+  &__body {
+    font-size: 16px;
+  }
+
+  &__body,
+  &__footer {
+    text-align: center;
+    padding: 15px 30px;
+  }
+
+  &__form {
+    margin-top: 50px;
+    margin-bottom: 30px;
+  }
+}

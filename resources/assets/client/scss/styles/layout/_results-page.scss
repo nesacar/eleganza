@@ -1,0 +1,11 @@
+.filter-toggler {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 200;
+  overflow: hidden;
+
+  @include media-breakpoint-up(lg) {
+    display: none;
+  }
+}

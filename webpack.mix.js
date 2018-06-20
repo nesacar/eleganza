@@ -24,4 +24,9 @@ mix.js('resources/assets/js/app.js', 'public/js')
     'public/themes/eleganza/js/instashop.js');
 
 mix.sass('resources/assets/client/scss/main.scss',
-  'public/themes/eleganza/css/instashop.css');
+  'public/themes/eleganza/css/instashop.css')
+  .sass('resources/assets/client/scss/style.scss',
+    'public/themes/eleganza/css/style.css')
+    .options({
+      processCssUrls: false
+   });

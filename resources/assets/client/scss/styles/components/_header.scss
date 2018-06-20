@@ -1,0 +1,138 @@
+.top-bar {
+  display: block;
+  height: 44px;
+  width: 100%;
+  background-color: $color--primary;
+  color: $font-color__light--primary;
+  text-transform: uppercase;
+  font-size: 14px;
+
+  &__wrapper,
+  &__box {
+    display: flex;
+    height: 100%;
+    align-items: center;
+  }
+
+  &__wrapper {
+    justify-content: space-between;
+  }
+
+  &__link {
+    position: relative;
+    display: inline-flex;
+    height: 100%;
+    align-items: center;
+    padding: 0 3px;
+    margin: 0 7px;
+    font-weight: $font-weight--medium;
+    text-transform: uppercase;
+    transition: opacity .1s;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    .e-select__icon {
+      margin-right: 8px;
+    }
+
+    @include media-breakpoint-up(lg) {
+      padding: 0 6px;
+      margin: 0 14px;
+    }
+
+    span {
+      display: none;
+
+      @include media-breakpoint-up(lg) {
+        display: initial;
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+.header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 48px;
+  background-color: $white;
+  border-bottom: 1px solid $border-color--dark;
+
+  @include media-breakpoint-up(md) {
+    height: 65px;
+  }
+
+  @include media-breakpoint-up(lg) {
+    height: 190px;
+  }
+
+  .logo {
+    display: flex;
+    flex-grow: 1;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+    font-family: $font-family--montserrat;
+    font-weight: $font-weight__light;
+    color: $font-color__dark--primary;
+    text-transform: uppercase;
+    letter-spacing: 0.125em;
+    font-size: 24px;
+
+    a:hover {
+      text-decoration: none;
+    }
+
+    @include media-breakpoint-up(md) {
+      font-size: 36px;
+    }
+
+    @include media-breakpoint-up(lg) {
+      font-size: 48px;
+    }
+  }
+}
+
+.e-search {
+  position: absolute;
+  top: 0;
+  right: 24px;
+  display: flex;
+  height: 100%;
+  width: calc(100% - 32px);
+  align-items: center;
+  z-index: 900;
+  background-color: black;
+  opacity: 0;
+  pointer-events: none;
+
+  @include media-breakpoint-up(lg) {
+    width: 412px;
+  }
+
+  &.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  input {
+    color: black;
+    flex-grow: 1;
+    outline: none;
+    border: 0;
+    padding: 0 15px;
+    height: 36px;
+    background-color: rgba(255, 255, 255, 1);
+  }
+
+  form {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    flex-grow: 1;
+  }
+}

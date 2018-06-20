@@ -1,0 +1,69 @@
+.menu-toggler {
+  position: absolute;
+  top: 50%;
+  left: 18px;
+  display: inline-flex;
+  height: 36px;
+  width: 36px;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
+  cursor: pointer;
+
+  @include media-breakpoint-up(lg) {
+    display: none;
+  }
+}
+
+.nav-icon {
+  position: relative;
+  width: 18px;
+  height: 12px;
+  transform: rotate(0deg);
+  pointer-events: none;
+
+	span {
+	  display: block;
+	  position: absolute;
+	  height: 2px;
+	  width: 100%;
+    transform: rotate(0deg);
+	  background: $color--primary;
+	  opacity: 1;
+	  left: 0;
+
+	  &:nth-child(1) {
+	  	top: 0;
+	  }
+
+	  &:nth-child(2),
+	  &:nth-child(3) {
+	  	top: 5px;
+	  }
+
+	  &:nth-child(4) {
+	  	top: 10px;
+	  }
+	}
+
+	[active] & {
+		span {
+      background: $color--primary;
+
+			&:nth-child(1),
+			&:nth-child(4) {
+				top: 5px;
+				width: 0;
+				left: 50%;
+			}
+
+			&:nth-child(2) {
+        transform: rotate(45deg);
+			}
+
+			&:nth-child(3) {
+        transform: rotate(-45deg);
+			}
+		}
+	}
+}

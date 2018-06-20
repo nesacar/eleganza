@@ -1,0 +1,44 @@
+.login {
+  &__help,
+  &__alt {
+    margin-bottom: 45px;
+    text-align: center;
+
+    p {
+      margin-bottom: 8px;
+    }
+
+    h4 {
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+  }
+
+  &__help {
+    a {
+      text-decoration: underline;
+    }
+  }
+
+  &__social-list {
+    display: inline-flex;
+
+    &__item {
+      margin-right: 18px;
+
+      a {
+        display: inline-flex;
+        align-items: center;
+      }
+
+      span {
+        font-size: 10px;
+        margin-left: 6px;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}

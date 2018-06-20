@@ -1,0 +1,15 @@
+.mobile-nav-list {
+  padding: 15px 0;
+
+  &__item {
+    padding: 0 15px;
+    border-top: 1px solid #E0E0E0;
+    border-bottom: 1px solid #E0E0E0;
+    margin-bottom: -1px;
+    text-transform: uppercase;
+
+    &:last-child {
+      border: 0;
+    }
+  }
+}

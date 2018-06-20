@@ -1,0 +1,43 @@
+.wish-list {
+  &__item {
+    border-bottom: 1px solid $border-color--dark;
+    padding-bottom: 30px;
+    padding-top: 30px;
+
+    &__wrap {
+      display: flex;
+      margin-bottom: 18px;
+
+      @include media-breakpoint-up(lg) {
+        margin-bottom: 0;
+      }
+    }
+
+    &__info {
+      flex-grow: 1;
+      text-transform: uppercase;
+      font-weight: $font-weight--bold;
+      font-size: 16px;
+    }
+
+    &__actions {
+      display: flex;
+      flex-grow: 1;
+      justify-content: space-between;
+      margin-top: 24px;
+
+      .e-btn {
+        width: calc(50% - 8px);
+        padding: 0;
+      }
+    }
+
+    &__comment {
+      textarea {
+        height: 118px;
+        width: 100%;
+        margin-bottom: 8px;
+      }
+    }
+  }
+}

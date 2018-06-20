@@ -1,0 +1,131 @@
+.benefits {
+  height: auto;
+  background-color: $color--secondary;
+  color: $font-color__light--primary;
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+
+    @include media-breakpoint-up(md) {
+      flex-direction: row;
+      justify-content: space-around;
+    }
+
+    &__item {
+      display: flex;
+      height: 46px;
+      align-items: center;
+      font-size: 14px;
+      font-weight: $font-weight--bold;
+      text-transform: uppercase;
+
+      span {
+        margin-left: 16px;
+      }
+
+      @include media-breakpoint-up(md) {
+        height: 65px;
+      }
+    }
+  }
+}
+.footer,
+.sub-footer {
+  background-color: #262626;
+  color: $font-color__light--secondary;
+}
+
+.footer {
+  padding: 46px 0;
+
+  @include media-breakpoint-up(md) {
+    padding: 65px 0;
+  }
+
+  &__col {
+    font-size: 13px;
+    margin-bottom: 15px;
+
+    &__title {
+      font-size: 14px;
+      color: $font-color__light--primary;
+      font-weight: $font-weight--bold;
+      text-transform: uppercase;
+    }
+  }
+
+  &__list {
+    &__item {
+      margin-bottom: 4px;
+    }
+  }
+}
+
+.social-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  &__item {
+    height: 35px;
+    width: 35px;
+    flex-basis: 35px;
+    margin-right: 6px;
+
+    a {
+      position: relative;
+      display: flex;
+      height: 100%;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: $white;
+
+      &:hover::after {
+        opacity: .5;
+      }
+
+      &::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        height: 100%;
+        width: 100%;
+        content: "";
+        background-color: $white;
+        opacity: 0;
+        transition: opacity .1s;
+      }
+    }
+  }
+}
+
+.sub-footer {
+  height: 46px;
+  border-top: 1px solid $border-color--light;
+  font-size: 12px;
+
+  @include media-breakpoint-up(md) {
+    height: 65px;
+  }
+
+  &__container {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.e-cards-list {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+
+  img {
+    margin-right: 4px;
+  }
+}

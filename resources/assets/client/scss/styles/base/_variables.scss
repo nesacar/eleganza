@@ -1,0 +1,29 @@
+/* Colors */
+$black: #000;
+$white: #FFF;
+$red: #F8333F;
+
+$color--primary: $black;
+$color--secondary: $red;
+
+$border-color--dark: rgba($black, .12);
+$border-color--light: rgba($white, .12);
+
+/* Typography */
+/* font family */
+$font-family--montserrat: 'Montserrat', sans-serif;
+$font-family--fjalla: 'Fjalla One', sans-serif;
+
+/* font weights */
+$font-weight--light: 300;
+$font-weight--regular: 400;
+$font-weight--medium: 500;
+$font-weight--bold: 700;
+
+$font-color__dark--primary: rgba($black, .87);
+$font-color__dark--secondary: rgba($black, .54);
+$font-color__dark--ternary: rgba($black, .38);
+
+$font-color__light--primary: $white;
+$font-color__light--secondary: rgba($white, .7);
+$font-color__light--ternary: rgba($white, .5);

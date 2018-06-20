@@ -1,0 +1,54 @@
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    color: inherit;
+  }
+}
+
+
+body {
+  position: relative;
+  width: 100%;
+  overflow-x: hidden;
+  padding: 0;
+  margin: 0;
+  font-family: $font-family--montserrat;
+  background-color: $white;
+  font-size: 14px;
+  color: $font-color__dark--primary;
+}
+
+button {
+  border: 0;
+  outline: none;
+  background: none;
+  cursor: pointer;
+}
+
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+hr {
+  opacity: .3;
+}
+
+textarea:hover,
+textarea:focus {
+  border-color: black;
+  outline: none;
+}
+
+p span {
+  font-family: inherit !important;
+  font-size: inherit !important;
+}

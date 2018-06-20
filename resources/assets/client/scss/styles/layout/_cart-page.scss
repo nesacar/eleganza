@@ -1,0 +1,250 @@
+.cart {
+  &-section {
+    margin-bottom: 16px;
+    padding-bottom: 32px;
+
+    &:last-child {
+      border: 0;
+    }
+
+    h3,
+    h4 {
+      font-weight: $font-weight--medium;
+      text-transform: uppercase;
+    }
+
+    h3 {
+      font-size: 18px;
+    }
+
+    h4 {
+      font-size: 14px;
+    }
+  }
+
+  &-header {
+    display: none;
+    align-items: center;
+    height: 50px;
+    border-bottom: 1px solid $border-color--dark;
+    border-top: 1px solid $border-color--dark;
+
+    @include media-breakpoint-up(md) {
+      display: flex;
+    }
+
+    &__label {
+      display: flex;
+      height: 100%;
+      align-items: center;
+      text-transform: uppercase;
+      font-weight: $font-weight--bold;
+      font-size: 12px;
+
+      @include media-breakpoint-up(xl) {
+        font-size: 14px;
+      }
+
+      &--artikal {
+        width: 118px;
+      }
+
+      &--opis {
+        margin-right: auto;
+      }
+
+      &--kolicina,
+      &--cena {
+        margin-right: 50px;
+
+        @include media-breakpoint-up(lg) {
+          margin-right: 30px;
+        }
+
+        @include media-breakpoint-up(xl) {
+          margin-right: 68px;
+        }
+      }
+    }
+  }
+
+  &-nav {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    @include media-breakpoint-down(xs) {
+      .e-btn {
+        width: 100%;
+        margin-bottom: 8px;
+      }
+    }
+  }
+
+  &__promo {
+    p {
+      color: $font-color__dark--secondary;
+    }
+
+    .e-form__group {
+      flex-direction: row;
+      margin-bottom: 0;
+
+      .nl-input {
+        flex-grow: 1;
+      }
+    }
+  }
+
+  &__details {
+    border: 0;
+
+    .row > .col-lg-6 {
+      @include media-breakpoint-down(md) {
+        margin-bottom: 48px;
+      }
+    }
+  }
+
+  &__dostava {
+    background-color: #f0f0f0;
+    padding: 24px 15px;
+    min-height: 100%;
+  }
+
+  &__radio-list {
+    &__item {
+      display: flex;
+    }
+
+    &__option {
+      flex-grow: 1;
+      font-weight: $font-weight--medium;
+      font-size: 14px;
+      color: $font-color__dark--ternary;
+    }
+
+    &__radio {
+      display: flex;
+      align-items: center;
+
+      ~ div {
+        padding-left: 40px;
+      }
+
+      label {
+        color: $font-color__dark--primary;
+        font-weight: $font-weight--bold;
+        text-transform: uppercase;
+        font-size: 14px;
+        margin: 0;
+      }
+    }
+
+    &__value {
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      font-weight: $font-weight--bold;
+      text-transform: uppercase;
+      font-size: 14px;
+    }
+  }
+
+  &__receipt {
+    border-top: 1px solid $border-color--dark;
+
+    &__line {
+      display: flex;
+      height: 54px;
+      align-items: center;
+      justify-content: space-between;
+      color: $font-color__dark--primary;
+      font-weight: $font-weight--bold;
+      text-transform: uppercase;
+      font-size: 14px;
+      border-bottom: 1px solid $border-color--dark;
+
+      .big {
+        font-size: 22px;
+      }
+    }
+  }
+
+  &-list {
+    &__item {
+      padding: 18px 0;
+      border-bottom: 1px solid $border-color--dark;
+
+      &:last-child {
+        border: 0;
+      }
+
+      &__cell {
+        display: flex;
+        justify-content: flex-end;
+        font-weight: $font-weight--bold;
+
+        @include media-breakpoint-up(md) {
+          justify-content: space-between;
+        }
+      }
+
+      &__digit {
+        font-size: 13px;
+
+        text-transform: uppercase;
+      }
+
+      &__about {
+        flex-grow: 1;
+
+        label {
+          color: $font-color__dark--secondary;
+
+          span {
+            text-transform: uppercase;
+            font-weight: $font-weight--bold;
+          }
+        }
+      }
+
+      &__brand {
+        font-size: 10px;
+        font-weight: $font-weight--bold;
+        color: $font-color__dark--secondary;
+        text-transform: uppercase;
+        letter-spacing: 0.125em;
+        margin-bottom: 6px;
+
+        @include media-breakpoint-up(md) {
+          font-size: 13px;
+        }
+      }
+
+      &__model {
+        font-size: 16px;
+        font-weight: $font-weight--medium;
+        text-transform: uppercase;
+
+        @include media-breakpoint-up(md) {
+          font-size: 18px;
+        }
+      }
+
+      &__count {
+        input {
+          padding: 0 8px;
+          width: 42px;
+          text-align: center;
+          margin-bottom: 0;
+          margin-right: 8px;
+        }
+      }
+
+      &__digit {
+        padding-left: 18px;
+      }
+    }
+  }
+}

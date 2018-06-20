@@ -1,0 +1,142 @@
+.filters {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: 100%;
+  overflow-x: hidden;
+  overflow: auto;
+  height: 100%;
+
+  @include media-breakpoint-up(lg) {
+    height: auto;
+    width: 240px;
+  }
+
+  @include media-breakpoint-up(xl) {
+    width: 280px;
+  }
+
+  &-wrap {
+    margin-bottom: 8px;
+  }
+
+  &-holder {
+    flex-shrink: 0;
+
+    @include media-breakpoint-up(lg) {
+      overflow: hidden !important;
+      position: relative;
+      height: auto;
+      width: auto;
+      background: none;
+      opacity: 1;
+      pointer-events: auto;
+      transition: none;
+      z-index: 0;
+    }
+  }
+
+  &-drawer {
+    @include media-breakpoint-up(lg) {
+      overflow-y: hidden !important;
+      position: relative;
+      width: 100%;
+      transform: translateX(0);
+      transition: none;
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 0 12px;
+    height: 55px;
+    background-color: $color--primary;
+    color: $font-color__light--primary;
+    font-size: 18px;
+    font-weight: $font-weight--bold;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  &__body {
+    position: relative;
+    padding: 15px 15px 50px;
+
+    @include media-breakpoint-up(lg) {
+      margin-top: 8px;
+      padding: 15px;
+    }
+  }
+
+  &__submit-btn {
+    position: fixed;
+    bottom: 0;
+
+    @include media-breakpoint-up(lg) {
+      position: relative;
+    }
+  }
+}
+
+.filter {
+  width: 100%;
+  height: auto;
+  margin-bottom: 16px;
+
+  &__name {
+    padding: 8px 0;
+    font-size: 17px;
+    line-height: 21px;
+    font-weight: $font-weight--bold;
+    border-bottom: 1px dashed $color--primary;
+    text-transform: capitalize;
+  }
+}
+
+.filter-list {
+  display: flex;
+  flex-direction: column;
+
+  .collapse &,
+  .collapsing & {
+    padding-left: 28px;
+  }
+
+  &__item {
+    label {
+      margin: 0 0 0 8px;
+      text-transform: capitalize;
+    }
+  }
+}
+
+.e-slider {
+  margin: 0 auto;
+  width: calc(100% - 13px);
+
+  &__labels {
+    text-align: center;
+
+  }
+
+  &__label {
+    &::after {
+      display: inline;
+      margin-left: 4px;
+    }
+
+    &--kn {
+      &::after {
+        content: "kn";
+      }
+    }
+
+    &--mm {
+      &::after {
+        content: "mm";
+      }
+    }
+  }
+}

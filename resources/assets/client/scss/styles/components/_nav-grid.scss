@@ -1,0 +1,56 @@
+.nav-grid {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 12px;
+
+  &__item {
+    position: relative;
+    flex-basis: 100%;
+
+    @include media-breakpoint-up(md) {
+      flex-basis: 50%;
+    }
+
+    &::after {
+      display: block;
+      width: 100%;
+      padding-top: 100%;
+      content: "";
+    }
+
+    &__wrap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      padding: 12px;
+    }
+
+    &__content {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+
+      .center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      h3 {
+        font-size: 20px;
+        font-weight: $font-weight--medium;
+        text-transform: uppercase;
+        z-index: 3;
+        text-align: center;
+      }
+
+      img {
+        height: 100%;
+      }
+    }
+  }
+}

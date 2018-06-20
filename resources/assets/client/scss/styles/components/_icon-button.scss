@@ -1,0 +1,25 @@
+.icon-btn {
+  display: inline-flex;
+  flex-basis: 36px;
+  height: 36px;
+  width: 36px;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+  justify-content: center;
+
+  &--primary {
+    background-color: $color--primary;
+    color: $font-color__light--primary;
+  }
+
+  &--secondary {
+    background-color: $color--secondary;
+    color: $font-color__light--primary;
+  }
+
+  &--inverse {
+    border: 1px solid $color--primary;
+    color: $font-color__dark--primary;
+  }
+}

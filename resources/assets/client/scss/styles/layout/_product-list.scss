@@ -1,0 +1,39 @@
+.products {
+  &-container {
+    flex-grow: 1;
+    padding: 0 18px;
+  }
+
+  &-content {
+    display: flex;
+  }
+}
+
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding-top: 34px;
+
+  @include media-breakpoint-up(lg) {
+    padding-top: 54px;
+  }
+
+  &__item {
+    width: 50%;
+
+    @include media-breakpoint-up(xl) {
+      width: 33.3333%;
+    }
+
+    &--search {
+      @include media-breakpoint-up(lg) {
+        width: 33.3333%;
+      }
+
+      @include media-breakpoint-up(xl) {
+        width: 25%;
+      }
+    }
+  }
+}

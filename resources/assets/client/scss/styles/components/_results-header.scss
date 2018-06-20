@@ -1,0 +1,52 @@
+.results-header {
+  display: none;
+  align-items: center;
+  justify-content: space-around;
+  height: 55px;
+  background-color: #f5f5f5;
+  color: $font-color__dark--secondary;
+  font-weight: $font-weight--medium;
+
+  @include media-breakpoint-up(md) {
+    display: flex;
+  }
+
+  .e-select {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    background-color: inherit;
+
+    label,
+    select {
+      display: inline-flex;
+      align-items: center;
+      height: 100%;
+    }
+
+    label {
+      margin-right: 8px;
+    }
+  }
+}
+
+.e-page-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  width: 34px;
+  border: 0;
+  background-color: transparent;
+  color: inherit !important;
+
+  .page-item.active & {
+    background-color: rgba(0, 0, 0, .12);
+  }
+
+  .page-item.disabled & {
+    background-color: transparent;
+    color: $font-color__dark--ternary;
+  }
+}
