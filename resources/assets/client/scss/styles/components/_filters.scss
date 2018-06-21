@@ -98,16 +98,19 @@
 .filter-list {
   display: flex;
   flex-direction: column;
-
+  
   .collapse &,
   .collapsing & {
     padding-left: 28px;
   }
-
+  
   &__item {
+    overflow: hidden;
+
     label {
       margin: 0 0 0 8px;
       text-transform: capitalize;
+      white-space: nowrap;
     }
   }
 }

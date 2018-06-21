@@ -53,7 +53,7 @@
                                                     </svg>
                                                 </div>
                                             </div>
-                                            <label for="cb-{{$a->id }}">{{ $a->title }}</label>
+                                            <label title="{{$a->title}}" for="cb-{{$a->id }}">{{ $a->title }}</label>
                                         </div>
                                     @endif
                                 </li>
@@ -95,7 +95,7 @@
                                                     </svg>
                                                 </div>
                                             </div>
-                                            <label for="cb-{{$a->id }}">{{ $a->title }}</label>
+                                            <label title="{{$a->title}}" for="cb-{{$a->id }}">{{ $a->title }}</label>
                                         </div>
                                     @endif
                                 </li>

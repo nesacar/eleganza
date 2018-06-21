@@ -2783,6 +2783,8 @@ p span {
 }
 
 .e-checkbox {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
   position: relative;
   display: inline-block;
   height: 23px;
@@ -3805,9 +3807,14 @@ p span {
   padding-left: 28px;
 }
 
+.filter-list__item {
+  overflow: hidden;
+}
+
 .filter-list__item label {
   margin: 0 0 0 8px;
   text-transform: capitalize;
+  white-space: nowrap;
 }
 
 .e-slider {
