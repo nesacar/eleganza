@@ -32,10 +32,19 @@ return array(
         'height' => 80,
         'method' => 'crop',
     ),
+    '173x231' => array(
+        'width' => 173,
+        'height' => 231,
+        'method' => 'crop',
+    ),
     '315x420' => array(
         'width' => 315,
         'height' => 420,
         'method' => 'crop',
     ),
-
+    '350x466' => array(
+        'width' => 350,
+        'height' => 466,
+        'method' => 'crop',
+    ),
 );

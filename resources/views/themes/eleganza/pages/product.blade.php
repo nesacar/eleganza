@@ -8,7 +8,9 @@
 
     <div>
         <div class=container>
-            {!! $breadcrumb !!}
+            @if(!empty($breadcrumb))
+                {!! $breadcrumb !!}
+            @endif
         </div>
     </div>
 
@@ -28,12 +30,12 @@
                     <div class="col-xl-3">
                         <div class="owl-thumbs" data-slider-id="image-box">
                             <div class="e-image e-image--11 e-owl-thumbnail owl-thumb-item">
-                                {!! HTML::Image($product->image, $product->title) !!}
+                                <img src="{{ url(\Imagecache::get($product->image, '50x73')->src) }}" alt="{{ $product->title }}">
                             </div>
                             @if(count($images)>0)
                                 @foreach($images as $image)
                                     <div class="e-image e-image--11 e-owl-thumbnail owl-thumb-item">
-                                        {!! HTML::Image($image->file_path, $product->title) !!}
+                                        <img src="{{ url(\Imagecache::get($image->file_path, '50x73')->src) }}" alt="{{ $product->title }}">
                                     </div>
                                 @endforeach
                             @endif
@@ -106,7 +108,7 @@
                             dodaj u listu zelja
                         </button>
                     </div>
-                    @if(count($similar)>0)
+                    @if(!empty($similar) && count($similar)>0)
                         <div class="product-info__section product__alt-colors">
                             <p class="product__hint-text">proizvod je dostupan i u drugim bojama</p>
                             <ul class="product__alt-colors__list">
@@ -167,7 +169,7 @@
                         <li class="product-item similar-list__item with-shadow">
                             <a href="{{ $p->getLink() }}">
                                 <div class="product-item__img-box">
-                                    {!! HTML::Image($p->image, $p->title) !!}
+                                    <img src="{{ url(\Imagecache::get($p->image, '173x231')->src) }}" alt="{{ $p->title }}">
                                 </div>
                                 <div class="product-item__info-box">
                                     <h2 class="product-item__name">{{ $p->title }}</h2>
