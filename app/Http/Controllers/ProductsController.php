@@ -574,7 +574,7 @@ class ProductsController extends Controller {
         $product = Product::find($product_id);
         $exploaded = explode(',', request('image'));
         $data = base64_decode($exploaded[1]);
-        $filename = $product->slug . '-' . $product->id . '.jpg';
+        $filename = $product->slug . '-' . $product->id . '-' . str_random(2) . '.jpg';
         $path = public_path('images/products/');
         file_put_contents($path . $filename, $data);
         $product->image = 'images/products/' . $filename;
