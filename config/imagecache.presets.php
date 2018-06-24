@@ -22,10 +22,20 @@
  */
 return array(
 
-  '80x80' => array(
-    'width' => 80,
-    'height' => 80,
-    'method' => 'crop',
-  ),
+    '50x73' => array(
+        'width' => 50,
+        'height' => 73,
+        'method' => 'crop',
+    ),
+    '80x80' => array(
+        'width' => 80,
+        'height' => 80,
+        'method' => 'crop',
+    ),
+    '315x420' => array(
+        'width' => 315,
+        'height' => 420,
+        'method' => 'crop',
+    ),
 
 );

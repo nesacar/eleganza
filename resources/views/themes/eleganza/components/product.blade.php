@@ -6,7 +6,8 @@
     </ul>
     <a href="{{ $product->getLink() }}">
         <div class=product-item__img-box>
-            {!! HTML::Image($product->image, $product->title) !!}
+            <img src="{{ url(\Imagecache::get($product->image, '315x420')->src) }}" alt="{{ $product->title }}">
+            {{--{!! HTML::Image($product->image, $product->title) !!}--}}
         </div>
         <div class=product-item__info-box>
             <span class=product-item__brand>@if(isset($product->brand)) {{ $product->brand->title }} @endif</span>

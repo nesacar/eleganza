@@ -10,13 +10,13 @@ return array(
    * The location of the directory where you keep your uploaded images on the
    * site relative to the public_path option
    */
-  'files_directory' => 'uploads/',
+  'files_directory' => '/',
 
   /**
    * The location of the directory where you would like to store
    * the rendered Imagecache files relative to the public_path option
    */
-  'imagecache_directory' => 'uploads/imagecache/',
+  'imagecache_directory' => 'storage/imagecache/',
 
   /**
    * The name of the field to check for a filename if passing an array

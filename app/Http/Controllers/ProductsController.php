@@ -193,22 +193,6 @@ class ProductsController extends Controller {
 		$product = Product::find($id);
 		$product->update(request()->except('image'));
 
-
-//        if($request->file('image')){
-//            $imageName = $product->slug.'-'.$product->id . '.' . $request->file('image')->getClientOriginalExtension();
-//            $imagePath = 'images/products/'.$imageName;
-//
-//            $filename  = $product->slug.'-'.$product->id . '.' . $request->file('image')->getClientOriginalExtension();
-//            $path = public_path('images/products/tmb/' . $filename);
-//            \Image::make($request->file('image')->getRealPath())->fit(270, 400)->save($path);
-//
-//            $request->file('image')->move(base_path() . '/public/images/products/', $imageName);
-//            $product->image = $imagePath;
-//            $product->tmb = 'images/products/tmb/' . $filename;
-//
-//            $product->update();
-//        }
-
         $product->featured = request('featured')?: 0;
         $product->publish = request('publish')?: 0;
 		$product->price_outlet = Product::calculateDiscount($product->price_small, request('discount'));
@@ -590,18 +574,17 @@ class ProductsController extends Controller {
         $product = Product::find($product_id);
         $exploaded = explode(',', request('image'));
         $data = base64_decode($exploaded[1]);
-        $filename = $product->{'slug:hr'} . '-' . $product->id . '.jpg';
+        $filename = $product->slug . '-' . $product->id . '.jpg';
         $path = public_path('images/products/');
-        $tmbPath = public_path('images/products/tmb/');
         file_put_contents($path . $filename, $data);
         $product->image = 'images/products/' . $filename;
 
-        Helper::setProductTmbImage($product);
-        $product->tmb = 'images/products/tmb/' . $filename;
+        //Helper::setProductTmbImage($product);
+        //$product->tmb = 'images/products/tmb/' . $filename;
         $product->update();
 
         return response()->json([
-            'image' => url($product->tmb)
+            'image' => url(\Imagecache::get($product->image, '50x73')->src),
         ]);
     }
 

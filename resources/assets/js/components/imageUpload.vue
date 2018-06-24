@@ -11,6 +11,8 @@
 </template>
 
 <script>
+    import { domain } from './../domain.config';
+
     export default {
         props: ['product_id'],
         data(){

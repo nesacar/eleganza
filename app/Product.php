@@ -31,11 +31,11 @@ class Product extends Model {
      * @var array
      */
 
-    protected $fillable = ['brand_id', 'user_id', 'set_id', 'title', 'slug', 'short', 'body', 'body2', 'code', 'image', 'tmb', 'price_small', 'price_outlet', 'diameter', 'water', 'views', 'amount', 'color', 'featured', 'discount', 'sold', 'publish_at', 'publish'];
+    protected $fillable = ['brand_id', 'user_id', 'set_id', 'title', 'slug', 'short', 'body', 'body2', 'code', 'image', 'price_small', 'price_outlet', 'diameter', 'water', 'views', 'amount', 'color', 'featured', 'discount', 'sold', 'publish_at', 'publish'];
 
     protected static $searchable = ['filters', 'minPrice', 'maxPrice', 'minWater', 'maxWater', 'minPromer', 'MaxPromer'];
 
-    protected $appends = ['fullImagePath', 'link'];
+    protected $appends = ['fullImagePath', 'link', 'tmb'];
 
     /**
      * The "booting" method of the model.
@@ -100,6 +100,10 @@ class Product extends Model {
 
     public function getLinkAttribute(){
         return $this->getLink();
+    }
+
+    public function getTmbAttribute(){
+        return url(\Imagecache::get($this->image, '50x73')->src);
     }
 
     public static function getAtt($product_id, $category_id){

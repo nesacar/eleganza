@@ -111,10 +111,8 @@
                                         {{ $p->code }}
                                     </div>
                                     <div class="col-md-1">
-                                        @if($p->tmb != null || $p->tmb != '')
-                                            {!! HTML::image($p->tmb, '', ['class' => 'thumb']) !!}
-                                        @elseif($p->image != null || $p->image != '')
-                                            {!! HTML::image($p->image, '', ['class' => 'thumb']) !!}
+                                        @if($p->image)
+                                            <img src="{{ url(\Imagecache::get($p->image, '50x73')->src) }}" alt="{{ $p->title }}" class="thumb">
                                         @else
                                             <image-upload :product_id="{{ $p->id }}"></image-upload>
                                         @endif
@@ -123,7 +121,7 @@
                                         {{ $p->price_small }} RSD
                                     </div>
                                     <div class="col-md-2 ima-padding">
-                                        {{ $p->category->first()->title }}
+                                        {{ $p->category->first()? $p->category->first()->title : 'Bez kategorije' }}
                                     </div>
                                     <div class="col-md-1 ima-padding2">
                                         {!! Form::checkbox('publish', 1, $p->publish, ['id' => $p->id, 'name' => 'primary[]', 'class' => 'switch-state', 'data-on-color' => 'success', 'data-off-color' => 'danger', 'data-on-text' => 'DA', 'data-off-text' => 'NE']) !!}
