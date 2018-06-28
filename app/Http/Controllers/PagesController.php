@@ -862,12 +862,12 @@ class PagesController extends Controller
     }
 
     public function proba(){
-//        $br = session('br3')?: 100;
-//        $product = Product::where('image', '<>', null)->orderBy('id', 'ASC')->skip($br)->first();
-//        if(!empty($product)){
-//            session(['br3' => ++$br]);
-//            return url(\Imagecache::get($product->image, '315x420')->src);
-//        }
+        $br = session('br4')?: 0;
+        $product = Product::where('image', '<>', null)->orderBy('id', 'ASC')->skip($br)->first();
+        if(!empty($product)){
+            session(['br4' => ++$br]);
+            return url(\Imagecache::get($product->image, '173x231')->src);
+        }
 
         return 'done';
     }
