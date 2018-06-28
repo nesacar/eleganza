@@ -71,42 +71,9 @@ class PagesController extends Controller
                 $props1 = null;
                 $props2 = null;
             }
-            //return MenuLink::tree(3);
             $data = Product::search($category);
-            //$topParent = PCategory::getTopParentBySlug($slug);
-//            $bred = Category::getBredcrumb($category->id);
-//            $bred = array_reverse($bred);
-//            $categories = Category::where('level', $category->level)->where('publish', 1)->orderby('order', 'ASC')->get();
-//
-//            request('filters') ? $filters = request('filters') : $filters = [];
-//            //request('price') ? $price = (explode(",",request('price'))) : $price = (explode(",", "0,0"));
-//            request('min-price') ? $price[0] = request('max-price') : $price[0] = 0;
-//            request('max-price') ? $price[1] = request('max-price') : $price[1] = 0;
-//            request('min-promer') ? $promer[0] = request('min-promer') : $promer[0] = 0;
-//            request('max-promer') ? $promer[1] = request('max-promer') : $promer[1] = 0;
-//            request('min-water') ? $water[0] = request('min-water') : $water[0] = 0;
-//            request('max-water') ? $water[1] = request('max-water') : $water[1] = 0;
-//            request('sort') ? $sort = request('sort') : $sort = 2;
-//            request('page') ? $page = request('page') : $page = 1;
-//            request('limit') ? $limit = request('limit') : $limit = 9;
-//
-//            $count = Property::countPropertyFilter($filters);
-//            $products = Product::filteredProducts($category->id, $filters, $sort, $price[0], $price[1], $promer[0], $promer[1], $water[0], $water[1]);
-//
-//            $filteri = Product::getFiltersByCategory($category->id);
-//
-//            if($count > 0){
-//                $oo = Property::sredi($filters);
-//                $products = Product::filtered($products, $count, $limit, $sort, $oo);
-//            }else{
-//                $products = Product::paginateRender($products, $limit, $sort);
-//            }
-
-            //$max = Product::newMaxPrice($category->id, $filters);
             $theme = Theme::where('active', 1)->first();
             $settings = Setting::find(1);
-            //$topCat = [];
-            //$active = $slug;
             $s2 = null; $s3 = null; $s4 = null;
             return view('themes.'.$theme->slug.'.pages.shop-category', compact('category', 'topParent', 'bred', 'categories', 's1', 's2', 's3', 's4', 'products', 'filters', 'featured', 'settings', 'theme', 'topCat', 'active', 'filteri', 'props1', 'props2', 'max', 'price', 'set', 'data'));
         }else{
@@ -895,7 +862,14 @@ class PagesController extends Controller
     }
 
     public function proba(){
-        return 'done2';
+//        $br = session('br3')?: 100;
+//        $product = Product::where('image', '<>', null)->orderBy('id', 'ASC')->skip($br)->first();
+//        if(!empty($product)){
+//            session(['br3' => ++$br]);
+//            return url(\Imagecache::get($product->image, '315x420')->src);
+//        }
+
+        return 'done';
     }
 
     public function eleganza(){
