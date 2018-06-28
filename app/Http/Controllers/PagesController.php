@@ -894,13 +894,9 @@ class PagesController extends Controller
         return redirect()->back()->with('done', 'Uspešno ste se prijavili');
     }
 
-//    public function proba(){
-//        $products = Product::where('id', '>', 422)->get();
-//        foreach ($products as $product){
-//            $product->update(['image' => null]);
-//        }
-//        return 'done';
-//    }
+    public function proba(){
+        return 'done2';
+    }
 
     public function eleganza(){
         $settings = Setting::first();
