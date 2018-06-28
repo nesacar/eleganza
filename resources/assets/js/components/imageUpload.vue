@@ -28,15 +28,19 @@
         methods:{
             setUpFileUploader(e){
                 this.loader = true;
+                let data = new FormData();
+
+                let file = e.target.files[0];
                 let reader = new FileReader();
                 let files = e.target.files;
                 if(!files.length){
                     return
                 }
                 reader.readAsDataURL(files[0]);
+
                 reader.onload = (e) => {
-                    this.image = e.target.result;
-                    axios.post('/admin/products/' + this.product_id + '/upload', { image: this.image }).then(response => {
+                    data.append('file', file);
+                    axios.post('/admin/products/' + this.product_id + '/upload', data).then(response => {
                         this.showImage = true;
                         this.loader = false;
                         this.image = response.data.image;

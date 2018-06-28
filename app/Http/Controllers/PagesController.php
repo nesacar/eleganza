@@ -894,10 +894,13 @@ class PagesController extends Controller
         return redirect()->back()->with('done', 'Uspešno ste se prijavili');
     }
 
-    public function proba(){
-
-        return Product::where('image', '<>', null)->count();
-    }
+//    public function proba(){
+//        $products = Product::where('id', '>', 422)->get();
+//        foreach ($products as $product){
+//            $product->update(['image' => null]);
+//        }
+//        return 'done';
+//    }
 
     public function eleganza(){
         $settings = Setting::first();
@@ -1066,6 +1069,12 @@ class PagesController extends Controller
         return \Cart::content()->search(function ($cartItem, $rowId) use ($product) {
             return $cartItem->id === $product->id;
         });
+    }
+
+    public function instaShop(){
+        $theme = Theme::where('active', 1)->first();
+        $instaShops = InstaShop::orderBy('order', 'ASC')->paginate(50);
+        return view('themes.'.$theme->slug.'.pages.instashop', compact('theme', 'instaShops'));
     }
 
 }

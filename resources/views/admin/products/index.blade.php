@@ -112,7 +112,8 @@
                                     </div>
                                     <div class="col-md-1">
                                         @if($p->image)
-                                            <img src="{{ url(\Imagecache::get($p->image, '50x73')->src) }}" alt="{{ $p->title }}" class="thumb">
+                                            {{--<a href="{{ url($p->image) }}" target="_blank"><img src="{{ url(\Imagecache::get($p->image, '50x73')->src) }}" alt="{{ $p->title }}" class="thumb"></a>--}}
+                                            <a href="{{ url($p->image) }}" target="_blank"><img src="{{ url($p->image) }}" alt="{{ $p->title }}" class="thumb"></a>
                                         @else
                                             <image-upload :product_id="{{ $p->id }}"></image-upload>
                                         @endif

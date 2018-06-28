@@ -31,7 +31,7 @@ class Post extends Model
 
     public function getLink(){
         $str = '';
-        if(count($this->pcategory())>0){
+        if(!empty($this->pcategory)){
             foreach ($this->pcategory as $category){
                 $str .= $category->slug . '/';
             }

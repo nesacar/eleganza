@@ -2,7 +2,7 @@
     <div class="container e-card-container instashop">
         <div class="e-card-wrap">
             <div class="instashop__wrap e-card">
-                <h3 class="e-subheading">#instashop</h3>
+                <h3 class="e-subheading"><a href="{{ url('instashop') }}">#instashop</a></h3>
                 <p>Pokazite nam kako nosite proizvode iz nase kolekcije. #ELEGANZA</p>
 
                 <div class="instashop-list js-grid">

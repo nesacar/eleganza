@@ -571,17 +571,20 @@ class ProductsController extends Controller {
     }
 
     public function upload($product_id){
-        $product = Product::find($product_id);
-        $exploaded = explode(',', request('image'));
-        $data = base64_decode($exploaded[1]);
-        $filename = $product->slug . '-' . $product->id . '-' . str_random(2) . '.jpg';
-        $path = public_path('images/products/');
-        file_put_contents($path . $filename, $data);
-        $product->image = 'images/products/' . $filename;
+//        $product = Product::find($product_id);
+//        $exploaded = explode(',', request('image'));
+//        $data = base64_decode($exploaded[1]);
+//        $filename = $product->slug . '-' . $product->id . '-' . str_random(2) . '.jpg';
+//        $path = public_path('images/products/');
+//        file_put_contents($path . $filename, $data);
+//        $product->image = 'images/products/' . $filename;
+//
+//        //Helper::setProductTmbImage($product);
+//        //$product->tmb = 'images/products/tmb/' . $filename;
+//        $product->update();
 
-        //Helper::setProductTmbImage($product);
-        //$product->tmb = 'images/products/tmb/' . $filename;
-        $product->update();
+        $product = Product::find($product_id);
+        $product->update(['image' => $product->storeImage('file')]);
 
         return response()->json([
             'image' => url(\Imagecache::get($product->image, '50x73')->src),

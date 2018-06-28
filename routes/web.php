@@ -12,9 +12,7 @@
 */
 
 
-Route::get('/instashop', function() {
-  return view('themes.eleganza.pages.instashop');
-});
+Route::get('/instashop', 'PagesController@instaShop');
 
 Route::get('/', 'PagesController@index');
 Route::get('pretraga', 'PagesController@search');

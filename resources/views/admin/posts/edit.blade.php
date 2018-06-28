@@ -51,7 +51,7 @@
                     <div class="form-group">
                         @if($post->image != null && $post->image != '')
                             <div class="place">
-                                <img src="{{ url($post->image) }}" alt="{{ $post->title }}" style="margin-bottom: 10px">
+                                <img src="{{ url($post->image) }}" alt="{{ $post->title }}" style="max-width: 250px;margin-bottom: 10px">
                                 <a class="btn btn-danger remove" href="{{ url('admin/posts/'.$post->id.'/deleteimg') }}">Obriši sliku</a>
                             </div>
                         @else
@@ -195,15 +195,4 @@
         }
     @endif
 
-    $('input[type="submit"]:not(".lang")').hover(function(){
-        $(this).parent().parent().parent().parent().parent().addClass('active');
-    }, function(){
-        $(this).parent().parent().parent().parent().parent().removeClass('active');
-    });
-
-    $('.lang').hover(function(){
-        $(this).parent().parent().parent().parent().parent().parent().parent().addClass('active');
-    }, function(){
-        $(this).parent().parent().parent().parent().parent().parent().parent().removeClass('active');
-    });
 @endsection
