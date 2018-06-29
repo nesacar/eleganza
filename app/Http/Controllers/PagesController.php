@@ -15,6 +15,7 @@ use App\Http\Requests\SendKontaktFormRequest;
 use App\Http\Requests\SubscribeRequest;
 use App\InstaShop;
 use App\Mail\OrderIsReadyMail;
+use App\Mail\TestMail;
 use App\MenuLink;
 use App\Newsletter;
 use App\PCategory;
@@ -862,12 +863,13 @@ class PagesController extends Controller
     }
 
     public function proba(){
-        $br = session('br4')?: 0;
-        $product = Product::where('image', '<>', null)->orderBy('id', 'ASC')->skip($br)->first();
-        if(!empty($product)){
-            session(['br4' => ++$br]);
-            return url(\Imagecache::get($product->image, '173x231')->src);
-        }
+
+//        $br = session('br4')?: 0;
+//        $product = Product::where('image', '<>', null)->orderBy('id', 'ASC')->skip($br)->first();
+//        if(!empty($product)){
+//            session(['br4' => ++$br]);
+//            return url(\Imagecache::get($product->image, '173x231')->src);
+//        }
 
         return 'done';
     }
