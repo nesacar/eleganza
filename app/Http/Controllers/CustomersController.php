@@ -27,7 +27,7 @@ class CustomersController extends Controller
     }
 
     public function cartUpdate(Request $request){
-        //return request()->all();
+//        return request()->all();
         $theme = Theme::where('active', 1)->first();
 
         for($i=0;$i<count(request('ids'));$i++){
@@ -47,8 +47,13 @@ class CustomersController extends Controller
         $cart = \App\Cart::storeCart(auth()->user()->customer->id, (float) $sum + $omot, 0, $discount);
         Product::removeFromCart();
 
-        \Mail::to(auth()->user()->email)->send(new OrderIsReadyMail(auth()->user(), $theme, $cart));
-        \Mail::to(Setting::first()->email1)->send(new OrderIsReadyMail(auth()->user(), $theme, $cart));
+        $coupon = $cart->coupon? Coupon::where('code', $cart->coupon)->first() : null;
+
+        session()->forget('coupon');
+        session()->forget('discount');
+
+        \Mail::to(auth()->user()->email)->send(new OrderIsReadyMail(auth()->user(), $theme, $cart, $coupon));
+        \Mail::to(Setting::first()->email1)->send(new OrderIsReadyMail(auth()->user(), $theme, $cart, $coupon));
 
         return redirect('moje-narudzbine')->with('done', 'Vaša košarica je naručena');
     }
@@ -74,6 +79,7 @@ class CustomersController extends Controller
         $theme = Theme::where('active', 1)->first();
         $cart = Cart::with('Product')->with('Customer')->where('customer_id', auth()->user()->customer->id)->where('id', $id)->first();
         if(empty($cart)) return redirect('/profile');
-        return view('themes.'.$theme->slug.'.pages.order', compact('settings', 'theme', 'cart'));
+        $coupon = $cart->coupon? Coupon::where('code', $cart->coupon)->first() : null;
+        return view('themes.'.$theme->slug.'.pages.order', compact('settings', 'theme', 'cart', 'coupon'));
     }
 }

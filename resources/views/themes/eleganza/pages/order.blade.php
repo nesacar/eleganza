@@ -140,6 +140,11 @@
                     </div>
 
                     <div class="order__receipt">
+                        @if(!empty($coupon))
+                            <div class="order__receipt-detail">
+                                <div>Primenjen je popust sa kodom: {{ $coupon->code }}</div><div>{{ $coupon->discount }} %</div>
+                            </div>
+                        @endif
                         <div class="order__receipt-detail">
                             <div>Cijena sa PDV-om</div><div>{{ $cart->sum }} KHR</div>
                         </div>

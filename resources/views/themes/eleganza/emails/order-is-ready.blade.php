@@ -598,6 +598,11 @@
                             <tr>
                                 <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                                     <div style="font-family:Helvetica;font-size:21px;line-height:1.4;text-align:left;color:rgba(0, 0, 0, .87);">
+                                        @if(!empty($coupon))
+                                            <div class="row">
+                                                <span>Primenjen je popust sa kodom</span> <span style="float: right;">{{ $coupon->code }}<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">Popust: {{ $coupon->discount }} %</i></span>
+                                            </div>
+                                        @endif
                                         <div class="row">
                                             <span>Cijena sa PDV-om</span> <span style="float: right;">{{ $cart->sum }}<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
                                         </div>

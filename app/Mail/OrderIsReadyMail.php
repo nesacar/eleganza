@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Cart;
+use App\Coupon;
 use App\Theme;
 use App\User;
 use Illuminate\Bus\Queueable;
@@ -17,17 +18,19 @@ class OrderIsReadyMail extends Mailable
     public $user;
     public $theme;
     public $cart;
+    public $coupon;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $user, Theme $theme, Cart $cart)
+    public function __construct(User $user, Theme $theme, Cart $cart, Coupon $coupon)
     {
         $this->user = $user;
         $this->theme = $theme;
         $this->cart = $cart;
+        $this->coupon = $coupon;
     }
 
     /**

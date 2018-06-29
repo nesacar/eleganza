@@ -202,7 +202,8 @@
                 console.log(code);
                 $.post('{{ url('coupon') }}', {_token: '{{ csrf_token() }}', code: code }, function(data){
                     if(data == 'done'){
-                        location.reload();
+                        $().toastmessage('showSuccessToast', "kupon je primenjen");
+                        //location.reload();
                     }else{
                         $().toastmessage('showWarningToast', "Kupon nije ispravan");
                     }
