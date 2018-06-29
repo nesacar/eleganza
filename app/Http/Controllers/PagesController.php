@@ -863,7 +863,6 @@ class PagesController extends Controller
     }
 
     public function proba(){
-
 //        $br = session('br4')?: 0;
 //        $product = Product::where('image', '<>', null)->orderBy('id', 'ASC')->skip($br)->first();
 //        if(!empty($product)){
@@ -934,7 +933,7 @@ class PagesController extends Controller
         $settings = Setting::first();
         $theme = Theme::where('active', 1)->first();
         $cookie = Product::getCookie();
-        count($cookie)>0? $products = Product::with('Brand')->whereIn('id', $cookie)->where('publish', 1)->get() : $products = [];
+        !empty($cookie)>0? $products = Product::with('Brand')->whereIn('id', $cookie)->where('publish', 1)->get() : $products = [];
         return view('themes.'.$theme->slug.'.pages.wishList', compact('settings', 'theme', 'products'));
     }
 
@@ -956,7 +955,11 @@ class PagesController extends Controller
     }
 
     public function addToWishList($id){
-        return Product::addToWishList($id);
+        Product::addToWishList($id);
+
+        return response([
+            'message' => 'added'
+        ], 200);
     }
 
     public function removeFromWishList($id){

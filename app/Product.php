@@ -886,7 +886,7 @@ class Product extends Model {
         $array = array();
         $old = $cookie->get('eleganza');
         $br = true;
-        if(count($old)>0){
+        if(!empty($old)>0){
             foreach($old as $o){
                 if($o == $id){
                     $br = false;
