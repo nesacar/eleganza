@@ -62,7 +62,11 @@ class CustomersController extends Controller
         if($discount = Coupon::getDiscount(request('code'))){
             \Session::put('discount', $discount);
             \Session::put('coupon', request('code'));
-            return 'done';
+            $coupon = Coupon::where('code', request('code'))->first();
+            return response([
+                'message' => 'done',
+                'coupon' => $coupon,
+            ]);
         }
         return 'error';
     }

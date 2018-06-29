@@ -141,6 +141,7 @@ class Cart extends Model {
         $cart->sum = $suma;
         $cart->status = $pay;
         $cart->payment_id = 1;
+        $cart->discount = \Session::has('discount')? \Session::get('discount') : null;
         $cart->coupon = \Session::has('coupon')? \Session::get('coupon') : null;
         $cart->delivery = request('delivery')? 1 : 0;
         $cart->save();

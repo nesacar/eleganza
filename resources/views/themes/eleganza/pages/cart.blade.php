@@ -87,6 +87,7 @@
                     </ul>
                 </div>
 
+                @if((!session()->has('coupon')))
                 <div class="cart__promo cart-section">
                     <h3>promo kod</h3>
                     <div class="row">
@@ -100,6 +101,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
                 <div class="cart__details cart-section">
                     <h3>dostava</h3>
                     <div class="row">
@@ -143,7 +145,7 @@
                                 </div>
                                 <div class="cart__receipt__line">
                                     <div>popust</div>
-                                    <div>hrk <span id="popust">0.00</span></div>
+                                    <div>hrk <span id="popust">0 %</span></div>
                                 </div>
                                 <div class="cart__receipt__line">
                                     <div>sveukupno</div>
@@ -201,11 +203,13 @@
                 var code = $(this).parent().find('input[type="text"]').val();
                 console.log(code);
                 $.post('{{ url('coupon') }}', {_token: '{{ csrf_token() }}', code: code }, function(data){
-                    if(data == 'done'){
-                        $().toastmessage('showSuccessToast', "kupon je primenjen");
-                        //location.reload();
-                    }else{
+                    if(data == 'error'){
                         $().toastmessage('showWarningToast', "Kupon nije ispravan");
+                    }else{
+                        console.log(data.coupon);
+                        $().toastmessage('showSuccessToast', "kupon je primenjen: " + data.coupon.discount + ' %');
+                        $('#popust').text(data.coupon.discount + ' %');
+                        $('.cart__promo').css({'display': 'none'});
                     }
                 });
             });
