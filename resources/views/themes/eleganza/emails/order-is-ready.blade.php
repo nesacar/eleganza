@@ -356,6 +356,7 @@
             <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
     <![endif]-->
     <div style="Margin:0px auto;max-width:600px;">
+        @if(false)
         <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
             <tbody>
             <tr>
@@ -412,13 +413,94 @@
             </tr>
             </tbody>
         </table>
+            @endif
     </div>
     <!--[if mso | IE]>
     </td>
     </tr>
     </table>
-
     @endforeach
+
+    <!-- OPIS CELE KORPE -->
+
+        <table
+                align="center" border="0" cellpadding="0" cellspacing="0" style="width:600px;" width="600"
+        >
+            <tr>
+                <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
+                    <![endif]-->
+                    <div style="Margin:0px auto;max-width:600px;">
+
+                    <table
+                            align="center" border="0" cellpadding="0" cellspacing="0" style="width:600px;" width="600"
+                    >
+                        <tr>
+                            <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
+                    <![endif]-->
+                    <div style="Margin:0px auto;max-width:600px;">
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+                            <tbody>
+                            <tr>
+                                <td style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;vertical-align:top;">
+                                    <!--[if mso | IE]>
+                                    <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+
+                                        <tr>
+
+                                            <td
+                                                    style="vertical-align:bottom;width:450px;"
+                                            >
+                                    <![endif]-->
+                                    <div class="mj-column-per-75 outlook-group-fix" style="font-size:13px;text-align:left;direction:ltr;display:inline-block;vertical-align:bottom;width:100%;">
+                                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:bottom;" width="100%">
+                                            <tr>
+                                                <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                    <div style="font-family:Helvetica;font-size:16px;line-height:1.5;text-align:left;color:rgba(0, 0, 0, .87);">
+                                                        <span class="order-details" style="font-weight: bold;">Broj narudžbe: </span>
+                                                        <span id="order-id">{{ $cart->id }}</span><br> <span class="order-details" style="font-weight: bold;">Datum narudžbe: </span>
+                                                        <span id="order-date">{{ \Carbon\Carbon::parse($cart->publish_at)->format('d/m/Y h:m:s') }}</span>
+                                                        <br>
+                                                        <span class="order-details" style="font-weight: bold;">Način plaćanja: </span>
+                                                        <span id="order-payment">@if($cart->delivery == 0) Placanje prillikom preuzimanja @endif</span>
+                                                        <br>
+                                                        <span class="order-details" style="font-weight: bold;">Način dostave: </span>
+                                                        <span id="order-shipping">DHL</span>
+                                                        <br>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                                    <div style="font-family:Helvetica;font-size:16px;line-height:1.5;text-align:left;color:rgba(0, 0, 0, .87);">
+                                                        <span class="order-details" style="font-weight: bold;">Email: </span>
+                                                        <span id="email">{{ $user->email }}</span>
+                                                        <br>
+                                                        <span class="order-details" style="font-weight: bold;">Telefon: </span>
+                                                        <span id="telephone">{{ $user->customer->phone }}</span>
+                                                        <br>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <!--[if mso | IE]>
+                                    </td>
+
+                                    </tr>
+
+                                    </table>
+                                    <![endif]-->
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--[if mso | IE]>
+                    </td>
+                    </tr>
+                    </table>
+
+                    <!-- KRAJ OPIS CELE KORPE -->
 
     <!-- kraj liste proizvoda -->
 
@@ -517,22 +599,24 @@
                                 <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                                     <div style="font-family:Helvetica;font-size:21px;line-height:1.4;text-align:left;color:rgba(0, 0, 0, .87);">
                                         <div class="row">
-                                            <span>Cijena bez PDV-a</span> <span style="float: right;">{{ $cart->sum }}<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
+                                            <span>Cijena sa PDV-om</span> <span style="float: right;">{{ $cart->sum }}<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
                                         </div>
                                         <div class="row">
                                             <span>Poštarina</span> <span style="float: right;">0<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
                                         </div>
                                         <div class="row">
-                                            <span>Naknada za plaćanje pouzećem</span> <span style="float: right;">6<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
+                                            <span>Naknada za plaćanje pouzećem</span> <span style="float: right;">0<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
                                         </div>
+                                        @if(false)
                                         <div class="row">
                                             <span>Kupon bez PDV-a (25% Disc.)</span> <span style="float: right;">-114<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
                                         </div>
                                         <div class="row">
                                             <span>PDV (20%)</span> <span style="float: right;">{{ ceil($cart->sum * 0.2) }}<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
                                         </div>
+                                        @endif
                                         <div class="row total" style="display: flex; justify-content: space-between; color: #F8333F; font-size: 28px; font-weight: bold; margin-bottom: 30px;">
-                                            <span>Ukupno</span> <span style="float: right;">{{ $cart->sum + ceil($cart->sum * 0.2) }}<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
+                                            <span>Ukupno</span> <span style="float: right;">{{ $cart->sum }}<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">hrk</i></span>
                                         </div>
                                     </div>
                                 </td>

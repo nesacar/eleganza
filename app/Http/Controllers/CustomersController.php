@@ -7,6 +7,7 @@ use App\Coupon;
 use App\Customer;
 use App\Http\Requests\CustomerRegisterRequest;
 use App\Http\Requests\EnterCouponRequest;
+use App\Mail\OrderIsReadyMail;
 use App\Product;
 use App\Setting;
 use App\Theme;
@@ -42,9 +43,13 @@ class CustomersController extends Controller
         }else{
             $discount = 0;
         }
-        \App\Cart::storeCart(auth()->user()->customer->id, (float) $sum + $omot, 0, $discount);
+        $cart = \App\Cart::storeCart(auth()->user()->customer->id, (float) $sum + $omot, 0, $discount);
         Product::removeFromCart();
-        return redirect('profile')->with('done', 'Vaša košarica je naručena');
+
+        \Mail::to(auth()->user()->email)->send(new OrderIsReadyMail(auth()->user(), Theme::where('active', 1)->first(), $cart));
+        \Mail::to(Setting::first()->email1)->send(new OrderIsReadyMail(auth()->user(), Theme::where('active', 1)->first(), $cart));
+
+        return redirect('moje-narudzbine')->with('done', 'Vaša košarica je naručena');
     }
 
     public function coupon(Request $request){
@@ -59,7 +64,7 @@ class CustomersController extends Controller
     public function myOrders(){
         $settings = Setting::first();
         $theme = Theme::where('active', 1)->first();
-        $carts = auth()->user()->customer->cart()->with('Product')->get();
+        $carts = auth()->user()->customer->cart()->with('Product')->latest()->get();
         return view('themes.'.$theme->slug.'.pages.orders', compact('settings', 'theme', 'carts'));
     }
 
