@@ -39,6 +39,6 @@ class OrderIsReadyMail extends Mailable
     {
         return $this->view('themes.'.$this->theme->slug.'.emails.order-is-ready')
             ->subject('Vaša porudžba je spremna za slanje')
-            ->from(['address' => 'info@eleganza.hr', 'name' => 'Eleganza.hr']);
+            ->from(['address' => 'service@eleganza.hr', 'name' => 'Eleganza.hr']);
     }
 }

@@ -32,7 +32,7 @@ class CartOrder extends Mailable
      */
     public function build()
     {
-        return $this->markdown('themes.p-grupacija.email.cart-order')->with('cart', $this->cart)
-            ->subject('Poruka sa sajta P-Grupacija.hr')->from('croatia@mia.rs', 'Porudžbina sa sajta P-Grupacija.hr');
+        return $this->markdown('themes.eleganza.email.cart-order')->with('cart', $this->cart)
+            ->subject('Poruka sa sajta Eleganza.hr')->from('service@eleganza.hr', 'Porudžbina sa sajta P-Grupacija.hr');
     }
 }

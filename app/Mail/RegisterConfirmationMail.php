@@ -34,6 +34,6 @@ class RegisterConfirmationMail extends Mailable
      */
     public function build()
     {
-        return $this->view('themes.'.$this->theme->slug.'.emails.register-confirmation')->subject('Potrvda registracije')->from(['address' => 'info@eleganza.hr', 'name' => 'Eleganza.hr']);
+        return $this->view('themes.'.$this->theme->slug.'.emails.register-confirmation')->subject('Potrvda registracije')->from(['address' => 'service@eleganza.hr', 'name' => 'Eleganza.hr']);
     }
 }

@@ -150,10 +150,13 @@ class Cart extends Model {
 
         for($i=0;$i<count(request('ids'));$i++){
             for($j=0;$j<request('counts')[$i];$j++){
+
+                $currentCart = \Cart::get(request('rowIds')[$i]);
+
                 if(!empty(request('gift_'.request('ids')[$i]))){
-                    $cart->product()->attach(request('ids')[$i], ['material' => 1]);
+                    $cart->product()->attach(request('ids')[$i], ['material' => 1, 'price' => $currentCart->price]);
                 }else{
-                    $cart->product()->attach(request('ids')[$i], ['material' => 0]);
+                    $cart->product()->attach(request('ids')[$i], ['material' => 0, 'price' => $currentCart->price]);
                 }
             }
         }

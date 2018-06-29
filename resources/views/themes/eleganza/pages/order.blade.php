@@ -141,7 +141,7 @@
 
                     <div class="order__receipt">
                         <div class="order__receipt-detail">
-                            <div>Cijena sa PDV-a</div><div>{{ $cart->sum - $cart->sum * 0.2 }} KHR</div>
+                            <div>Cijena sa PDV-om</div><div>{{ $cart->sum }} KHR</div>
                         </div>
                         <div class="order__receipt-detail">
                             <div>Poštarina</div><div>0 KHR</div>
@@ -154,9 +154,11 @@
                             <div>Kupon sa PDV-a ({{ $cart->discount }}% Disc.)</div><div>{{ ($cart->discount / 100) * $cart->sum }}KHR</div>
                         </div>
                         @endif
+                        @if(false)
                         <div class="order__receipt-detail">
                             <div>PDV (20%)</div><div>{{ $cart->sum * 0.2 }}KHR</div>
                         </div>
+                        @endif
                         <div class="order__receipt-detail order__receipt-detail--total">
                             <div>Ukupno</div><div>{{ $cart->sum }}KHR</div>
                         </div>

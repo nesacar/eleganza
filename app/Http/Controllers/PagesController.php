@@ -942,10 +942,8 @@ class PagesController extends Controller
         //return \Cart::content();
         $settings = Setting::first();
         $theme = Theme::where('active', 1)->first();
-        //$cart = session('cart');
-        //count($cart)>0? $products = Product::with('Brand')->whereIn('id', Product::getCartIds())->where('publish', 1)->get() : $products = [];
-        //$discount = \Session::has('discount')? \Session::get('discount') : 0;
-        return view('themes.'.$theme->slug.'.pages.cart', compact('settings', 'theme', 'products', 'discount'));
+        $cart = \Cart::content();
+        return view('themes.'.$theme->slug.'.pages.cart', compact('settings', 'theme', 'products', 'discount', 'cart'));
     }
 
     public function cart2(){
@@ -967,10 +965,10 @@ class PagesController extends Controller
 
     public function addToCartFromWishList($id){
         Product::removeFromWishList($id);
-        $product = Product::find($id);
+        $product = Product::with('brand')->find($id);
         if(self::isExists($product) == false){
-            $price = (float) $product->totalPrice;
-            \Cart::add(['id' => $product->id, 'name' => $product->title, 'qty' => 1, 'price' => $price]);
+            $price = (float) $product->price_outlet?: $product->price_small;
+            \Cart::add(['id' => $product->id, 'name' => $product->title, 'qty' => 1, 'price' => $price, 'options' => ['brand' => $product->brand? $product->brand->title : null, 'image' => $product->image]]);
 
             return response([
                 'message' => 'done'
@@ -983,10 +981,10 @@ class PagesController extends Controller
 
     public function addToCart($id){
         //Product::addToCart($id);
-        $product = Product::find($id);
+        $product = Product::with('brand')->find($id);
         if(self::isExists($product) == false){
-            $price = (float) $product->totalPrice;
-            \Cart::add(['id' => $product->id, 'name' => $product->title, 'qty' => 1, 'price' => $price]);
+            $price = (float) $product->price_outlet?: $product->price_small;
+            \Cart::add(['id' => $product->id, 'name' => $product->title, 'qty' => 1, 'price' => $price, 'options' => ['brand' => $product->brand? $product->brand->title : null, 'image' => $product->image]]);
 
             return response([
                 'message' => 'done'

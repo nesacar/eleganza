@@ -39,7 +39,7 @@ class SendNewsletter2 extends Mailable
     {
         $message = $this->view('themes.'.$this->theme->slug.'.email.newsletter2')->with('newsletter', $this->newsletter)->with('sub', $this->subscriber);
         $message->subject($this->newsletter->title);
-        $message->from('croatia@mia.rs', 'Newsletter P-Grupacija.hr');
+        $message->from('service@eleganza.hr', 'Newsletter Eleganza.hr');
         return $message;
     }
 }

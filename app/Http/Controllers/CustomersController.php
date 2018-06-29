@@ -26,7 +26,14 @@ class CustomersController extends Controller
     }
 
     public function cartUpdate(Request $request){
-        $sum = Product::whereIn('id', request('ids'))->sum('price_outlet');
+        //return request()->all();
+
+        for($i=0;$i<count(request('ids'));$i++){
+            $currentCart = \Cart::get(request('rowIds')[$i]);
+            \Cart::update(request('rowIds')[$i], ['price' => (float) $currentCart->price * request('counts')[$i]]);
+        }
+
+        $sum = \Cart::total();
         $omot = Cart::omot(16.41);
         if(\Session::has('discount')){
             $discount = \Session::get('discount');
@@ -35,7 +42,7 @@ class CustomersController extends Controller
         }else{
             $discount = 0;
         }
-        Cart::storeCart(auth()->user()->customer->id, $sum + $omot, 0, $discount);
+        \App\Cart::storeCart(auth()->user()->customer->id, (float) $sum + $omot, 0, $discount);
         Product::removeFromCart();
         return redirect('profile')->with('done', 'Vaša košarica je naručena');
     }

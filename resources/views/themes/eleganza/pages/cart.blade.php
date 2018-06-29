@@ -34,7 +34,7 @@
                     <div class=cart-nav>
                         <a href="{{ url('/') }}" class="e-btn e-btn--fat e-btn--invert">&lt; nastavi kupovinu</a>
                         @if(auth()->check())
-                            @if(!empty(\Cart::content())) <a href=# class="e-btn e-btn--fat e-btn--primary submit">sigurna uplata</a> @endif
+                            @if(!empty($cart)) <a href=# class="e-btn e-btn--fat e-btn--primary submit">sigurna uplata</a> @endif
                         @else
                             <a href="{{ url('logovanje') }}" class="e-btn e-btn--fat e-btn--primary">prijavi se</a>
                         @endif
@@ -50,19 +50,19 @@
                         <div class="cart-header__label cart-header__label--total">sveukupnu</div>
                     </div>
                     <ul class="cart-list">
-                        @foreach(\Cart::content() as $product)
-                            @php $product = \App\Product::with('brand')->find($product->id); @endphp
+                        @foreach($cart as $product)
                             <li class="cart-list__item row">
                                 <div class="col-lg-8 col-md-6 cart-list__item__cell">
                                     <div class=cart-list__item__img>
                                         <div class="e-thumbnail e-image e-image--11">
-                                            <a href="{{ \App\Product::getProductLink($product->id) }}">{!! HTML::Image($product->image, $product->title) !!}</a>
+                                            <a href="{{ \App\Product::getProductLink($product->id) }}"> @if($product->options->has('brand')){!! HTML::Image($product->options->image, $product->name) !!}</a> @endif
                                             <input type="hidden" name="ids[]" value="{{ $product->id }}">
+                                            <input type="hidden" name="rowIds[]" value="{{ $product->rowId }}">
                                         </div>
                                     </div>
                                     <div class=cart-list__item__about>
-                                        <div class=cart-list__item__brand>@if(isset($product->brand)) {{ $product->brand->title }} @endif</div>
-                                        <div class=cart-list__item__model>{{ $product->title }}</div>
+                                        <div class=cart-list__item__brand>@if($product->options->has('brand')) {{ $product->options->brand }} @endif</div>
+                                        <div class=cart-list__item__model>{{ $product->name }}</div>
                                         <hr>
                                         <div class=e-form__cb-group>
                                             <div class=e-checkbox>
@@ -79,8 +79,8 @@
                                     <div class=cart-list__item__count>
                                         <input class="nl-input count" type=number name=counts[] value=1 min="1" max="10"> <span class="remove" style="cursor:pointer;" data-href="{{ url('remove-from-cart/'.$product->id) }}">X</span>
                                     </div>
-                                    <div class="cart-list__item__digit cart-list__item__price"> hrk <span class="js-price">{{ $product->price_outlet }}.00</span> </div>
-                                    <div class="cart-list__item__digit cart-list__item__total"> hrk <span class="js-total">{{ $product->price_outlet }}.00</span> </div>
+                                    <div class="cart-list__item__digit cart-list__item__price"> hrk <span class="js-price">{{ $product->price }}.00</span> </div>
+                                    <div class="cart-list__item__digit cart-list__item__total"> hrk <span class="js-total">{{ $product->subtotal }}.00</span> </div>
                                 </div>
                             </li>
                         @endforeach
