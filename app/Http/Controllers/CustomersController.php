@@ -28,6 +28,7 @@ class CustomersController extends Controller
 
     public function cartUpdate(Request $request){
         //return request()->all();
+        $theme = Theme::where('active', 1)->first();
 
         for($i=0;$i<count(request('ids'));$i++){
             $currentCart = \Cart::get(request('rowIds')[$i]);
@@ -46,8 +47,8 @@ class CustomersController extends Controller
         $cart = \App\Cart::storeCart(auth()->user()->customer->id, (float) $sum + $omot, 0, $discount);
         Product::removeFromCart();
 
-        \Mail::to(auth()->user()->email)->send(new OrderIsReadyMail(auth()->user(), Theme::where('active', 1)->first(), $cart));
-        \Mail::to(Setting::first()->email1)->send(new OrderIsReadyMail(auth()->user(), Theme::where('active', 1)->first(), $cart));
+        \Mail::to(auth()->user()->email)->send(new OrderIsReadyMail(auth()->user(), $theme, $cart));
+        \Mail::to(Setting::first()->email1)->send(new OrderIsReadyMail(auth()->user(), $theme, $cart));
 
         return redirect('moje-narudzbine')->with('done', 'Vaša košarica je naručena');
     }

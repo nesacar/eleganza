@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    @if(!empty(\Cart::content()))
+    @if(!empty($cart))
         {!! Form::open(['action' => ['CustomersController@cartUpdate'], 'method' => 'POST', 'class' => 'form-horizontal', 'id' => 'forma']) !!}
             <section class="container content">
                 <div class="cart-section">
@@ -156,7 +156,7 @@
                 <div class=cart-nav>
                     <a href=# class="e-btn e-btn--fat e-btn--invert">&lt; nastavi kupovinu</a>
                     @if(auth()->check())
-                        @if(!empty(\Cart::content())) <a href=# class="e-btn e-btn--fat e-btn--primary submit">sigurna uplata</a> @endif
+                        @if(!empty($cart)) <a href=# class="e-btn e-btn--fat e-btn--primary submit">sigurna uplata</a> @endif
                     @else
                         <a href="{{ url('logovanje') }}" class="e-btn e-btn--fat e-btn--primary">prijavi se</a>
                     @endif
