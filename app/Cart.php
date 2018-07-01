@@ -134,33 +134,29 @@ class Cart extends Model {
         \Session::put('korpa', $korpa); \Session::put('qty', $qty); \Session::put('size', $size); \Session::put('color', $color); \Session::put('material', $material);
     }
 
-    public static function storeCart($user, $suma, $pay=0){
+    public static function storeCart($user){
         $cart = new Cart();
         $cart->customer_id = $user;
         $cart->country_id = 1;
-        $cart->sum = $suma;
-        $cart->status = $pay;
+        $cart->sum = \Cart::total();
+        $cart->status = 0;
         $cart->payment_id = 1;
         $cart->discount = \Session::has('discount')? \Session::get('discount') : null;
         $cart->coupon = \Session::has('coupon')? \Session::get('coupon') : null;
         $cart->delivery = request('delivery')? 1 : 0;
         $cart->save();
 
+        foreach (\Cart::content() as $product){
+            if($product->options->gift > 0){
+                $cart->product()->attach($product->id, ['omot' => 1, 'price' => $product->price, 'count' => $product->qty]);
+            }else{
+                $cart->product()->attach($product->id, ['omot' => 0, 'price' => $product->price, 'count' => $product->qty]);
+            }
+        }
+
         \Session::forget('discount');
         \Session::forget('coupon');
 
-        for($i=0;$i<count(request('ids'));$i++){
-            for($j=0;$j<request('counts')[$i];$j++){
-
-                $currentCart = \Cart::get(request('rowIds')[$i]);
-
-                if(!empty(request('gift_'.request('ids')[$i]))){
-                    $cart->product()->attach(request('ids')[$i], ['material' => 1, 'price' => $currentCart->price]);
-                }else{
-                    $cart->product()->attach(request('ids')[$i], ['material' => 0, 'price' => $currentCart->price]);
-                }
-            }
-        }
         return $cart;
     }
 
@@ -271,7 +267,7 @@ class Cart extends Model {
     }
 
     public function product(){
-        return $this->belongsToMany('App\Product')->withPivot('material', 'color', 'size', 'price');
+        return $this->belongsToMany('App\Product')->withPivot('count', 'omot', 'color', 'size', 'price');
     }
 
     public function customer(){

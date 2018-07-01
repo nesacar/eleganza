@@ -201,15 +201,19 @@
             $('#kupon').click(function(e){
                 e.preventDefault();
                 var code = $(this).parent().find('input[type="text"]').val();
-                console.log(code);
                 $.post('{{ url('coupon') }}', {_token: '{{ csrf_token() }}', code: code }, function(data){
                     if(data == 'error'){
                         $().toastmessage('showWarningToast', "Kupon nije ispravan");
                     }else{
-                        console.log(data.coupon);
+                        var ukupno = parseFloat($('#sveukupno').text());
+
                         $().toastmessage('showSuccessToast', "kupon je primenjen: " + data.coupon.discount + ' %');
                         $('#popust').text(data.coupon.discount + ' %');
                         $('.cart__promo').css({'display': 'none'});
+
+                        var sveukupno = ukupno - (ukupno * (data.coupon.discount / 100));
+                        $('#sveukupno').text(sveukupno);
+//                        $('.nl-input').prop('disabled', true);
                     }
                 });
             });

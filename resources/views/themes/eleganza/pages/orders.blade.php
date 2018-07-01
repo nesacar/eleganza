@@ -47,7 +47,7 @@
                     Društvene mreže
                 </a>
                 @endif
-                <a href="#" class="e-btn e-btn--invert e-btn--block profile-link">
+                <a href="{{ url('info/trebas-pomoc/14') }}" class="e-btn e-btn--invert e-btn--block profile-link">
                     <i class="fas fa-question-circle"></i>
                     Trebaš pomoć?
                 </a>

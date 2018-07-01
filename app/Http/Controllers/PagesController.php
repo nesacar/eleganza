@@ -938,6 +938,8 @@ class PagesController extends Controller
     }
 
     public function cart(){
+        session()->forget( 'coupon');
+        session()->forget('discount');
         //return \Cart::content();
         $settings = Setting::first();
         $theme = Theme::where('active', 1)->first();

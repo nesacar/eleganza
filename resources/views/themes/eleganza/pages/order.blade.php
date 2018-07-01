@@ -47,7 +47,7 @@
                     Društvene mreže
                 </a>
                 @endif
-                <a href="#" class="e-btn e-btn--invert e-btn--block profile-link">
+                <a href="{{ url('info/trebas-pomoc/14') }}" class="e-btn e-btn--invert e-btn--block profile-link">
                     <i class="fas fa-question-circle"></i>
                     Trebaš pomoć?
                 </a>
@@ -82,12 +82,12 @@
                                     @foreach($cart->product as $product)
                                     <li class="row section-spacer">
                                         <div class="col-sm-6">
-                                            <a href="{{ url(\App\Product::getProductLink($product->id, 'hr')) }}" target="_blank">{!! HTML::Image($product->image, $product->title, array('class' => 'order__img')) !!}</a>
+                                            <a href="{{ $product->getLink() }}" target="_blank">{!! HTML::Image($product->image, $product->title, array('class' => 'order__img')) !!}</a>
                                         </div>
                                         <div class="col-sm-6 order__ids">
-                                            <div>{{ $product->title }}</div>
-                                            <div>{{ $product->code }}</div>
-                                            <div>Količina: {{ $product->pivot->size }}</div>
+                                            <div>Naziv: {{ $product->title }}</div>
+                                            <div>Šifra: {{ $product->code }}</div>
+                                            <div>Količina: {{ $product->pivot->count }}</div>
                                         </div>
                                     </li>
                                     @endforeach

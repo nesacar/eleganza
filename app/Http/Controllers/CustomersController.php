@@ -27,27 +27,28 @@ class CustomersController extends Controller
     }
 
     public function cartUpdate(Request $request){
-//        return request()->all();
         $theme = Theme::where('active', 1)->first();
 
         for($i=0;$i<count(request('ids'));$i++){
             $currentCart = \Cart::get(request('rowIds')[$i]);
-            \Cart::update(request('rowIds')[$i], ['price' => (float) $currentCart->price * request('counts')[$i]]);
+            if(!empty($currentCart)){
+                \Cart::update(request('rowIds')[$i], ['qty' => request('counts')[$i], 'options' => ['gift' => !empty(request('gift_' . request('ids')[$i]))? 16.41 : 0]]);
+            }
         }
 
-        $sum = \Cart::total();
-        $omot = Cart::omot(16.41);
-        if(\Session::has('discount')){
-            $discount = \Session::get('discount');
-            $discount = ($discount / 100) * $sum;
-            $sum = $sum - $discount;
-        }else{
-            $discount = 0;
+        foreach (\Cart::content() as $product){
+            if(session('discount')){
+                $newPrice =  $product->price - ($product->price * session('discount') / 100) + $product->options->gift - ($product->options->gift * session('discount') / 100);
+            }else{
+                $newPrice =  $product->price + $product->options->gift;
+            }
+            \Cart::update($product->rowId, ['price' => $newPrice]);
         }
-        $cart = \App\Cart::storeCart(auth()->user()->customer->id, (float) $sum + $omot, 0, $discount);
+
+        $cart = \App\Cart::storeCart(auth()->user()->customer->id);
         Product::removeFromCart();
 
-        $coupon = $cart->coupon? Coupon::where('code', $cart->coupon)->first() : null;
+        $coupon = $cart->coupon? Coupon::where('code', $cart->coupon)->first() : new Coupon();
 
         session()->forget('coupon');
         session()->forget('discount');

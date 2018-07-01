@@ -318,8 +318,9 @@
                                 <tr>
                                     <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                                         <div style="font-family:Helvetica;font-size:16px;line-height:1.5;text-align:left;color:rgba(0, 0, 0, .87);">
-                                            <div class="product-description" id="product-name" style="font-size: 16px; text-transform: uppercase;">{{ $product->title }}</div>
-                                            <div class="product-description" id="product-sku" style="font-size: 16px; text-transform: uppercase;">{{ $product->code }}</div>
+                                            <div class="product-description" id="product-name" style="font-size: 16px; text-transform: uppercase;">Naziv: {{ $product->title }}</div>
+                                            <div class="product-description" id="product-sku" style="font-size: 16px; text-transform: uppercase;">Šifra: {{ $product->code }}</div>
+                                            <div class="product-description" id="product-count" style="font-size: 16px; text-transform: uppercase;">Količina: {{ $product->pivot->count }}</div>
                                         </div>
                                     </td>
                                 </tr>
@@ -598,7 +599,7 @@
                             <tr>
                                 <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                                     <div style="font-family:Helvetica;font-size:21px;line-height:1.4;text-align:left;color:rgba(0, 0, 0, .87);">
-                                        @if(!empty($coupon))
+                                        @if(!empty($coupon) && !empty($coupon->dicount))
                                             <div class="row">
                                                 <span>Primenjen je popust sa kodom</span> <span style="float: right;">{{ $coupon->code }}<i class="currency" style="color: inherit; font-style: normal; text-transform: uppercase;">Popust: {{ $coupon->discount }} %</i></span>
                                             </div>
