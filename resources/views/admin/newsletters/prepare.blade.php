@@ -29,12 +29,6 @@
                                 {!! Form::text('title', null, array('class' => 'form-control')) !!}
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="language_id" class="col-sm-2 control-label">Jezik</label>
-                            <div class="col-sm-10">
-                                {!! Form::select('language_id', $languages, null, array('class' => 'form-control', 'id' => 'locale')) !!}
-                            </div>
-                        </div>
                         <hr>
 
                         <div class="form-group">

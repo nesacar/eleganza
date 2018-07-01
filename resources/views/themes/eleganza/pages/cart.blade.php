@@ -71,7 +71,7 @@
                                                     <svg class=e-checkbox__checkmark viewBox="0 0 24 24"> <path class=e-checkbox__path fill=none stroke=white d="M1.73,12.91 8.1,19.28 22.79,4.59"></path> </svg>
                                                 </div>
                                             </div>
-                                            <label for=gift>Umotaj ovaj artikal kao poklon (+ hrk <span class="js-omot">16.41</span>)</label>
+                                            <label for=gift>Umotaj ovaj artikal kao poklon (+ hrk <span class="js-omot">{{ $settings->omot }}</span>)</label>
                                         </div>
                                     </div>
                                 </div>

@@ -615,10 +615,8 @@ class Product extends Model {
         return $cena;
     }
 
-    public static function getProductSelect($locale='hr'){
-        return self::join('product_translations', 'products.id', '=', 'product_translations.product_id')
-            ->where('product_translations.locale', $locale)->where('products.publish', 1)->where('products.publish_at', '<=', (new \Carbon\Carbon()))
-            ->pluck('product_translations.title', 'products.id');
+    public static function getProductSelect(){
+        return self::where('publish', 1)->where('publish_at', '<=', (new \Carbon\Carbon()))->pluck('title', 'id');
     }
 
     public static function newFilteredAdminProducts($title=false, $cat=0, $limit, $sort=2, $min=0, $max=0){

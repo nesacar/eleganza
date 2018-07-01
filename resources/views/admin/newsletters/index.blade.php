@@ -21,11 +21,8 @@
                     <div class="panel-header-stats">
                         @if(count($newsletters) > 0)
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-6">
                                     <b>Naziv</b>
-                                </div>
-                                <div class="col-md-3">
-                                    <b>Jezik</b>
                                 </div>
                                 <div class="col-md-3">
                                     <b>Poslato</b>
@@ -37,11 +34,8 @@
                             <hr>
                             @foreach($newsletters as $n)
                                 <div class="row @if($n->last_send == null) crvena @endif">
-                                    <div class="col-md-3 vcenter">
+                                    <div class="col-md-6 vcenter">
                                         {{ $n->title }}
-                                    </div>
-                                    <div class="col-md-3 vcenter">
-                                        {{ $n->language->fullname }}
                                     </div>
                                     <div class="col-md-3 vcenter">
                                         @if($n->last_send != null) {{ \Carbon\Carbon::parse($n->last_send)->format('d/m/Y') }} @else Nije poslato @endif

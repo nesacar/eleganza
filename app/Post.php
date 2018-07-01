@@ -144,10 +144,8 @@ class Post extends Model
             ->where('posts.publish', 1)->where('posts.publish_at', '<', $post->publish_at)->orderBy('posts.publish_at', 'DESC')->first();
     }
 
-    public static function getPostSelect($locale='sr'){
-        return self::join('post_translations', 'posts.id', '=', 'post_translations.post_id')
-            ->where('post_translations.locale', $locale)->where('posts.publish', 1)->where('posts.publish_at', '<=', (new \Carbon\Carbon()))
-            ->pluck('post_translations.title', 'posts.id');
+    public static function getPostSelect(){
+        return self::where('publish', 1)->where('publish_at', '<=', (new \Carbon\Carbon()))->pluck('title', 'id');
     }
 
     public static function pagePreview($post){

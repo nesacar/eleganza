@@ -22,7 +22,7 @@ class Setting extends Model
      */
     protected $fillable = [
         'title', 'keywords', 'desc', 'footer', 'address', 'course', 'phone1', 'phone2', 'email1', 'email2', 'facebook', 'twitter', 'instagram', 'google',
-        'analytics', 'map', 'lang', 'colorDependence', 'materialDependence', 'newsletter'
+        'analytics', 'map', 'lang', 'colorDependence', 'materialDependence', 'newsletter', 'omot'
     ];
 
     public function language(){

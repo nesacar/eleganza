@@ -6,7 +6,6 @@ use App\Banner;
 use App\Click;
 use App\Http\Requests\CreateNewsletterRequest;
 use App\Http\Requests\PrepareNewsletterRequest;
-use App\Language;
 use App\Mail\SendNewsletter2;
 use App\Newsletter;
 use App\Post;
@@ -54,15 +53,14 @@ class NewslettersController extends Controller
     public function create()
     {
         $slug = 'newsletters';
-        $languages = Language::where('publish', 1)->orderBy('order', 'ASC')->pluck('name', 'id');
         $setting = Setting::first();
         if($setting->blog){
-            $posts = Post::getPostSelect('sr');
+            $posts = Post::getPostSelect();
         }
         if($setting->shop){
-            $products = Product::getProductSelect('sr');
+            $products = Product::getProductSelect();
         }
-        return view('admin.newsletters.prepare', compact('slug', 'languages', 'setting', 'posts', 'products'));
+        return view('admin.newsletters.prepare', compact('slug', 'setting', 'posts', 'products'));
     }
 
     /**
@@ -74,7 +72,6 @@ class NewslettersController extends Controller
     public function store(PrepareNewsletterRequest $request)
     {
         $newsletter = Newsletter::create([
-            'language_id' => $request->input('language_id'),
             'title' => $request->input('title'),
             'verification' => str_random(32),
             //'types' => $request->input('types'),
@@ -112,22 +109,20 @@ class NewslettersController extends Controller
     public function edit(Newsletter $newsletter)
     {
         $slug = 'newsletters';
-        $languages = Language::where('publish', 1)->orderBy('order', 'ASC')->pluck('name', 'id');
         $setting = Setting::first();
-        $language = Language::find($newsletter->language_id);
         if($setting->blog){
-            $posts = Post::getPostSelect($language->locale);
+            $posts = Post::getPostSelect();
 
             $postIds = $newsletter->post()->orderBy('newsletter_post.id', 'ASC')->get()->pluck('id');
         }
         if($setting->shop){
-            $products = Product::getProductSelect($language->locale);
+            $products = Product::getProductSelect();
 
             $productIds = $newsletter->product()->orderBy('newsletter_product.id', 'ASC')->get()->pluck('id');
         }
         $types = explode(',', $newsletter->types);
         $numbers = explode(',', $newsletter->numbers);
-        return view('admin.newsletters.edit', compact('slug', 'languages', 'setting', 'newsletter', 'posts', 'banners', 'products', 'types', 'numbers', 'postIds', 'productIds', 'bannerIds'));
+        return view('admin.newsletters.edit', compact('slug', 'setting', 'newsletter', 'posts', 'banners', 'products', 'types', 'numbers', 'postIds', 'productIds', 'bannerIds'));
     }
 
     /**
@@ -142,7 +137,6 @@ class NewslettersController extends Controller
         $newsletter = Newsletter::find($id);
         $newsletter->update([
             'title' => $request->input('title'),
-            'language_id' => $request->input('language_id')
         ]);
         if(count($request->input('products'))>0){
             $newsletter->product()->sync($request->input('products'));
@@ -183,15 +177,14 @@ class NewslettersController extends Controller
     }*/
 
     public function preview($id){
+        dd('nema sablona');
         $theme = Theme::where('active', 1)->first();
         $newsletter = Newsletter::find($id);
-        $language = Language::find($newsletter->language_id);
-        app()->setLocale($newsletter->locale);
         $sub = Subscriber::where('block', 0)->first();
         $preview = true;
         $lists = Newsletter::prepareNewsletter($newsletter);
         $markdown = Container::getInstance()->make(Markdown::class);
-        return $markdown->render('admin.newsletters.preview', compact('newsletter', 'sub', 'preview', 'theme', 'lists', 'language'));
+        return $markdown->render('admin.newsletters.preview', compact('newsletter', 'sub', 'preview', 'theme', 'lists'));
     }
 
     public function post($n_veri, $post_id){
@@ -224,10 +217,10 @@ class NewslettersController extends Controller
     }
 
     public function send($id){
+        dd('nema sablona');
         $theme = Theme::where('active', 1)->first();
         $newsletter = Newsletter::find($id);
-        app()->setLocale($newsletter->locale);
-        //$subscribers = Subscriber::where('block', 0)->where('locale', $newsletter->locale)->orderby('created_at', 'ASC')->get();
+        //$subscribers = Subscriber::where('block', 0)->orderby('created_at', 'ASC')->get();
         $subscribers = Subscriber::where('email', 'nebojsart1409@yahoo.com')->get();
         $brojac=0;
         if(count($subscribers)>0){
@@ -245,15 +238,13 @@ class NewslettersController extends Controller
 
     public function prepareUpdate(PrepareNewsletterRequest $request){
         $setting = Setting::first();
-        $locale = $request->input('language_id');
-        $language = Language::find($locale);
         $posts = []; $banners = []; $products = [];
         if($setting->blog){
-            $posts = Post::getPostSelect($language->locale);
+            $posts = Post::getPostSelect();
         }
         if($setting->shop){
-            $products = Product::getProductSelect($language->locale);
-            $banners = Banner::getBannerSelect($language->locale);
+            $products = Product::getProductSelect();
+            $banners = Banner::getBannerSelect();
         }
         $tt = $request->input('type');
         $nn = $request->input('number');
@@ -268,7 +259,7 @@ class NewslettersController extends Controller
         }
         $typeString = implode(',',$types);
         $numberString = implode(',',$numbers);
-        return view('admin.newsletters.create', compact('language', 'posts', 'products', 'banners', 'types', 'numbers', 'title', 'typeString', 'numberString'));
+        return view('admin.newsletters.create', compact('posts', 'products', 'banners', 'types', 'numbers', 'title', 'typeString', 'numberString'));
     }
 
 }

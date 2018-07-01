@@ -28,11 +28,12 @@ class CustomersController extends Controller
 
     public function cartUpdate(Request $request){
         $theme = Theme::where('active', 1)->first();
+        $settings = Setting::first();
 
         for($i=0;$i<count(request('ids'));$i++){
             $currentCart = \Cart::get(request('rowIds')[$i]);
             if(!empty($currentCart)){
-                \Cart::update(request('rowIds')[$i], ['qty' => request('counts')[$i], 'options' => ['gift' => !empty(request('gift_' . request('ids')[$i]))? 16.41 : 0]]);
+                \Cart::update(request('rowIds')[$i], ['qty' => request('counts')[$i], 'options' => ['gift' => !empty(request('gift_' . request('ids')[$i]))? $settings->omot : 0]]);
             }
         }
 

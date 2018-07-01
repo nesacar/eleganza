@@ -143,6 +143,12 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="omot" class="col-sm-3 control-label">Cena omota</label>
+                        <div class="col-sm-9">
+                            {!! Form::text('omot', $setting->omot, array('class' => 'form-control', 'id' => 'omot')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <div class="col-sm-12">
                             <input type="submit" class="btn btn-success pull-right" value="Izmeni">
                         </div>

@@ -23,19 +23,12 @@
                 <div class="panel-body">
                     @include('admin.partials.errors')
                     {!! Form::open(['action' => ['NewslettersController@store'], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
-                        {!! Form::hidden('language_id', $language->id) !!}
                         {!! Form::hidden('types', $typeString) !!}
                         {!! Form::hidden('numbers', $numberString) !!}
                         <div class="form-group">
                             <label for="title" class="col-sm-2 control-label">Naziv</label>
                             <div class="col-sm-10">
                                 {!! Form::text('title', $title, array('class' => 'form-control')) !!}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="lang" class="col-sm-2 control-label">Jezik</label>
-                            <div class="col-sm-10">
-                                {!! Form::text('lang', $language->name, array('class' => 'form-control', 'disabled' => true)) !!}
                             </div>
                         </div>
                         <hr>
