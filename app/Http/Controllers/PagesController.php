@@ -1048,7 +1048,7 @@ class PagesController extends Controller
 
     public function instaShop(){
         $theme = Theme::where('active', 1)->first();
-        $instaShops = InstaShop::orderBy('order', 'ASC')->paginate(50);
+        $instaShops = InstaShop::orderBy('order', 'ASC')->take(50)->get();
         return view('themes.'.$theme->slug.'.pages.instashop', compact('theme', 'instaShops'));
     }
 

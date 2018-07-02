@@ -51,7 +51,6 @@
 @endsection
 
 @section('footer_scripts')
-    @if(false)
-        <script>window.products = {!! $instaShops !!};</script> @endif
+    <script>window.products = {!! $instaShops !!};</script>
     <script src="{{ url('themes/eleganza/js/instashop.js') }}"></script>
 @endsection
