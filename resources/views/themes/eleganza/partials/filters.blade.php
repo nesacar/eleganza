@@ -68,6 +68,20 @@
   </div>
 </div>
 
+@php
+    $counter = 0;
+    if (count($props2)>0) {
+        foreach ($props2 as $prop) {
+            foreach ($prop->attribute as $a) {
+                if ($a->publish == 1 && in_array($a->id, $data['attIds'])) {
+                    $counter++;
+                }
+            }
+        }
+    }
+@endphp
+
+@if($counter > 0)
 <div class=filters>
   <div class="filters-wrap">
     <div class="filters__header collapsed" data-toggle=collapse href=#jsAdvancedFilters role=button aria-expanded=false
@@ -161,3 +175,4 @@
     </div>
   </div>
 </div>
+@endif

@@ -26,8 +26,8 @@
 <div class=benefits>
     <div class=container>
         <ul class=benefits__list>
-            <li class=benefits__list__item> <i class="fas fa-truck"></i> <span>BESPLATNA DOSTAVA ZA PROIZVODE IZNAD 500 KN</span> </li>
-            <li class=benefits__list__item> <i class="fas fa-lock"></i> <span>GARANCIJE SIGURNE KUPNJE</span> </li>
+            <li class=benefits__list__item> <i class="fas fa-truck"></i> <span>BESPLATNA DOSTAVA</span> </li>
+            <li class=benefits__list__item> <i class="fas fa-lock"></i> <span>GARANCIJA SIGURNE KUPNJE</span> </li>
             <li class=benefits__list__item> <i class="fas fa-redo-alt"></i> <span>povrat i zamjene</span> </li>
         </ul>
     </div>
@@ -54,7 +54,7 @@
             <div class="col-md-3 col-sm-6 footer__col">
                 <h4 class=footer__col__title>korisnička podrška</h4>
                 <ul class=footer__list>
-                    <li class=footer__list__item><a href=#>Opći uveti poslovanja</a></li>
+                    <li class=footer__list__item><a href=#>Opći uvjeti poslovanja</a></li>
                     <li class=footer__list__item><a href=#>Dostava</a></li>
                     <li class=footer__list__item><a href=#>Povrat i zamjene</a></li>
                     <li class=footer__list__item><a href=#>Načini plaćanja</a></li>
@@ -65,10 +65,10 @@
             <div class="col-md-3 col-sm-6 footer__col">
                 <h4 class=footer__col__title>društvene mreže</h4>
                 <ul class=social-list>
-                    <li class=social-list__item> <a href=# target=_blank rel=noopener aria-label=Facebook> <i class="fab fa-facebook-f"></i> </a> </li>
-                    <li class=social-list__item> <a href=# target=_blank rel=noopener aria-label=Twitter> <i class="fab fa-twitter"></i> </a> </li>
-                    <li class=social-list__item> <a href=# target=_blank rel=noopener aria-label=Instagram> <i class="fab fa-instagram"></i> </a> </li>
-                    <li class=social-list__item> <a href=# target=_blank rel=noopener aria-label=YouTube> <i class="fab fa-youtube"></i> </a> </li>
+                    <li class=social-list__item> <a href="{{ $settings->facebook }}" target=_blank rel=noopener aria-label=Facebook> <i class="fab fa-facebook-f"></i> </a> </li>
+                    <li class=social-list__item> <a href="{{ $settings->instagram }}" target=_blank rel=noopener aria-label=Instagram> <i class="fab fa-instagram"></i> </a> </li>
+                    <li class=social-list__item> <a href="{{ $settings->youtube }}" target=_blank rel=noopener aria-label=YouTube> <i class="fab fa-youtube"></i> </a> </li>
+                    {{--<li class=social-list__item> <a href=# target=_blank rel=noopener aria-label=Twitter> <i class="fab fa-twitter"></i> </a> </li>--}}
                 </ul>
             </div>
             <div class=col-12>
