@@ -32,6 +32,11 @@ return array(
         'height' => 80,
         'method' => 'crop',
     ),
+    '132x193' => array(
+        'width' => 173,
+        'height' => 231,
+        'method' => 'crop',
+    ),
     '173x231' => array(
         'width' => 173,
         'height' => 231,

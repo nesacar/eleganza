@@ -30,12 +30,12 @@
                     <div class="col-xl-3">
                         <div class="owl-thumbs" data-slider-id="image-box">
                             <div class="e-image e-image--11 e-owl-thumbnail owl-thumb-item">
-                                <img src="{{ url(\Imagecache::get($product->image, '50x73')->src) }}" alt="{{ $product->title }}">
+                                <img src="{{ url(\Imagecache::get($product->image, '132x193')->src) }}" alt="{{ $product->title }}">
                             </div>
                             @if(count($images)>0)
                                 @foreach($images as $image)
                                     <div class="e-image e-image--11 e-owl-thumbnail owl-thumb-item">
-                                        <img src="{{ url(\Imagecache::get($image->file_path, '50x73')->src) }}" alt="{{ $product->title }}">
+                                        <img src="{{ url(\Imagecache::get($image->file_path, '132x193')->src) }}" alt="{{ $product->title }}">
                                     </div>
                                 @endforeach
                             @endif
