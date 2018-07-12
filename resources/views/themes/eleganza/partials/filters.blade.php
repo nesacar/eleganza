@@ -30,7 +30,7 @@
             </div>
         @endif
 
-        @if(count($props1)>0)
+        @if(!empty($props1)>0)
             @foreach($props1 as $prop)
                 <div class=filter>
                     <h4 class=filter__name>{{ \App\Helper::removeBrackets($prop->title) }}</h4>
@@ -70,7 +70,7 @@
 
 @php
     $counter = 0;
-    if (count($props2)>0) {
+    if (!empty($props2)>0) {
         foreach ($props2 as $prop) {
             foreach ($prop->attribute as $a) {
                 if ($a->publish == 1 && in_array($a->id, $data['attIds'])) {
@@ -88,7 +88,7 @@
          aria-controls=#jsAdvancedFilters>prošireni filter<span style=margin-left:auto>&plus;</span></div>
     <div class="collapse" id=jsAdvancedFilters>
       <div class="filters__body">
-        @if(count($props2)>0)
+        @if(!empty($props2)>0)
             @foreach($props2 as $prop)
                 <div class=filter>
                     <h4 class="filter__name">{{ \App\Helper::removeBrackets($prop->title) }}</h4>
