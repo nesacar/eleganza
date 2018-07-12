@@ -39,7 +39,7 @@
                                             <div class="diamond center">
                                                 <div class="diamond__shape diamond__shape--white"></div>
                                             </div>
-                                            <h3 class="center">{{ $box->title }}</h3>
+                                            <h3 class="center">{!! $box->title !!}</h3>
                                         </div>
                                     </a>
                                 </div>

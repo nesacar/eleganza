@@ -79,17 +79,19 @@
                     </div>
                     <hr>
                     <div class="product-info__section product__price-box">
-                        @if($product->price_outlet != $product->price_small)
-                            <span class="product__price product__price--current">{{ $product->price_outlet }} kn</span>
-                            <span class="product__price product__price--actual">{{ $product->price_small }} kn</span>
+                        {{-- Price without discount --}}
+                        @if($product->price_outlet == 0 || $product->price_outlet == $product->price_small/*$product->price_outlet != $product->price_small*/)
+                            <span class="product__price product__price--current">@convert($product->price_small) kn</span>
+                            {{-- Price with discount--}}
                         @else
-                            <span class="product__price product__price--current">{{ $product->price_small }} kn</span>
+                            <span class="product__price product__price--actual">@convert($product->price_outlet) kn</span>
+                            <span class="product__price product__price--current">@convert($product->price_small) kn</span>
                         @endif
                         @if($product->discount > 0)
                             <span class="product__price product__price--discount product__hint-text">popust {{ $product->discount }}
                                 %</span>
                         @endif
-                        <p class="product__hint-text">dodatnih 5% popusta na online placanje</p>
+                        {{--<p class="product__hint-text">dodatnih 5% popusta na online placanje</p>--}}
                     </div>
                     <div class="product-info__section">
                         @if($product->amount > 0)
@@ -126,15 +128,16 @@
                     <div class="product-info__section product__attrs">
                         <h3>karakteristike</h3>
                         <ul class="product__attrs-list js-v-grid">
-                            <li class="product-attr js-v-grid-item">
-                                <div class="js-v-grid-item_content">
-                                    @php $collection = $product->getCollection(); @endphp
-                                    @if(!empty($collection))
+
+                            @php $collection = $product->getCollection(); @endphp
+                            @if(!empty($collection))
+                                <li class="product-attr js-v-grid-item">
+                                    <div class="js-v-grid-item_content">
                                         <b>Kolekcija:</b> {{ $collection }}
-                                    @endif
-                                    <span>{{ \App\Product::getLastCategory($product->id) }}</span>
-                                </div>
-                            </li>
+                                        <span>{{ \App\Product::getLastCategory($product->id) }}</span>
+                                    </div>
+                                </li>
+                            @endif
                             @if(count($attributes))
                                 @foreach($attributes as $attribute)
                                     <li class="product-attr js-v-grid-item">

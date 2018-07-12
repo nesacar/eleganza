@@ -174,7 +174,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Jenssegers\Date\DateServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-        nesacar\blogshop\BlogShopServiceProvider::class,
+//        nesacar\blogshop\BlogShopServiceProvider::class,
         nesacar\newsletter\NewsletterServiceProvider::class,
         App\Providers\ViewComposerServiseProvider::class,
         Devfactory\Imagecache\ImagecacheServiceProvider::class,
