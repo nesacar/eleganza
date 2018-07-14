@@ -141,19 +141,13 @@ class MenusController extends Controller
 
         $links = $menu->menuLinks()->where('parent', 0)->where('level', 1)->orderBy('order', 'ASC')->get();
 
-        $categories = Category::where('publish', 1)
-            ->whereNotIn('id', $excludes)->orderBy('order', 'ASC')->get();
-
-        $pcategories = PCategory::where('publish', 1)
-            ->whereNotIn('id', $excludes)->orderBy('order', 'ASC')->get();
-
         $custom = 1000;
         $res = MenuLink::orderBy('cat_id', 'DESC')->first();
         if(isset($res)){
             $custom = $res->cat_id + 1;
         }
 
-        return view('admin.menus.editLinks', compact('slug', 'menu', 'categories', 'pcategories', 'links', 'excludes', 'custom'));
+        return view('admin.menus.editLinks', compact('slug', 'menu', 'links', 'excludes', 'custom'));
     }
 
     public function editLinksUpdate(Request $request, $id){
@@ -182,6 +176,7 @@ class MenusController extends Controller
                         'menu_id' => $menu->id,
                         'cat_id' => $category->id,
                         'title' => $title,
+                        'slug' => str_slug($title),
                         'type' => $types[$i],
                         'locale' => $locale,
                         'publish' => 1
@@ -196,6 +191,7 @@ class MenusController extends Controller
                         'menu_id' => $menu->id,
                         'cat_id' => $pcategory->id,
                         'title' => $title,
+                        'slug' => str_slug($title),
                         'type' => $types[$i],
                         'locale' => $locale,
                         'publish' => 1
@@ -209,6 +205,7 @@ class MenusController extends Controller
                         'menu_id' => $menu->id,
                         'cat_id' => $ids[$i],
                         'title' => $title,
+                        'slug' => str_slug($title),
                         'type' => $types[$i],
                         'locale' => $locale,
                         'publish' => 1
