@@ -75,16 +75,16 @@ class MenuLink extends Model
             if($menuLink->parent > 0){
                 $menuLink2 = self::where('cat_id', $menuLink->parent)->where('locale', $locale)
                     ->where('menu_id', $menuLink->menu_id)->first();
-                $str = $cat->{'slug:'.$locale}.'/'.$str;
+                $str = $cat->slug.'/'.$str;
                 $str = self::getSomeLink($menuLink->parent, $locale, $menuLink2).$str;
             }else{
-                $str = $cat->{'slug:'.$locale}.'/'.$str;
+                $str = $cat->slug.'/'.$str;
             }
         }
         return $str;
     }
 
-    public static function makeShopLink($menu, $id, $locale='sr'){
+    public static function makeShopLink($menu, $id, $locale='hr'){
         $link = substr(self::getSomeLink($id,$locale, false), 0, -1);
         $link = 'shop/' . $link;
         if($menu->prefix != null){
@@ -96,7 +96,7 @@ class MenuLink extends Model
         return $link;
     }
 
-    public static function makeBlogLink($menu, $id, $locale='sr'){
+    public static function makeBlogLink($menu, $id, $locale='hr'){
         $link = substr(self::getSomeLink($id, $locale, false), 0, -1);
         if($menu->prefix != null){
             $link = $menu->prefix . '/' . $link;
@@ -108,33 +108,29 @@ class MenuLink extends Model
     }
 
     public static function setLinks($menu, $links2){
-        $languages = Language::where('publish', 1)->orderBy('order', 'ASC')->get();
-        if(count($languages)>0){
-            foreach ($languages as $language){
-                $links = self::where('menu_id', $menu->id)->where('locale', $language->locale)->get();
-                if(count($links)>0){
-                    foreach ($links as $l){
-                        if(count($links2)>0){
-                            foreach ($links2 as $ll2){
-                                if($ll2->image != null && $l->title == $ll2->title && $l->locale == $ll2->locale && $menu->id == $ll2->menu_id){
-                                    $l->image = $ll2->image;
-                                }
-                            }
+        $links = self::where('menu_id', $menu->id)->where('locale', 'hr')->get();
+        if(count($links)>0){
+            foreach ($links as $l){
+                if(count($links2)>0){
+                    foreach ($links2 as $ll2){
+                        if($ll2->image != null && $l->title == $ll2->title && $l->locale == $ll2->locale && $menu->id == $ll2->menu_id){
+                            $l->image = $ll2->image;
                         }
-                        if($l->type == 1){
-                            $l->link = self::makeShopLink($menu, $l->id, $language->locale);
-                        }elseif($l->type == 2){
-                            $l->link = self::makeBlogLink($menu, $l->id, $language->locale);
-                        }else{
-                            $ll = self::getLink($links2, $l->cat_id);
-                            isset($ll)? $link = $ll : $link = null;
-                            $l->link = $link;
-                        }
-                        $l->update();
                     }
                 }
+                if($l->type == 1){
+                    $l->link = self::makeShopLink($menu, $l->id, 'hr');
+                }elseif($l->type == 2){
+                    $l->link = self::makeBlogLink($menu, $l->id, 'hr');
+                }else{
+                    $ll = self::getLink($links2, $l->cat_id);
+                    isset($ll)? $link = $ll : $link = null;
+                    $l->link = $link;
+                }
+                $l->update();
             }
         }
+
     }
 
     public static function renderMobileMenuHtml($menu){

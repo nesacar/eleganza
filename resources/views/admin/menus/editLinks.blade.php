@@ -18,52 +18,7 @@
 
     <div class="row" style="background-color: white">
         @include('admin.partials.errors')
-        <div class="col-md-6">
-            @if(count($pcategories)>0)
-                <div class="panel panel-white">
-                    <div class="panel-heading clearfix">
-                        <h4 class="panel-title">Kategorije bloga</h4>
-                    </div>
-                    <div class="panel-body">
-                        <ul id="sortable2" class="connectedSortable sortable2">
-                            @foreach($pcategories as $category)
-                                <li id="list_{{$category->id}}" class="ui-state-default" data-attribute="[]">
-                                    <div>
-                                        {!! Form::hidden('categories[]', $category->id) !!}
-                                        {!! Form::hidden('types[]', 2) !!}
-                                        {{ $category->{'title:hr'} }}
-                                        <span class="kat-dole">Kategorija bloga <i class="fa fa-times" aria-hidden="true"></i></span>
-                                    </div>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
-            @endif
-
-            @if(count($categories)>0)
-                    <div class="panel panel-white">
-                        <div class="panel-heading clearfix">
-                            <h4 class="panel-title">Kategorije prodavnice</h4>
-                        </div>
-                        <div class="panel-body">
-                            <ul id="sortable1" class="connectedSortable sortable2">
-                                @foreach($categories as $category)
-                                    <li id="list_{{$category->id}}" class="ui-state-default" data-attribute="[]">
-                                        <div>
-                                            {!! Form::hidden('categories[]', $category->id) !!}
-                                            {!! Form::hidden('types[]', 1) !!}
-                                            {{ $category->{'title:hr'} }} / {{ $category->id }}
-                                            <span class="kat-dole">Kategorija prodavnice <i class="fa fa-times" aria-hidden="true"></i></span>
-                                        </div>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
-            @endif
-        </div><!-- .col-md-6 -->
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="panel panel-white">
                 <div class="panel-heading clearfix">
                     <h4 class="panel-title">Linkovi menija</h4>
