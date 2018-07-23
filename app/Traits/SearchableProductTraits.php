@@ -29,13 +29,18 @@ trait SearchableProductTraits
             $products->brandFilter($brand->id);
         }
 
-        $products = $products->select('products.id', 'products.price_small')->published()->orderBy('products.price_small', 'DESC')->groupBy('products.id')->get(['products.id', 'products.price_small']);
+        $products = $products->select('products.id', 'products.price_small', 'diameter', 'water')->published()->orderBy('products.price_small', 'DESC')->groupBy('products.id')->get(['products.id', 'products.price_small']);
         $productIds = $products->pluck('id')->toArray();
-
-        $min = self::getPass() ? request('minPrice') : 0;
+        $min = self::getPass() ? request('minPrice') : $products->min('price_small');
         $max = self::getPass() ? request('maxPrice') : ($products && $products->first())? $products->first()->price_small : 0;
+        $minPromer = request('minPromer') ? request('minPromer') : $products->min('diameter');
+        $maxPromer = request('maxPromer') ? request('maxPromer') : $products->max('diameter');
+        $minWater = request('minWater') ? request('minWater') : $products->min('water');
+        $maxWater = request('maxWater') ? request('maxWater') : $products->max('water');
 
         $range = $category? $category->product()->published()->orderBy('price_small', 'DESC')->value('price_small') : Product::published()->orderBy('price_small', 'DESC')->value('price_small');
+        $rangePromer = $maxPromer - $minPromer;
+        $rangeWater = $maxWater - $minWater;
 
         return [
             'products' => self::query()->select('products.*', DB::raw("CASE WHEN price_outlet THEN price_outlet ELSE price_small END as totalPrice"))->withoutGlobalScope('attribute')->whereIn('id', $productIds)->sort(request('sort'))->paginate(self::$paginate),
@@ -44,7 +49,13 @@ trait SearchableProductTraits
             })->groupBy('attributes.id')->pluck('attributes.id')->toArray(),
             'min' => (int)$min,
             'max' => (int)$max,
+            'minPromer' => (int)$minPromer,
+            'maxPromer' => (int)$maxPromer,
+            'minWater' => (int)$minWater,
+            'maxWater' => (int)$maxWater,
             'range' => $range,
+            'rangePromer' => $rangePromer,
+            'rangeWater' => $rangeWater,
             'count' => count($productIds)
         ];
 
@@ -79,7 +90,7 @@ trait SearchableProductTraits
         return $query->whereHas('attribute', function ($q) use ($ids) {
             $q->whereIn('attributes.id', $ids)
                 ->groupBy('products.id')
-                ->havingRaw('COUNT(DISTINCT attributes.id) = ' . count($ids));
+                ->havingRaw('COUNT(DISTINCT attributes.id) >= ' . count($ids));
         });
     }
 

@@ -12,8 +12,8 @@
                         <div data-is-slider=true
                              data-min-value={{ request('minPrice') }} data-max-value={{ request('maxPrice') }} data-value-range={{ $data['range'] }} id=jsPriceSlider></div>
                     @else
-                        <div data-is-slider=true data-min-value=0
-                             data-max-value={{ $data['max'] }} data-value-range={{ $data['max'] }} id=jsPriceSlider></div>
+                        <div data-is-slider=true
+                             data-min-value={{ $data['min'] }} data-max-value={{ $data['max'] }} data-value-range={{ $data['max'] }} id=jsPriceSlider></div>
                     @endif
                     <div class=e-slider__labels>
                         <input type=text name=minPrice class=hidden data-label-for=min data-for-slider=jsPriceSlider
@@ -121,55 +121,59 @@
         @endif
 
         @if(!empty($set) && $set->id == 4)
+            @if($data['maxWater'])
             <div class="filter promjer">
                 <h4 class=filter__name>Vodootpornost</h4>
                 <div class=e-slider>
-                    @if(request('max-water') > 0)
+                    @if(request('maxWater') > 0)
                         <div data-is-slider=true
-                             data-min-value={{ request('minWater') }} data-max-value={{ request('maxWater') }} data-value-range=500
+                             data-min-value={{ request('minWater') }} data-max-value={{ request('maxWater') }} data-value-range={{ $data['rangeWater'] }}
                              id=jsHousingSlider2></div>
-                    @else
-                        <div data-is-slider=true data-min-value=0 data-max-value=500 data-value-range=500
+                    @elseif($data['maxWater'])
+                        <div data-is-slider=true data-min-value={{ $data['minWater'] }} data-max-value={{ $data['maxWater'] }} data-value-range={{ $data['rangeWater'] }}
                              id=jsHousingSlider2></div>
                     @endif
                     <div class=e-slider__labels>
-                        <input type=text name=min-water class=hidden data-label-for=min data-for-slider=jsHousingSlider2
+                        <input type=text name=minWater class=hidden data-label-for=min data-for-slider=jsHousingSlider2
                                readonly=readonly/>
-                        <span class="e-slider__label e-slider__label--mm" data-label-for=min
+                        <span class="e-slider__label e-slider__label--m" data-label-for=min
                               data-for-slider=jsHousingSlider2></span>
                         -
-                        <input type=text name=max-water class=hidden data-label-for=max data-for-slider=jsHousingSlider2
+                        <input type=text name=maxWater class=hidden data-label-for=max data-for-slider=jsHousingSlider2
                                readonly=readonly/>
-                        <span class="e-slider__label e-slider__label--mm" data-label-for=max
+                        <span class="e-slider__label e-slider__label--m" data-label-for=max
                               data-for-slider=jsHousingSlider2></span>
                     </div>
                 </div>
             </div>
+                @endif
 
+            @if($data['maxPromer'])
             <div class="filter promjer">
                 <h4 class=filter__name>promjer kućišta</h4>
                 <div class=e-slider>
-                    @if(request('max-promer') > 0)
+                    @if(request('maxPromer') > 0)
                         <div data-is-slider=true
-                             data-min-value={{ request('minPromer') }} data-max-value={{ request('maxPromer') }} data-value-range=50
+                             data-min-value={{ request('minPromer') }} data-max-value={{ request('maxPromer') }} data-value-range={{ $data['rangePromer'] }}
                              id=jsHousingSlider></div>
                     @else
-                        <div data-is-slider=true data-min-value=0 data-max-value=50 data-value-range=50
+                        <div data-is-slider=true data-min-value={{ $data['minPromer'] }} data-max-value={{ $data['maxPromer'] }} data-value-range={{ $data['rangePromer'] }}
                              id=jsHousingSlider></div>
                     @endif
                     <div class=e-slider__labels>
-                        <input type=text name=min-promer class=hidden data-label-for=min data-for-slider=jsHousingSlider
+                        <input type=text name=minPromer class=hidden data-label-for=min data-for-slider=jsHousingSlider
                                readonly=readonly/>
                         <span class="e-slider__label e-slider__label--mm" data-label-for=min
                               data-for-slider=jsHousingSlider></span>
                         -
-                        <input type=text name=max-promer class=hidden data-label-for=max data-for-slider=jsHousingSlider
+                        <input type=text name=maxPromer class=hidden data-label-for=max data-for-slider=jsHousingSlider
                                readonly=readonly/>
                         <span class="e-slider__label e-slider__label--mm" data-label-for=max
                               data-for-slider=jsHousingSlider></span>
                     </div>
                 </div>
             </div>
+                @endif
         @endif
       </div>
     </div>

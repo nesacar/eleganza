@@ -33,7 +33,7 @@ class Product extends Model {
 
     protected $fillable = ['brand_id', 'user_id', 'set_id', 'title', 'slug', 'short', 'body', 'body2', 'code', 'image', 'price_small', 'price_outlet', 'diameter', 'water', 'views', 'amount', 'color', 'featured', 'discount', 'sold', 'publish_at', 'publish'];
 
-    protected static $searchable = ['filters', 'minPrice', 'maxPrice', 'minWater', 'maxWater', 'minPromer', 'MaxPromer'];
+    protected static $searchable = ['filters', 'minPrice', 'maxPrice', 'minWater', 'maxWater', 'minPromer', 'maxPromer'];
 
     protected $appends = ['fullImagePath', 'link', 'tmb'];
 
