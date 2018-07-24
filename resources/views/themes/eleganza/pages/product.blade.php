@@ -148,6 +148,20 @@
                                     </li>
                                 @endforeach
                             @endif
+                            @if($product->diameter)
+                                <li class="product-attr js-v-grid-item">
+                                    <div class="js-v-grid-item_content">
+                                        <b>Promjer kućišta:</b> {{ $product->diameter }} mm
+                                    </div>
+                                </li>
+                            @endif
+                            @if($product->water)
+                                <li class="product-attr js-v-grid-item">
+                                    <div class="js-v-grid-item_content">
+                                        <b>Vodootpornost:</b> {{ $product->water }} m
+                                    </div>
+                                </li>
+                            @endif
                         </ul>
 
                     </div>

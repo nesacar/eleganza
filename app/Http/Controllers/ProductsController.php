@@ -223,8 +223,8 @@ class ProductsController extends Controller {
 		$product = Product::findOrFail($id);
 		$images = Product::where('image', $product->image)->where('id', '<>', $product->id)->get();
 		if(count($images)==0) File::delete($product->image);
-		$tmbs = Product::where('tmb', $product->image)->where('id', '<>', $product->id)->get();
-		if(count($tmbs)==0) File::delete($product->tmb);
+		/*$tmbs = Product::where('tmb', $product->image)->where('id', '<>', $product->id)->get();
+		if(count($tmbs)==0) File::delete($product->tmb);*/
 		/*$relation = Relation::where('product_id', $product->id)->first();
 		if(isset($relation)){ $relation->delete(); }*/
 		$product->delete();
@@ -529,6 +529,8 @@ class ProductsController extends Controller {
                         $old->amount = $row->amount;
                         $old->price_small = $row->price;
                         $old->price_outlet = $row->price_outlet;
+                        $old->diameter = $row->promjer_kucista;
+                        $old->water = $row->vodootpornost;
                         $old->publish = $row->publish;
                         $old->publish_at = Carbon::parse($row->publish_at)->format('Y-m-d H:m:s');
                         $old->update();
@@ -552,6 +554,8 @@ class ProductsController extends Controller {
                         $new->amount = $row->amount;
                         $new->price_small = $row->price;
                         $new->price_outlet = $row->price_outlet;
+                        $new->diameter = $row->promjer_kucista;
+                        $new->water = $row->vodootpornost;
                         $new->publish = $row->publish;
                         $new->publish_at = Carbon::parse($row->publish_at)->format('Y-m-d H:m:s');
                         $new->save();
