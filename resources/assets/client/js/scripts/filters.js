@@ -1,33 +1,27 @@
-import DoubleSlider from 'double-slider';
-
-const color = '#000';
+import DoubleSlider from '../components/double-slider';
+import {forEachAsync} from './utils';
 
 $(document).ready(function () {
-  const sliders = {};
-  const $sliderHosts = $('[data-is-slider="true"]');
+  const sliders = Array.from(document.querySelectorAll('[data-is-slider="true"]'))
+    .map((el) => new DoubleSlider(el))
+    .map(attachEventHandlers);
 
-  if ($sliderHosts.length < 1) return;
-
-  $sliderHosts.each((i, sliderHost) => {
-    const id = sliderHost.id;
-    const updateSliderLabels = updateSliderLabelsFactory(id);
-
-    const initialValue = {
-      min: parseInt(sliderHost.getAttribute('data-min-value'), 10),
-      max: parseInt(sliderHost.getAttribute('data-max-value'), 10),
-      range: parseInt(sliderHost.getAttribute('data-value-range'), 10)
-    };
-
-    sliders[id] = new DoubleSlider({
-      id,
-      color,
-      onEnd: updateSliderLabels
+  window.addEventListener('slider:layout', () => {
+    forEachAsync(sliders, (s) => {
+      s.layout();
     });
-
-    sliders[id].value = initialValue;
-    updateSliderLabels(initialValue);
   });
 });
+
+function attachEventHandlers(slider) {
+  const id = slider.root.id;
+  const updateSliderLabels = updateSliderLabelsFactory(id);
+  updateSliderLabels(slider.value);
+  slider.addEventListener('slider:change', () => {
+    updateSliderLabels(slider.value);
+  });
+  return slider;
+}
 
 function updateSliderLabelsFactory (id) {
   return value => {

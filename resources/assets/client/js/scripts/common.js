@@ -41,3 +41,19 @@ function toggleNoScrollElement (el) {
     document.body.classList.remove('no-scroll');
   }
 }
+
+// emitter helpers.
+$(document).ready(function() {
+  $emitters = document.querySelectorAll('.js-emitter');
+  $emitters.forEach(($emitter) => {
+    $emitter.addEventListener('click', () => {
+      dispatch($emitter);
+    });
+  });
+});
+
+function dispatch(el) {
+  const type = el.dataset.event;
+  const evt = new CustomEvent(type, {bubbles: true, detail: el});
+  el.dispatchEvent(evt);
+}
