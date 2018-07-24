@@ -33,10 +33,11 @@ trait SearchableProductTraits
         $productIds = $products->pluck('id')->toArray();
         $min = self::getPass() ? request('minPrice') : $products->min('price_small');
         $max = self::getPass() ? request('maxPrice') : ($products && $products->first())? $products->first()->price_small : 0;
-        $minPromer = request('minPromer') ? request('minPromer') : $products->min('diameter');
-        $maxPromer = request('maxPromer') ? request('maxPromer') : $products->max('diameter');
-        $minWater = request('minWater') ? request('minWater') : $products->min('water');
-        $maxWater = request('maxWater') ? request('maxWater') : $products->max('water');
+
+        $minPromer = request('minPromer') ? (request('minPromer') >= $products->min('diameter')) ? request('minPromer') : $products->min('diameter') : $products->min('diameter');
+        $maxPromer = request('maxPromer') ? (request('maxPromer') <= $products->max('diameter')) ? request('maxPromer') : $products->max('diameter') : $products->max('diameter');
+        $minWater = request('minWater') ? (request('minWater') >= $products->min('water')) ? request('minWater') : $products->min('water') : $products->min('water');
+        $maxWater = request('maxWater') ? (request('maxWater') <= $products->max('water')) ? request('maxWater') : $products->max('water') : $products->max('water');
 
         $range = $category? $category->product()->published()->orderBy('price_small', 'DESC')->value('price_small') : Product::published()->orderBy('price_small', 'DESC')->value('price_small');
         $rangePromer = $maxPromer - $minPromer;
