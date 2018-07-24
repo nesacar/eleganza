@@ -190,7 +190,7 @@
                                 </div>
                                 <div class="product-item__info-box">
                                     <h2 class="product-item__name">{{ $p->title }}</h2>
-                                    <span class="product-item__price">{{ $p->price_small }}</span>
+                                    <span class="product-item__price">@convert($p->price_small)</span>
                                 </div>
                                 <button class="e-btn e-btn--primary e-btn--block">saznaj više</button>
                             </a>

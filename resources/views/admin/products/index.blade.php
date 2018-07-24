@@ -119,7 +119,7 @@
                                         @endif
                                     </div>
                                     <div class="col-md-1 ima-padding">
-                                        {{ $p->price_small }} RSD
+                                        {{ $p->price_small }} HRK
                                     </div>
                                     <div class="col-md-2 ima-padding">
                                         {{ $p->category->first()? $p->category->first()->title : 'Bez kategorije' }}
