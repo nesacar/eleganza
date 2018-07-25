@@ -22558,10 +22558,17 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 
 
+var FORM_ID = 'moja';
+
 $(document).ready(function () {
+  var form = document.getElementById(FORM_ID);
   var sliders = Array.from(document.querySelectorAll('[data-is-slider="true"]')).map(function (el) {
     return new __WEBPACK_IMPORTED_MODULE_0__components_double_slider__["a" /* default */](el);
   }).map(attachEventHandlers);
+
+  window.addEventListener('slider:change', function () {
+    form.submit();
+  });
 
   window.addEventListener('slider:layout', function () {
     Object(__WEBPACK_IMPORTED_MODULE_1__utils__["a" /* forEachAsync */])(sliders, function (s) {
@@ -22574,7 +22581,7 @@ function attachEventHandlers(slider) {
   var id = slider.root.id;
   var updateSliderLabels = updateSliderLabelsFactory(id);
   updateSliderLabels(slider.value);
-  slider.addEventListener('slider:change', function () {
+  slider.addEventListener('slider:input', function () {
     updateSliderLabels(slider.value);
   });
   return slider;
