@@ -9,7 +9,7 @@ $(document).ready(function () {
   window.addEventListener('slider:layout', () => {
     forEachAsync(sliders, (s) => {
       s.layout();
-    });
+    }, 300);
   });
 });
 
