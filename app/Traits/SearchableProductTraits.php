@@ -31,32 +31,44 @@ trait SearchableProductTraits
 
         $products = $products->select('products.id', 'products.price_small', 'diameter', 'water')->published()->orderBy('products.price_small', 'DESC')->groupBy('products.id')->get(['products.id', 'products.price_small']);
         $productIds = $products->pluck('id')->toArray();
-        $min = self::getPass() ? request('minPrice') : $products->min('price_small');
-        $max = self::getPass() ? request('maxPrice') : ($products && $products->first())? $products->first()->price_small : 0;
+        /*$min = self::getPass() ? request('minPrice') : $products->min('price_small');
+        $max = self::getPass() ? request('maxPrice') : ($products && $products->first())? $products->first()->price_small : 0;*/
 
-        $minPromer = request('minPromer') ? (request('minPromer') >= $products->min('diameter')) ? request('minPromer') : $products->min('diameter') : $products->min('diameter');
-        $maxPromer = request('maxPromer') ? (request('maxPromer') <= $products->max('diameter')) ? request('maxPromer') : $products->max('diameter') : $products->max('diameter');
-        $minWater = request('minWater') ? (request('minWater') >= $products->min('water')) ? request('minWater') : $products->min('water') : $products->min('water');
-        $maxWater = request('maxWater') ? (request('maxWater') <= $products->max('water')) ? request('maxWater') : $products->max('water') : $products->max('water');
+        $rangePriceMax = $category ? $category->product()->published()->orderBy('price_small', 'DESC')->value('price_small') : Product::published()->orderBy('price_small', 'DESC')->value('price_small');
+        $rangePriceMin = $category ? $category->product()->published()->orderBy('price_small', 'ASC')->value('price_small') : Product::published()->orderBy('price_small', 'ASC')->value('price_small');
 
-        $range = $category? $category->product()->published()->orderBy('price_small', 'DESC')->value('price_small') : Product::published()->orderBy('price_small', 'DESC')->value('price_small');
-        $rangePromer = $maxPromer - $minPromer;
-        $rangeWater = $maxWater - $minWater;
+        $rangePromerMax = $category ? $category->product()->published()->orderBy('diameter', 'DESC')->value('diameter') : Product::published()->orderBy('diameter', 'DESC')->value('diameter');
+        $rangePromerMin = $category ? $category->product()->published()->orderBy('diameter', 'ASC')->value('diameter') : Product::published()->orderBy('diameter', 'ASC')->value('diameter');
+
+        $rangeWaterMax = $category ? $category->product()->published()->orderBy('water', 'DESC')->value('water') : Product::published()->orderBy('water', 'DESC')->value('water');
+        $rangeWaterMin = $category ? $category->product()->published()->orderBy('water', 'ASC')->value('water') : Product::published()->orderBy('water', 'ASC')->value('water');
+
+        $minPrice = self::getPass() ? request('minPrice') : $rangePriceMin;
+        $maxPrice = self::getPass() ? request('maxPrice') : $rangePriceMax;
+
+        $minPromer = request('maxPromer') ? request('minPromer') : $rangePromerMin;
+        $maxPromer = request('maxPromer') ? request('maxPromer') : $rangePromerMax;
+
+        $minWater = request('maxWater') ? request('minWater') : $rangeWaterMin;
+        $maxWater = request('maxWater') ? request('maxWater') : $rangeWaterMax;
 
         return [
             'products' => self::query()->select('products.*', DB::raw("CASE WHEN price_outlet THEN price_outlet ELSE price_small END as totalPrice"))->withoutGlobalScope('attribute')->whereIn('id', $productIds)->sort(request('sort'))->paginate(self::$paginate),
             'attIds' => Attribute::whereHas('product', function ($q) use ($productIds) {
                 $q->whereIn('products.id', $productIds);
             })->groupBy('attributes.id')->pluck('attributes.id')->toArray(),
-            'min' => (int)$min,
-            'max' => (int)$max,
+            'minPrice' => (int)$minPrice,
+            'maxPrice' => (int)$maxPrice,
             'minPromer' => (int)$minPromer,
             'maxPromer' => (int)$maxPromer,
             'minWater' => (int)$minWater,
             'maxWater' => (int)$maxWater,
-            'range' => $range,
-            'rangePromer' => $rangePromer,
-            'rangeWater' => $rangeWater,
+            'rangePriceMax' => $rangePriceMax,
+            'rangePriceMin' => $rangePriceMin,
+            'rangePromerMax' => $rangePromerMax,
+            'rangePromerMin' => $rangePromerMin,
+            'rangeWaterMax' => $rangeWaterMax,
+            'rangeWaterMin' => $rangeWaterMin,
             'count' => count($productIds)
         ];
 

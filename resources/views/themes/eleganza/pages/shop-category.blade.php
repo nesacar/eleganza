@@ -92,6 +92,16 @@
 
         </div>
 
+        @if(count($data['products']) == 0)
+
+            <div class="products-container">
+                <div class="no-result" style="text-align: center; padding-top: 48px; ">
+                    <h1>Nema rezultata</h1><br>
+                    <a href="{{ url()->current() }}" class="e-btn e-btn--primary">Osvježi filtre</a>
+                </div>
+            </div>
+
+        @endif
 
         @if(count($data['products'])>0)
 

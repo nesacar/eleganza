@@ -14,27 +14,19 @@
 
     <div class="collapse show" id=jsBasicFilters>
       <div class="filters__body">
-        @if($data['max'])
+        @if($data['maxPrice'])
             <div class="filter cijena">
                 <h4 class=filter__name>cijena</h4>
                 <div class=e-slider>
-                    @if(request('maxPrice') > 0)
-                        <div data-is-slider=true
-                          data-min={{ request('minPrice') }}
-                          data-max={{ request('maxPrice') }}
-                          data-rangemax={{ $data['range'] }}
-                          data-rangemin="0"
-                          id=jsPriceSlider
-                        ></div>
-                    @else
-                        <div data-is-slider=true
-                          data-min={{ $data['min'] }}
-                          data-max={{ $data['max'] }}
-                          data-rangemax={{ $data['max'] }}
-                          data-rangemin="0"
-                          id=jsPriceSlider
-                        ></div>
-                    @endif
+
+                    <div data-is-slider=true
+                         data-min={{ $data['minPrice'] }}
+                                 data-max="{{ $data['maxPrice'] }}"
+                                 data-rangemax="{{ $data['rangePriceMax'] }}"
+                                 data-rangemin="{{ $data['rangePriceMin'] }}"
+                         id=jsPriceSlider
+                    ></div>
+
                     <div class=e-slider__labels>
                         <input class=hidden
                           type=text
@@ -183,10 +175,10 @@
           <div class=e-slider>
 
             <div data-is-slider=true
-              data-min={{ $data['minWater'] }}
-              data-max={{ $data['maxWater'] }}
-              data-rangemax={{ $data['rangeWater'] }}
-              data-rangemin="0"
+              data-min="{{ $data['minWater'] }}"
+              data-max="{{ $data['maxWater'] }}"
+              data-rangemax="{{ $data['rangeWaterMax'] }}"
+              data-rangemin="{{ $data['rangeWaterMin'] }}"
               id=jsHousingSlider2
             ></div>
 
@@ -225,10 +217,10 @@
           <div class=e-slider>
 
             <div data-is-slider=true
-              data-min={{ $data['minPromer'] }}
-              data-max={{ $data['maxPromer'] }}
-              data-rangemax={{ $data['rangePromer'] }}
-              data-rangemin="0"
+              data-min="{{ $data['minPromer'] }}"
+              data-max="{{ $data['maxPromer'] }}"
+              data-rangemax="{{ $data['rangePromerMax'] }}"
+              data-rangemin="{{ $data['rangePromerMin'] }}"
               id=jsHousingSlider
             ></div>
 
