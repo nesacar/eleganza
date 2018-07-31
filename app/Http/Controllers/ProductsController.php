@@ -39,9 +39,10 @@ class ProductsController extends Controller {
 	{
 		$slug = 'products';
 		$products = Product::newFilteredAdminProducts(Session::get('title'), Session::get('cat'), Product::$list_limit, 1, Session::get('od'), Session::get('do'));
-		$catids = Category::pluck('title', 'id');
+		$category = Category::getSortCategorySelect() . '</select>';
+        //$catids = Category::pluck('title', 'id');
 
-		return view('admin.products.index', compact('products', 'slug', 'catids'));
+		return view('admin.products.index', compact('products', 'slug', 'catids', 'category'));
 	}
 
 	/**

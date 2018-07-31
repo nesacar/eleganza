@@ -42,7 +42,7 @@
                                 <input type="text" name="title" placeholder="Pretraga..." id="title" class="form-control input-sm" value="@if(Session::get('title')){{Session::get('title')}}@endif">
                             </div>
                             <div class="col-sm-2">
-                                {!! \App\Category::getSortCategorySelectAdmin() !!}
+                                {!! $category !!}
                             </div>
                             <div class="col-sm-2">
                                 <input type="text" placeholder="cena od..." name="od" id="od" maxlength="6" value="@if(Session::get('od')){{Session::get('od')}}@endif" class="form-control input-sm" style="margin-bottom: 10px;">

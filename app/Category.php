@@ -59,8 +59,8 @@ class Category extends Model
         return $str;
     }
 
-    public static function tree() {
-        return static::with(implode('.', array_fill(0, 1, 'children')))->where('parent', 0)->get();
+    public static function tree($parent = 0) {
+        return static::with(implode('.', array_fill(0, 1, 'children')))->where('parent', $parent)->get();
     }
 
     public function parentCategory() {
@@ -428,6 +428,41 @@ class Category extends Model
                 $str .= self::getSortCategorySelectParentAdmin($c->id);
             }
             $str .= "</select>";
+        }
+        return $str;
+    }
+
+    /**
+     * Get select tag list with nested categories
+     *
+     * @param int $cat
+     * @param int $i
+     * @return string
+     */
+    public static function getSortCategorySelect($cat = 0, $i = 0)
+    {
+        $str = '';
+        // Get category with children category relations
+        $categories = Category::tree($cat);
+
+        if ($i == 0) {
+            // Run only one, open tag
+            $str = "<select name='category_id' class='sele' id='kategorija'>";
+            $str .= "<option value='0'>Sve kategorije</option>";
+            $i++;
+        }
+        foreach ($categories as $category) {
+
+            $separator = self::getSeparator($category->level);
+
+            $str .= "<option value='$category->id'";
+            Session::get('cat') == $category->id ? $str .= "selected" : $str .= '';
+            $str .= ">$separator$category->order $category->title</option>";
+
+            if (!empty($category->children)) {
+                // category have subcategory, run recursive
+                $str .= self::getSortCategorySelect($category->id, $i++);
+            }
         }
         return $str;
     }
