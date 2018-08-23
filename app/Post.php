@@ -273,6 +273,11 @@ class Post extends Model
         }
     }
 
+    public function setSlugAttribute($slug)
+    {
+        $slug ? $this->attributes['slug'] = str_slug($slug) : $this->attributes['slug'] = str_slug($this->title);
+    }
+
     public function pcategory(){
         return $this->belongsToMany('App\PCategory')->orderBy('parent', 'ASC');
     }

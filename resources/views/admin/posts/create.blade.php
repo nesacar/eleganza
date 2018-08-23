@@ -30,6 +30,12 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="title" class="col-sm-2 control-label">Slug</label>
+                            <div class="col-sm-10">
+                                {!! Form::text('slug', null, array('class' => 'form-control')) !!}
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="publish_at" class="col-sm-2 control-label">Vreme publikovanja <span class="crvena-zvezdica">*</span></label>
                             <div class="col-sm-10">
                                 {!! Form::text('publish_at', null, array('class' => 'form-control', 'id' => 'publish_at')) !!}

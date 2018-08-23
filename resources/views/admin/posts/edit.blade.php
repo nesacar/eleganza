@@ -31,6 +31,12 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="title" class="col-sm-2 control-label">Slug</label>
+                        <div class="col-sm-10">
+                            {!! Form::text('slug', $post->slug, array('class' => 'form-control')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="short" class="col-sm-2 control-label">SEO opis <span class="crvena-zvezdica">*</span></label>
                         <div class="col-sm-10">
                             {!! Form::textarea('short', $post->short, array('class' => 'form-control')) !!}
